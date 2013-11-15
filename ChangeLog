@@ -270,6 +270,13 @@
 
 - Added AsyncTask PlayMediaTask to handle playing of media in background task
 
+/********** November 15, 2013 **********/
+/!!!!!!!!!! Version 0.7.0 !!!!!!!!!!/
+
+- Updated database structure to match Media Store more closely
+- Updated database queries
+- Updated retrieval of Media Store information to retrieve albums based on artist ID
+
 
 
 

@@ -19,12 +19,11 @@ public class ExtractService extends IntentService {
 		long startTime = System.nanoTime(); // Get the time for extraction start
 		Log.i(TAG, "Beginning media file extraction from SD Card.");
 
-		sdCard.retrieveArtists(); // Get files from sd card
+		// sdCard.retrieveArtists(); // Get files from sd card
 		// sdCard.logFiles(); // Display the Music data in Log Cat
 
 		long endTime = System.nanoTime(); // Get the time for extraction end
 		long duration = endTime - startTime;
-		Log.i(TAG, "Media file extraction complete. Time ellapsed was: "
-				+ duration / 1000000);
+		Log.i(TAG, "Media file extraction complete. Time ellapsed was: " + duration / 1000000);
 	}
 }

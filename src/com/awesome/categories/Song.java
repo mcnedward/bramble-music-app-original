@@ -12,12 +12,11 @@ public class Song implements Serializable {
 	private String title;
 	private String titleKey;
 	private String displayName;
-	private Integer artistId;
 	private String artist;
 	private String artistKey;
-	private Integer albumId;
 	private String album;
 	private String albumKey;
+	private String composer;
 	private Integer track;
 	private Integer duration;
 	private Integer year;
@@ -29,25 +28,48 @@ public class Song implements Serializable {
 
 	}
 
-	public Song(Integer titleId, String title, String titleKey, String displayName, Integer artistId, String artist,
-			String artistKey, Integer albumId, String album, String albumKey, Integer track, Integer duration,
-			Integer year, Integer dateAdded, String mimeType, String data) {
+	public Song(Integer titleId, String title, String titleKey, String displayName, String artist, String artistKey,
+			String album, String albumKey, String composer, Integer track, Integer duration, Integer year,
+			Integer dateAdded, String mimeType, String data) {
 		this.titleId = titleId;
 		this.title = title;
 		this.titleKey = titleKey;
 		this.displayName = displayName;
-		this.artistId = artistId;
 		this.artist = artist;
 		this.artistKey = artistKey;
-		this.albumId = albumId;
 		this.album = album;
 		this.albumKey = albumKey;
+		this.composer = composer;
 		this.track = track;
 		this.duration = duration;
 		this.year = year;
 		this.dateAdded = dateAdded;
 		this.mimeType = mimeType;
 		this.data = data;
+	}
+
+	public String getArtist() {
+		return artist;
+	}
+
+	public void setArtist(String artist) {
+		this.artist = artist;
+	}
+
+	public String getAlbum() {
+		return album;
+	}
+
+	public void setAlbum(String album) {
+		this.album = album;
+	}
+
+	public String getComposer() {
+		return composer;
+	}
+
+	public void setComposer(String composer) {
+		this.composer = composer;
 	}
 
 	public Integer getTitleId() {
@@ -82,44 +104,12 @@ public class Song implements Serializable {
 		this.displayName = displayName;
 	}
 
-	public Integer getArtistId() {
-		return artistId;
-	}
-
-	public void setArtistId(Integer artistId) {
-		this.artistId = artistId;
-	}
-
-	public String getArtist() {
-		return artist;
-	}
-
-	public void setArtist(String artist) {
-		this.artist = artist;
-	}
-
 	public String getArtistKey() {
 		return artistKey;
 	}
 
 	public void setArtistKey(String artistKey) {
 		this.artistKey = artistKey;
-	}
-
-	public Integer getAlbumId() {
-		return albumId;
-	}
-
-	public void setAlbumId(Integer albumId) {
-		this.albumId = albumId;
-	}
-
-	public String getAlbum() {
-		return album;
-	}
-
-	public void setAlbum(String album) {
-		this.album = album;
 	}
 
 	public String getAlbumKey() {
@@ -182,9 +172,7 @@ public class Song implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((album == null) ? 0 : album.hashCode());
 		result = prime * result + ((albumKey == null) ? 0 : albumKey.hashCode());
-		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
 		result = prime * result + ((artistKey == null) ? 0 : artistKey.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((dateAdded == null) ? 0 : dateAdded.hashCode());
@@ -208,20 +196,10 @@ public class Song implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Song other = (Song) obj;
-		if (album == null) {
-			if (other.album != null)
-				return false;
-		} else if (!album.equals(other.album))
-			return false;
 		if (albumKey == null) {
 			if (other.albumKey != null)
 				return false;
 		} else if (!albumKey.equals(other.albumKey))
-			return false;
-		if (artist == null) {
-			if (other.artist != null)
-				return false;
-		} else if (!artist.equals(other.artist))
 			return false;
 		if (artistKey == null) {
 			if (other.artistKey != null)

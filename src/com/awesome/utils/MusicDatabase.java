@@ -1,9 +1,7 @@
 package com.awesome.utils;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,7 +11,6 @@ import android.util.Log;
 
 import com.awesome.categories.Album;
 import com.awesome.categories.Artist;
-import com.awesome.categories.Music;
 import com.awesome.categories.Song;
 
 @SuppressWarnings("deprecation")
@@ -25,60 +22,41 @@ public class MusicDatabase {
 	private Context context;
 
 	/** Artist Table Variables **/
-	static String DATABASE_TABLE_ARTISTS = "artists";
-	private static String ARTIST_ID = "_id";
-	private static String ARTIST = "artist";
-	private static String ARTIST_KEY = "artist_key";
-	private static String NUMBER_OF_ALBUMS = "number_of_albums";
+	final private static String DATABASE_TABLE_ARTISTS = "Artists";
+	final private static String ARTIST_ID = "_id";
+	final private static String ARTIST = "Artist";
+	final private static String ARTIST_KEY = "ArtistKey";
+	final private static String NUMBER_OF_ALBUMS = "NumberOfAlbums";
 
 	/** Album Table Variables **/
-	private static String DATABASE_TABLE_ALBUMS = "albums";
-	private static String ALBUM_ID = "_id";
-	private static String ALBUM = "album";
-	private static String ALBUM_KEY = "album_key";
-	private static String ALBUM_ARTIST = "artist";
-	private static String NUMBER_OF_SONGS = "numsongs";
-	private static String FIRST_YEAR = "minyear";
-	private static String LAST_YEAR = "maxyear";
-	private static String ALBUM_ART = "album_art";
+	final private static String DATABASE_TABLE_ALBUMS = "Albums";
+	final private static String ALBUM_ID = "_id";
+	final private static String ALBUM = "Album";
+	final private static String ALBUM_KEY = "AlbumKey";
+	final private static String ALBUM_ARTIST = "Artist";
+	final private static String NUMBER_OF_SONGS = "NumberOfSongs";
+	final private static String FIRST_YEAR = "MinYear";
+	final private static String LAST_YEAR = "MaxYear";
+	final private static String ALBUM_ART = "AlbumArt";
 
 	/** Song Table Variables **/
-	private static String DATABASE_TABLE_SONGS = "songs";
-	private static String SONG_ID = "_id";
-	private static String SONG_TITLE = "title";
-	private static String SONG_KEY = "title_key";
-	private static String SONG_DISPLAY_NAME = "_display_name";
-	private static String SONG_ARTIST_ID = "artist_id";
-	private static String SONG_ARTIST = "artist";
-	private static String SONG_ARTIST_KEY = "artist_key";
-	private static String SONG_ALBUM_ID = "album_id";
-	private static String SONG_ALBUM = "album";
-	private static String SONG_ALBUM_KEY = "album_key";
-	private static String SONG_TRACK = "track";
-	private static String SONG_DURATION = "duration";
-	private static String SONG_YEAR = "year";
-	private static String SONG_DATE_ADDED = "date_added";
-	private static String SONG_MIME_TYPE = "mime_type";
-	private static String SONG_DATA = "_data";
-	private static String SONG_IS_MUSIC = "is_music";
-
-	/** Music Table Variables **/
-	private static String DATABASE_TABLE_MUSIC = "MUSIC";
-	private static String MUSIC_ID = "_id";
-	private static String MUSIC_TITLE = "Title";
-	private static String MUSIC_ARTIST = "Artist";
-	private static String MUSIC_ALBUM = "Album";
-	private static String MUSIC_COMPOSER = "Composer";
-	private static String MUSIC_YEAR = "Year";
-	private static String MUSIC_DURATION = "Duration";
-	private static String MUSIC_TRACK_NUMBER = "TrackNumber";
-	private static String MUSIC_ALBUM_ART = "AlbumArt";
-	private static String MUSIC_SONG_ID = "SongId";
-	private static String MUSIC_TITLE_KEY = "TitleKey";
-	private static String MUSIC_ARTIST_ID = "ArtistId";
-	private static String MUSIC_ARTIST_KEY = "ArtistKey";
-	private static String MUSIC_ALBUM_ID = "AlbumId";
-	private static String MUSIC_ALBUM_KEY = "AlbumKey";
+	final private static String DATABASE_TABLE_SONGS = "Songs";
+	final private static String SONG_ID = "_id";
+	final private static String SONG_TITLE = "Title";
+	final private static String SONG_KEY = "TitleKey";
+	final private static String SONG_DISPLAY_NAME = "DisplayName";
+	final private static String SONG_ARTIST = "Artist";
+	final private static String SONG_ARTIST_KEY = "ArtistKey";
+	final private static String SONG_ALBUM = "Album";
+	final private static String SONG_ALBUM_KEY = "AlbumKey";
+	final private static String SONG_COMPOSER = "Composer";
+	final private static String SONG_TRACK = "Track";
+	final private static String SONG_DURATION = "Duration";
+	final private static String SONG_YEAR = "Year";
+	final private static String SONG_DATE_ADDED = "DateAdded";
+	final private static String SONG_MIME_TYPE = "MimeType";
+	final private static String SONG_DATA = "Data";
+	final private static String SONG_IS_MUSIC = "IsMusic";
 
 	public MusicDatabase() {
 
@@ -108,7 +86,7 @@ public class MusicDatabase {
 	@SuppressWarnings("deprecation")
 	public void insertArtist(Artist artist) {
 		// Check if the artist is already in the database
-		if (artistExists(artist.getArtistKey())) {
+		if (artistExists(artist)) {
 			return;
 		} else {
 			open();	// Open the database
@@ -205,7 +183,7 @@ public class MusicDatabase {
 	@SuppressWarnings("deprecation")
 	public void insertSong(Song song) {
 		// Check if the song is already in the database
-		if (songExists(song.getTitleKey())) {
+		if (songExists(song)) {
 			return;
 		} else {
 			open();
@@ -216,12 +194,9 @@ public class MusicDatabase {
 			final String songTitle = song.getTitle();
 			final String songKey = song.getTitleKey();
 			final String songDisplayName = song.getDisplayName();
-			final Integer songArtistId = song.getArtistId();
-			final String songArtist = song.getArtist();
 			final String songArtistKey = song.getArtistKey();
-			final Integer songAlbumId = song.getAlbumId();
-			final String songAlbum = song.getAlbum();
 			final String songAlbumKey = song.getAlbumKey();
+			final String songComposer = song.getComposer();
 			final Integer songTrack = song.getTrack();
 			final Integer songDuration = song.getDuration();
 			final Integer songYear = song.getYear();
@@ -233,12 +208,9 @@ public class MusicDatabase {
 			final int songTitleColumn = ih.getColumnIndex(SONG_TITLE);
 			final int songKeyColumn = ih.getColumnIndex(SONG_KEY);
 			final int songDisplayNameColumn = ih.getColumnIndex(SONG_DISPLAY_NAME);
-			final int songArtistIdColumn = ih.getColumnIndex(SONG_ARTIST_ID);
-			final int songArtistColumn = ih.getColumnIndex(SONG_ARTIST);
 			final int songArtistKeyColumn = ih.getColumnIndex(SONG_ARTIST_KEY);
-			final int songAlbumIdColumn = ih.getColumnIndex(SONG_ALBUM_ID);
-			final int songAlbumColumn = ih.getColumnIndex(SONG_ALBUM);
 			final int songAlbumKeyColumn = ih.getColumnIndex(SONG_ALBUM_KEY);
+			final int songComposerComlumn = ih.getColumnIndex(SONG_COMPOSER);
 			final int songTrackColumn = ih.getColumnIndex(SONG_TRACK);
 			final int songDurationColumn = ih.getColumnIndex(SONG_DURATION);
 			final int songYearColumn = ih.getColumnIndex(SONG_YEAR);
@@ -257,12 +229,9 @@ public class MusicDatabase {
 				ih.bind(songTitleColumn, songTitle);
 				ih.bind(songKeyColumn, songKey);
 				ih.bind(songDisplayNameColumn, songDisplayName);
-				ih.bind(songArtistIdColumn, songArtistId);
-				ih.bind(songArtistColumn, songArtist);
 				ih.bind(songArtistKeyColumn, songArtistKey);
-				ih.bind(songAlbumIdColumn, songAlbumId);
-				ih.bind(songAlbumColumn, songAlbum);
 				ih.bind(songAlbumKeyColumn, songAlbumKey);
+				ih.bind(songComposerComlumn, songComposer);
 				ih.bind(songTrackColumn, songTrack);
 				ih.bind(songDurationColumn, songDuration);
 				ih.bind(songYearColumn, songYear);
@@ -280,88 +249,14 @@ public class MusicDatabase {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	public void insertMusic(Music music) {
-		// Check if the album is already in the database
-		if (musicExists(music.getSongId())) {
-			return;
-		} else {
-			open();
-			// Create a single InsertHelper to handle this set of insertions.
-			InsertHelper ih = new InsertHelper(database, DATABASE_TABLE_MUSIC);
-
-			// Get the Music information
-			final String title = music.getTitle();
-			final String artist = music.getArtist();
-			final String album = music.getAlbum();
-			final String composer = music.getComposer();
-			final Integer year = music.getYear();
-			final Integer duration = music.getDuration();
-			final Integer trackNumber = music.getTrackNumber();
-			final String albumArt = music.getAlbumArt();
-			final Integer songId = music.getSongId();
-			final String titleKey = music.getTitleKey();
-			final Integer artistId = music.getArtistId();
-			final String artistKey = music.getArtistKey();
-			final Integer albumId = music.getAlbumId();
-			final String albumKey = music.getAlbumKey();
-
-			// Get the numeric indexes for each of the columns that we're updating
-			final int titleColumn = ih.getColumnIndex(MUSIC_TITLE);
-			final int artistColumn = ih.getColumnIndex(MUSIC_ARTIST);
-			final int albumColumn = ih.getColumnIndex(MUSIC_ALBUM);
-			final int composerColumn = ih.getColumnIndex(MUSIC_COMPOSER);
-			final int yearColumn = ih.getColumnIndex(MUSIC_YEAR);
-			final int durationColumn = ih.getColumnIndex(MUSIC_DURATION);
-			final int trackNumberColumn = ih.getColumnIndex(MUSIC_TRACK_NUMBER);
-			final int albumArtColumn = ih.getColumnIndex(MUSIC_ALBUM_ART);
-			final int songIdColumn = ih.getColumnIndex(MUSIC_SONG_ID);
-			final int titleKeyColumn = ih.getColumnIndex(MUSIC_TITLE_KEY);
-			final int artistIdColumn = ih.getColumnIndex(MUSIC_ARTIST_ID);
-			final int artistKeyColumn = ih.getColumnIndex(MUSIC_ARTIST_KEY);
-			final int albumIdColumn = ih.getColumnIndex(MUSIC_ALBUM_ID);
-			final int albumKeyColumn = ih.getColumnIndex(MUSIC_ALBUM_KEY);
-
-			@SuppressWarnings("unused")
-			int x = 0;
-
-			try {
-				// Get the InsertHelper ready to insert a single row
-				ih.prepareForInsert();
-
-				// Add the data for each column
-				ih.bind(titleColumn, title);
-				ih.bind(artistColumn, artist);
-				ih.bind(albumColumn, album);
-				ih.bind(composerColumn, composer);
-				ih.bind(yearColumn, year);
-				ih.bind(durationColumn, duration);
-				ih.bind(trackNumberColumn, trackNumber);
-				ih.bind(albumArtColumn, albumArt);
-				ih.bind(songIdColumn, songId);
-				ih.bind(titleKeyColumn, titleKey);
-				ih.bind(artistIdColumn, artistId);
-				ih.bind(artistKeyColumn, artistKey);
-				ih.bind(albumIdColumn, albumId);
-				ih.bind(albumKeyColumn, albumKey);
-
-				// Insert the row into the database.
-				ih.execute();
-				x++;
-			} finally {
-				ih.close();
-				close();
-			}
-		}
-	}
-
 	/********** SELECT QUERIES **********/
 
 	public List<Artist> getAllArtists() {
 		List<Artist> artistList = new ArrayList<Artist>();
 
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM artists ORDER BY artist COLLATE NOCASE ASC", null);
+		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ARTISTS + " ORDER BY " + ARTIST
+				+ " COLLATE NOCASE ASC", null);
 		try {
 			while (c.moveToNext()) {
 				Integer artistId = c.getInt(c.getColumnIndexOrThrow(ARTIST_ID));
@@ -389,42 +284,11 @@ public class MusicDatabase {
 		}
 	}
 
-	public List<Artist> getArtists() {
-		List<Artist> artistList = new ArrayList<Artist>();
-
-		open();
-		Cursor c = database.rawQuery(
-				"SELECT ArtistId, Artist, ArtistKey FROM MUSIC ORDER BY Artist COLLATE NOCASE ASC", null);
-		try {
-			while (c.moveToNext()) {
-				Integer artistId = c.getInt(c.getColumnIndexOrThrow(MUSIC_ARTIST_ID));
-				String artist = c.getString(c.getColumnIndexOrThrow(MUSIC_ARTIST));
-				String artistKey = c.getString(c.getColumnIndexOrThrow(MUSIC_ARTIST_KEY));
-				List<Album> albumList = getAlbumsForArtist(artistId);
-				Artist a = new Artist(artistId, artist, artistKey, null, null);
-				artistList.add(a);
-			}
-			Set<Artist> hashedList = new LinkedHashSet<Artist>(artistList);
-			artistList = new ArrayList<Artist>(hashedList);
-			if (artistList.isEmpty()) {
-				Log.i(TAG, "No artists");
-				close();
-				return null;
-			} else
-				return artistList;
-		} finally {
-			if (c != null && !c.isClosed()) {
-				c.close();
-			}
-			close();
-		}
-	}
-
 	public List<Album> getAllAlbums() {
 		List<Album> albumList = new ArrayList<Album>();
 
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM albums ORDER BY album", null);
+		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " ORDER BY " + ALBUM, null);
 		try {
 			while (c.moveToNext()) {
 				Integer albumId = c.getInt(c.getColumnIndexOrThrow(ALBUM_ID));
@@ -457,28 +321,27 @@ public class MusicDatabase {
 		List<Song> songList = new ArrayList<Song>();
 
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM songs ORDER BY title", null);
+		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_SONGS + " ORDER BY " + SONG_TITLE, null);
 		try {
 			while (c.moveToNext()) {
 				Integer songId = c.getInt(c.getColumnIndexOrThrow(SONG_ID));
 				String songTitle = c.getString(c.getColumnIndexOrThrow(SONG_TITLE));
 				String songKey = c.getString(c.getColumnIndexOrThrow(SONG_KEY));
 				String songDisplayName = c.getString(c.getColumnIndexOrThrow(SONG_DISPLAY_NAME));
-				Integer songArtistId = c.getInt(c.getColumnIndexOrThrow(SONG_ARTIST_ID));
 				String songArtist = c.getString(c.getColumnIndexOrThrow(SONG_ARTIST));
 				String songArtistKey = c.getString(c.getColumnIndexOrThrow(SONG_ARTIST_KEY));
-				Integer songAlbumId = c.getInt(c.getColumnIndexOrThrow(SONG_ALBUM_ID));
 				String songAlbum = c.getString(c.getColumnIndexOrThrow(SONG_ALBUM));
 				String songAlbumKey = c.getString(c.getColumnIndexOrThrow(SONG_ALBUM_KEY));
+				String songComposer = c.getString(c.getColumnIndexOrThrow(SONG_COMPOSER));
 				Integer songTrack = c.getInt(c.getColumnIndexOrThrow(SONG_TRACK));
 				Integer songDuration = c.getInt(c.getColumnIndexOrThrow(SONG_DURATION));
 				Integer songYear = c.getInt(c.getColumnIndexOrThrow(SONG_YEAR));
 				Integer songDateAdded = c.getInt(c.getColumnIndexOrThrow(SONG_DATE_ADDED));
 				String songMimeType = c.getString(c.getColumnIndexOrThrow(SONG_MIME_TYPE));
 				String songData = c.getString(c.getColumnIndexOrThrow(SONG_DATA));
-				Song song = new Song(songId, songTitle, songKey, songDisplayName, songArtistId, songArtist,
-						songArtistKey, songAlbumId, songAlbum, songAlbumKey, songTrack, songDuration, songYear,
-						songDateAdded, songMimeType, songData);
+				Song song = new Song(songId, songTitle, songKey, songDisplayName, songArtist, songArtistKey, songAlbum,
+						songAlbumKey, songComposer, songTrack, songDuration, songYear, songDateAdded, songMimeType,
+						songData);
 				songList.add(song);
 			}
 			if (songList.isEmpty()) {
@@ -494,47 +357,12 @@ public class MusicDatabase {
 		}
 	}
 
-	public List<Album> getAlbumsForArtist(Integer artistId) {
-		List<Album> albumList = new ArrayList<Album>();
-
-		open();
-		Cursor c = database.rawQuery("SELECT * FROM MUSIC WHERE ArtistId = ? ORDER BY Album",
-				new String[] { artistId.toString() });
-		try {
-			while (c.moveToNext()) {
-				Integer albumId = c.getInt(c.getColumnIndexOrThrow(MUSIC_ALBUM_ID));
-				String album = c.getString(c.getColumnIndexOrThrow(MUSIC_ALBUM));
-				String albumKey = c.getString(c.getColumnIndexOrThrow(MUSIC_ALBUM_KEY));
-				String artist = c.getString(c.getColumnIndexOrThrow(MUSIC_ARTIST));
-				Integer year = c.getInt(c.getColumnIndexOrThrow(MUSIC_YEAR));
-				Album a = new Album(albumId, album, albumKey, artist, null, year, null, null, null);
-				albumList.add(a);
-			}
-			Set<Album> hashedList = new LinkedHashSet<Album>(albumList);
-			albumList = new ArrayList<Album>(hashedList);
-			if (albumList.isEmpty()) {
-				Log.i(TAG, "No albums");
-				close();
-				return null;
-			} else
-				return albumList;
-		} catch (Exception e) {
-			Log.i(TAG, e.getLocalizedMessage());
-			e.printStackTrace();
-			return null;
-		} finally {
-			if (c != null && !c.isClosed()) {
-				c.close();
-			}
-			close();
-		}
-	}
-
 	public List<Album> getAllAlbumsForArtist(String artist) {
 		List<Album> albumList = new ArrayList<Album>();
 
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM albums WHERE artist = ? ORDER BY album", new String[] { artist });
+		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " WHERE " + ALBUM_ARTIST
+				+ " = ? ORDER BY " + ALBUM, new String[] { artist });
 		try {
 			while (c.moveToNext()) {
 				Integer albumId = c.getInt(c.getColumnIndexOrThrow(ALBUM_ID));
@@ -566,29 +394,28 @@ public class MusicDatabase {
 		List<Song> songList = new ArrayList<Song>();
 
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM songs WHERE album_key = ? ORDER BY track",
-				new String[] { albumKey });
+		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_SONGS + " WHERE " + SONG_ALBUM_KEY
+				+ " = ? ORDER BY " + SONG_TRACK, new String[] { albumKey });
 		try {
 			while (c.moveToNext()) {
 				Integer songId = c.getInt(c.getColumnIndexOrThrow(SONG_ID));
 				String songTitle = c.getString(c.getColumnIndexOrThrow(SONG_TITLE));
 				String songKey = c.getString(c.getColumnIndexOrThrow(SONG_KEY));
 				String songDisplayName = c.getString(c.getColumnIndexOrThrow(SONG_DISPLAY_NAME));
-				Integer songArtistId = c.getInt(c.getColumnIndexOrThrow(SONG_ARTIST_ID));
 				String songArtist = c.getString(c.getColumnIndexOrThrow(SONG_ARTIST));
 				String songArtistKey = c.getString(c.getColumnIndexOrThrow(SONG_ARTIST_KEY));
-				Integer songAlbumId = c.getInt(c.getColumnIndexOrThrow(SONG_ALBUM_ID));
 				String songAlbum = c.getString(c.getColumnIndexOrThrow(SONG_ALBUM));
 				String songAlbumKey = c.getString(c.getColumnIndexOrThrow(SONG_ALBUM_KEY));
+				String songComposer = c.getString(c.getColumnIndexOrThrow(SONG_COMPOSER));
 				Integer songTrack = c.getInt(c.getColumnIndexOrThrow(SONG_TRACK));
 				Integer songDuration = c.getInt(c.getColumnIndexOrThrow(SONG_DURATION));
 				Integer songYear = c.getInt(c.getColumnIndexOrThrow(SONG_YEAR));
 				Integer songDateAdded = c.getInt(c.getColumnIndexOrThrow(SONG_DATE_ADDED));
 				String songMimeType = c.getString(c.getColumnIndexOrThrow(SONG_MIME_TYPE));
 				String songData = c.getString(c.getColumnIndexOrThrow(SONG_DATA));
-				Song song = new Song(songId, songTitle, songKey, songDisplayName, songArtistId, songArtist,
-						songArtistKey, songAlbumId, songAlbum, songAlbumKey, songTrack, songDuration, songYear,
-						songDateAdded, songMimeType, songData);
+				Song song = new Song(songId, songTitle, songKey, songDisplayName, songArtist, songArtistKey, songAlbum,
+						songAlbumKey, songComposer, songTrack, songDuration, songYear, songDateAdded, songMimeType,
+						songData);
 				songList.add(song);
 			}
 			if (songList.isEmpty()) {
@@ -610,7 +437,8 @@ public class MusicDatabase {
 		String albumArt = null;
 
 		open();
-		Cursor c = database.rawQuery("SELECT album_art FROM albums WHERE album_key = ?", new String[] { albumKey });
+		Cursor c = database.rawQuery("SELECT " + ALBUM_ART + " FROM " + DATABASE_TABLE_ALBUMS + " WHERE " + ALBUM_KEY
+				+ " = ?", new String[] { albumKey });
 		try {
 			while (c.moveToNext()) {
 				albumArt = c.getString(c.getColumnIndexOrThrow(ALBUM_ART));
@@ -630,25 +458,32 @@ public class MusicDatabase {
 
 	/********** OBJECT EXISTS QUERIES **********/
 
-	private boolean artistExists(String artistKey) {
+	private boolean artistExists(Artist artist) {
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM artists WHERE artist_key = ?", new String[] { artistKey });
-		if (c.getCount() > 0) {
-			c.close();
+		try {
+			Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ARTISTS + " WHERE " + ARTIST_KEY + " = ?",
+					new String[] { artist.getArtistKey() });
+			c.moveToFirst();
+			if (c.getCount() > 0) {
+				c.close();
+				close();
+				return true;
+			} else
+				c.close();
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
+		} finally {
 			close();
-			return true;
-		} else {
-			c.close();
-			close();
-			return false;
 		}
+		return false;
 	}
 
 	public boolean albumExists(Album album) {
 		open();
 		try {
-			Cursor c = database.rawQuery("SELECT * FROM albums WHERE album_key = ?",
+			Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " WHERE " + ALBUM_KEY + " = ?",
 					new String[] { album.getAlbumKey() });
+			c.moveToFirst();
 			if (c.getCount() > 0) {
 				while (c.moveToNext()) {
 					String albumArtist = c.getString(c.getColumnIndexOrThrow(ALBUM_ARTIST));
@@ -671,32 +506,24 @@ public class MusicDatabase {
 		return false;
 	}
 
-	private boolean songExists(String songKey) {
+	private boolean songExists(Song song) {
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM songs WHERE title_key = ?", new String[] { songKey });
-		if (c.getCount() > 0) {
-			c.close();
+		try {
+			Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_SONGS + " WHERE " + SONG_KEY + " = ?",
+					new String[] { song.getTitleKey() });
+			c.moveToFirst();
+			if (c.getCount() > 0) {
+				c.close();
+				close();
+				return true;
+			} else
+				c.close();
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
+		} finally {
 			close();
-			return true;
-		} else {
-			c.close();
-			close();
-			return false;
 		}
-	}
-
-	private boolean musicExists(Integer songId) {
-		open();
-		Cursor c = database.rawQuery("SELECT * FROM MUSIC WHERE songId = ?", new String[] { songId.toString() });
-		if (c.getCount() > 0) {
-			c.close();
-			close();
-			return true;
-		} else {
-			c.close();
-			close();
-			return false;
-		}
+		return false;
 	}
 
 }
