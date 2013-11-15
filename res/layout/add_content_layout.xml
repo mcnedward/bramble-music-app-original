@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    
+    <android.support.v4.view.ViewPager
+	    android:id="@+id/contentPager"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" />
+    
+    <fragment
+        android:name="com.awesome.musiclibrary.addcontent.AddArtistActivity"
+        android:id="@+id/add_artist_fragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    
+    <fragment
+        android:name="com.awesome.musiclibrary.addcontent.AddAlbumActivity"
+        android:id="@+id/add_album_fragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    
+    <fragment
+        android:name="com.awesome.musiclibrary.addcontent.AddGenreActivity"
+        android:id="@+id/add_genre_fragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    
+    <fragment
+        android:name="com.awesome.musiclibrary.addcontent.AddSongActivity"
+        android:id="@+id/add_song_fragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+    
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+    </LinearLayout>
+</TabHost>

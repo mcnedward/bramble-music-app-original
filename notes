@@ -1,0 +1,26 @@
+To create a new database, try all these steps:
+- PULL the database file MusicLibrary.db from the assets folder onto your device
+- Change the version number
+
+In order for foreign keys to work, PRAGMA foreign_keys = ON must be run for every query that has a key.
+For that reason, its best to call that query in open() method, that way it is ran every time the database is opened.
+
+copyDataBase() is needed in case the/database directory and its databases are removed
+To use, check for getReadableDatabase()
+If database does not exists, then copy database
+
+When starting an intent, at startActivity(), you may have to use the context:
+context.startActivity(intent);
+
+Control needs to start a database in the constructor to work properly
+
+Should I use the song to get all content, using the metadata of each individual mp3 file?
+Or set each item separately
+
+If Expandable List View is scrolling on every click, set the transcript mode to normal
+
+Shared preferences for first time only methods
+
+Tab fragments in a ViewPager have a default of loading a maximum of 3 pages at a time.
+To fix the issue with tabs being destroyed and created on each swipe or tab selection of 3 or more tabs away, use:
+viewPager.setOffScreenPageLimit(ITEMS_COUNT-1);

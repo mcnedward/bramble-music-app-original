@@ -1,0 +1,275 @@
+/********** April 29, 2013 **********/
+/!!!!!!!!!! Version 0.1 !!!!!!!!!!/
+
+- Updated some SELECT SQL queries
+- Added Tab Content
+- Redesign of Add Artist, Genre, and Albums
+- Tables to show current artists, genres, and albums on their respective views
+
+/********** April 30, 2013 **********/	(Hours Worked: 10)
+/!!!!!!!!!! Version 0.1 !!!!!!!!!!/
+
+- Added Menu options to Main Activity and Add Content
+- Added Refresh option for Album list in library
+- Add Content for Artist, Genre, and Album
+- Fixed Action Bar functionality
+- Changed theme to Holo with Dark Action Bar
+- Add delete option for albums in library
+- Pop-up layout and Confirm options added
+
+/********** May 2, 2013 **********/		(Hours Worked: 9)
+/!!!!!!!!!! Version 0.2 !!!!!!!!!!/
+
+- Added click and long click listeners to Main Activity page
+- Sort by any category
+- Artist and Genre Expandable List Views function properly now
+- Added Display Album Content view
+- Changed color and design of tabs for Add Content views
+- Changed design of selecting current content for Add Content view
+- Fixed most SQL queries to open and close database in query
+
+/********** May 5, 2013 **********/		(Hours Worked: 5)
+/!!!!!!!!!! Version 0.2 !!!!!!!!!!/
+
+- When editing, changes will be made throughout whole library
+- Updated ExpandableListAdapter class
+
+/********** May 21, 2013 **********/
+/!!!!!!!!!! Version 0.2.1 !!!!!!!!!!/
+
+- If there are no artists or genres, changed to show the regular list view with their respective message
+
+/********** May 22, 2013 *********/
+/!!!!!!!!!! Version 0.2.1 !!!!!!!!!!/
+
+- Fixed Edit Artist activity
+- Close options menu after an option is chosen
+- Added Edit Genre activity
+- Edit Artist and Edit Genre now accessible from Add Content
+- Long press option menu for Edit Artist and Edit Genre now accessible from Main Activity
+- Started Edit Album activity
+
+/********** June 13, 2013 **********/
+/!!!!!!!!!! Version 0.3 !!!!!!!!!!/
+
+- Updated Add Songs to allowing inserting songs and refreshing song table
+- Fixed clicks for Main Activity Artists and Genres
+
+/********** June 26, 2013 **********/
+/!!!!!!!!!! Version 0.3.1 !!!!!!!!!!/
+
+- Deleting from Add Content refreshes list correctly
+- Added on resume for activities so lists will be refreshed after adding content
+- Refresh lists added after deleting content on Main Activity, removing need for refresh button at this time
+- Adding songs fixed and refreshing correctly
+- Deleting songs fixed
+- Viewing all songs by album now working
+- Added Album class
+- Updated Edit Album Activity layout
+
+/********** July 2, 2013 **********/
+/!!!!!!!!!! Version 0.4 !!!!!!!!!!/
+
+- Added ViewContent Activity
+- Improved Tab Layout designs
+
+/********** July 3, 2013 **********/		(Hours Worked: Like 12, seriously man)
+/!!!!!!!!!! Version 0.4 !!!!!!!!!!/
+
+- Implemented swiping between tabs on ViewContent
+- Added View Songs Activity
+- Added Edit Songs Activity
+- Fixed Edit Album Activity
+- Improved UPDATE queries
+- Upgraded tabs for Add Content
+- Fixed and updated Add Artist
+
+/********** July 4, 2013 **********/		(Hours Worked: Like 12, again)
+/!!!!!!!!!! Version 0.4 !!!!!!!!!!/
+
+- Improved Refresh list for Add Content tables
+- Fixed Pop-Up Options
+- Fixed Edit and Delete
+- Fixed Add Songs
+- Fixed bug for refreshing spinners in AddAlbum after adding content
+
+/********** July 5, 2013 **********/		(Hours Worked: I don't know, about 6)
+/!!!!!!!!!! Version 0.4 !!!!!!!!!!/
+
+- Fixed spinner population bug where spinners not refreshing correctly after delete
+- Fixed Fragment attachment
+- Moved all fragment methods into main FragmentActivity for AddContentActivity
+- Added View Genre Activity
+
+
+/********** July 6, 2013 **********/
+/!!!!!!!!!! Version 0.4.1 !!!!!!!!!!/
+
+- Fixed bug with deleted content on View Artist crashing because of Genre exp list npe
+
+/**********July 8, 2013**********/		(Hours Worked: 5)
+/!!!!!!!!!! Version 0.4.1 !!!!!!!!!!/
+
+- Began DataBaseHelper reconstruction
+- Songs table renamed to Tracks
+
+/********** July 9, 2013 **********/
+/!!!!!!!!!! Version 0.4.1 !!!!!!!!!!/
+
+- Added Foreign Key restraints to sqlite database
+- Updated DataBase from version 1 to version 9
+- Delete Artist and Genre also deletes related Albums and Tracks
+- Delete Album also deletes related Tracks
+- Restructured table layouts and fields
+- Updated Edit Content layout and methods
+
+/********** July 10, 2013 **********/
+/!!!!!!!!!! Version 0.4.2 !!!!!!!!!!/
+
+- Fixed Action Bar menus and Home button bug on View Content
+- Fixed toast for Edit Content
+- Fixed layout of lists on View Content to display properly (orientation to vertical)
+- Fixed xml on all other layouts
+- Removed unused imports and variables and suppressed warnings where necessary
+- Removed Table list of current library on Add Content
+- Added List View and Exp List View on Add Content
+- Moved all universal refresh, view, and edit methods into Control class
+
+/********** July 11, 2013 **********/
+/!!!!!!!!!! Version 0.4.2 !!!!!!!!!!/
+
+- Added FillData class to populate data into database automatically onCreate
+- Fixed Show Options for new lists from Control
+- Changed queries to use more stable and secure prepared statements
+
+/********** July 12, 2013 **********/	(Hours Worked: 8)
+/!!!!!!!!!! Version 0.4.3 !!!!!!!!!!/
+
+- Moved global methods into Control class
+- Restructured all classes into proper packages
+- Fixed View Songs in Album to enable options
+- Created SDCardAdapter class
+- Pulled data from sd card and used Metadata to find keys
+
+/********** July 12, 2013 **********/	(Hours Worked: 10)
+/!!!!!!!!!! Version 0.4.3 !!!!!!!!!!/
+
+- Added MusicFile class
+- Added Song class
+- Fixed listFiles methods to return the correct files
+- GetFiles now pulls files from sd card and populates database
+- Updated Database from version 9 to version 30
+
+/********** July 15, 2013 **********/	(Hours Worked: 5)
+/!!!!!!!!!! Version 0.4.4 !!!!!!!!!!/
+
+- Created an ExtractService class to be used for extracting media files from the SD Card
+- Fixed bug where Expandable List View would scroll on parent click
+- Added RefreshTask class
+- Started setting up Async Tasks
+
+/********** July 16, 2013 **********/
+/!!!!!!!!!! Version 0.4.4 !!!!!!!!!!/
+
+- Fixed bug with tab viewer destroying tabs after moving 3 or more tabs away
+
+/********** July 17, 2013 **********/
+/!!!!!!!!!! Version 0.4.4 !!!!!!!!!!/
+
+- Refined View Activities to have only onCreateView
+- Added find content information by Media Store
+- Updated Music File class
+
+/********** September 5, 2013 **********/
+/!!!!!!!!!! Version 0.5.0 !!!!!!!!!!/
+
+- Changed SdCardAdapter to MediaAdapter
+- Added new methods to MediaAdapter for retrieving media data
+- Added Refresh class to handle refreshing of library all in one method
+- Updated Artist, Album, and Song classes to contain more variables based on the data extracted from MediaStore
+
+/********** September 5, 2013 **********/
+/!!!!!!!!!! Version 0.5.0 !!!!!!!!!!/
+
+- Added CacheStorage class in attempt to add caching of files between app usage
+
+/********** September 5, 2013 **********/
+/!!!!!!!!!! Version 0.5.0 !!!!!!!!!!/
+
+- Added DatabaseAdapter as an updated database class to match the Media Store data
+
+/********** September 10, 2013 **********/
+/!!!!!!!!!! Version 0.5.0 !!!!!!!!!!/
+
+- Updated DatabaseAdapter
+- Changed package names to com.awesome
+
+/********** September 12, 2013 **********/
+/!!!!!!!!!! Version 0.5.1 !!!!!!!!!!/
+
+- Sqlite database classes into two:
+	- DatabaseAdapter for creation and update of database
+	- MusicDatabase for handling all database operations
+	
+/********** September 12, 2013 **********/
+/!!!!!!!!!! Version 0.5.1 !!!!!!!!!!/
+
+- Updated Check if Exists methods in MusicDatabase to work properly
+- Changed loading of list views to pull from database only, instead of database, then Media Store
+- Updated getAllArtists() to get albums for that artist right away from database
+- Updated Async Tasks for database and media retrieval to run properly
+
+/********** September 13, 2013 **********/
+/!!!!!!!!!! Version 0.5.1 !!!!!!!!!!/
+
+- Added listview_layout for the album view of expandable list view
+- Artist list view now has album art for artist's albums
+
+/********** September 13, 2013 **********/
+/!!!!!!!!!! Version 0.5.1 !!!!!!!!!!/
+
+- Updated database and media retrieval to match data types more accurately
+- Updated custom adapters for list views to match correct data types
+- Updated custom list views
+
+/********** September 15, 2013 **********/
+/!!!!!!!!!! Version 0.6.0 !!!!!!!!!!/
+
+- Updated display of album art
+- Added View Song Activity and layout to view the songs in an album
+- Added Now Playing Activity and layout to display a selected song
+- Updated categories to contain more information about each object
+
+/********** September 16, 2013 **********/
+/!!!!!!!!!! Version 0.6.0 !!!!!!!!!!/
+
+- Changed database calls and async tasks to load app faster
+	- getAllSongsForAlbum() called only when necessary for example
+- Updated Music Library to contain media file location and mime type for songs
+
+/********** September 17, 2013 **********/
+/!!!!!!!!!! Version 0.6.0 !!!!!!!!!!/
+
+- Updated Now Playing Activity to play media files
+
+/********** October 4, 2013 **********/
+/!!!!!!!!!! Version 0.6.1 !!!!!!!!!!/
+
+- Updated UI to be more consistent with text sizes and to display items in list views clearer
+- Changed DatabaseAdapter to DatabaseHelper
+- Began update on database classes to open and close properly
+
+/********** October 6, 2013 **********/
+/!!!!!!!!!! Version 0.6.1 !!!!!!!!!!/
+
+- Updated UI for NowPlayingActivity to display the current progress of the song
+- Updated Seekbar in NowPlayingActivity to change track position
+
+/********** October 9, 2013 **********/
+/!!!!!!!!!! Version 0.6.2 !!!!!!!!!!/
+
+- Added AsyncTask PlayMediaTask to handle playing of media in background task
+
+
+
+

@@ -1,0 +1,238 @@
+
+
+	public void initLayout() {
+		String artist = null;
+		String genre = null;
+		String album = null;
+		String year = null;
+		String song = null;
+		ArrayList<MusicFile> musicFileList = new ArrayList<MusicFile>();
+
+		final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;			// URI for the external media files
+		// Set the columns of data to retrieve
+		final String[] cursor_cols = { MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ALBUM,
+				MediaStore.Audio.Media.YEAR, MediaStore.Audio.Media.TITLE };
+		final String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";		// Select only music type files
+		final Cursor cursor = context.getContentResolver().query(uri, cursor_cols, selection, null, null);
+
+		while (cursor.moveToNext()) {
+			artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
+			album = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+			year = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.YEAR));
+			song = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
+			MusicFile mf = new MusicFile(artist, genre, album, year, song);
+			musicFileList.add(mf);
+		}
+		Set<MusicFile> mfList = new LinkedHashSet<MusicFile>(musicFileList);
+		for (MusicFile musicFile : mfList) {
+			Log.i(TAG, "Artist: " + musicFile.getArtist() + "; Album: " + musicFile.getAlbum() + "; Year: "
+					+ musicFile.getYear() + "; Song: " + musicFile.getSong());
+		}
+	}
+
+public void getFiles() {
+		musicList = new ArrayList<String>();
+		musicFile = new ArrayList<File>();
+
+		ArrayList<String> artistList = new ArrayList<String>();
+		ArrayList<String> genreList = new ArrayList<String>();
+		ArrayList<Album> albumList = new ArrayList<Album>();
+		ArrayList<Song> songList = new ArrayList<Song>();
+
+		// Get the parent directory of Music from sd card and list all containing files
+		musicDirectory = new File(path + "/" + media);
+
+		musicFile = listFiles(musicDirectory);	// Retrieve the Music data
+
+		// Set the media data retriever
+		MediaMetadataRetriever mediaData = new MediaMetadataRetriever();
+
+		for (File file : musicFile) {
+			Uri uri = Uri.fromFile(file);
+			mediaData.setDataSource(context, uri);
+
+			String artist = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST).trim();
+			String albumArtist = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUMARTIST)
+					.trim();
+			String genre = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE).trim();
+			String album = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM).trim();
+			String year = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_YEAR).trim();
+			String song = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE).trim();
+
+			// Album a = new Album(album, artist, genre, year);
+			// Song s = new Song(song, album);
+
+			if (!artistList.contains(artist) && artist != null)		// Check if the artist is in the list before adding
+				artistList.add(artist);
+			if (!artistList.contains(albumArtist) && albumArtist != null)
+				artistList.add(albumArtist);
+
+			if (!genreList.contains(genre) && genre != null)		// Check if the genre is in the list before adding
+				genreList.add(genre);
+
+			/*
+			 * if (a != null) { // Check if the album is in the list before adding
+			 * albumList.add(a);
+			 * }
+			 */
+
+			/*
+			 * if (s != null) { // Check if the song is in the list before adding
+			 * songList.add(s);
+			 * }
+			 */
+		}
+
+		for (String a : artistList) {	// Loop through artists and insert into database
+			dbh.open();
+			dbh.insertArtist(a);
+			dbh.close();
+		}
+
+		for (String g : genreList) {	// Loop through genres and insert into database
+			dbh.open();
+			dbh.insertGenre(g);
+			dbh.close();
+		}
+
+		for (Album a : albumList) {		// Loop through albums and insert into database
+			dbh.open();
+			// dbh.insertAlbum(a.getTitle(), dbh.getArtistID(a.getArtist()), dbh.getGenreID(a.getGenre()), a.getYear());
+			dbh.close();
+		}
+
+		for (Song s : songList) {		// Loop through genres and insert into database
+			dbh.open();
+			// dbh.insertSong(s.getSong(), dbh.getAlbumID(s.getAlbum()));
+			dbh.close();
+		}
+	}
+
+// Run through each file in the Music folder and add it to a list if it is an mp3
+private List<File> listFiles(final File folder) {
+	File[] list;	// This list of files needs to be initialized here, and should not be null
+	Log.e("FOLDERS", folder.getName());
+	// Loop through every file in the folder
+	for (File inFile : folder.listFiles()) {
+		if (inFile != null && inFile.isFile()) {
+			File[] file = folder.listFiles(new FilenameFilter() {	// Filter all files in the list to retrieve ones
+																	// with mp3 extenstion
+						@Override
+						public boolean accept(File dir, String name) {
+							return name.toLowerCase().endsWith(".mp3");
+						}
+					});
+			if (file != null) {
+				for (int x = 0; x < file.length; x++) {				// Add any files with mp3 extension to mp3 array
+					// Log.e("SONG", file[x].getName());
+					mp3.add(file[x]);
+				}
+			}
+		}
+		if (inFile.exists() && inFile.isDirectory()) {
+			if (inFile.list().length > 0) {
+				// Log.e("ALBUM", inFile.getName());
+				// album.add(list[i]); // Add the folder to album array
+				listFiles(inFile);
+			}
+		} else {
+			break;
+		}
+	}
+	return mp3;
+}
+
+public void logFiles() {
+		musicList = new ArrayList<String>();
+		musicFile = new ArrayList<File>();
+
+		final ArrayList<String> artistList = new ArrayList<String>();
+		final ArrayList<String> genreList = new ArrayList<String>();
+		final ArrayList<String> albumArtistList = new ArrayList<String>();
+		final ArrayList<Album> albumList = new ArrayList<Album>();
+		final ArrayList<Song> songList = new ArrayList<Song>();
+
+		// Get the parent directory of Music from sd card and list all containing files
+		musicDirectory = new File(path + "/" + media);
+
+		musicFile = listFiles(musicDirectory);	// Retrieve the Music data
+
+		// initLayout();
+		// getArtist();
+
+		// Set the media data retriever
+		MediaMetadataRetriever mediaData = new MediaMetadataRetriever();
+
+		for (File file : musicFile) {
+			Uri uri = Uri.fromFile(file);
+			mediaData.setDataSource(context, uri);
+
+			String artist = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+			String albumArtist = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUMARTIST);
+			String genre = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
+			String album = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+			String year = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_YEAR);
+			String song = mediaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+
+			if (artist == null) {
+				artist = "Could not find artist";
+			} else {
+				artistList.add(artist.trim());
+			}
+			if (albumArtist == null) {
+				albumArtist = "Could not find album artist";
+			} else {
+				albumArtistList.add(albumArtist.trim());
+			}
+			if (genre == null) {
+				genre = "Could not find genre";
+			} else {
+				genreList.add(genre.trim());
+			}
+			if (album == null) {
+				album = "Could not find album";
+			} else {
+				album.trim();
+			}
+			if (year == null) {
+				year = "Could not find year";
+			} else {
+				year.trim();
+			}
+			if (song == null) {
+				song = "Could not find song";
+			} else {
+				song.trim();
+			}
+
+			// Album a = new Album(album, artist, genre, year);
+			// Song s = new Song(song, album);
+
+			artistList.add(artist);
+			genreList.add(genre);
+			albumArtistList.add(albumArtist);
+			// albumList.add(a);
+			// songList.add(s);
+		}
+
+		Set<String> aList = new LinkedHashSet<String>(artistList);
+		Set<String> gList = new LinkedHashSet<String>(genreList);
+		Set<String> aaList = new LinkedHashSet<String>(albumArtistList);
+		Set<Album> alList = new LinkedHashSet<Album>(albumList);
+		Set<Song> sList = new LinkedHashSet<Song>(songList);
+
+		/*
+		 * for (String artist : aList) { Log.e("ARTISTS", "Artist: " + artist);
+		 * } Log.e("ARTISTS", String.valueOf(aList.size())); for (String genre :
+		 * gList) { Log.e("GENRES", "Genre: " + genre); } Log.e("GENRES",
+		 * String.valueOf(gList.size())); for (String album : aaList) {
+		 * Log.e("LIST", "Album: " + album); } Log.e("LIST",
+		 * String.valueOf(aaList.size())); for (Album album : alList) {
+		 * Log.e("ALBUMS", "Album: " + album.getTitle() + "; Artist: " +
+		 * album.getArtist() + "; GENRE: " + album.getGenre() + "; Year: " +
+		 * album.getYear()); } Log.e("ALBUMS", String.valueOf(alList.size()));
+		 * for (Song song : sList) { Log.e("SONGS", "Title: " + song.getSong() +
+		 * "; Album: " + song.getAlbum()); } Log.e("SONGS",
+		 * String.valueOf(sList.size()));
+		 */
+	}

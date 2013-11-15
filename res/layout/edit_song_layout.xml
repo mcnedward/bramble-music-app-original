@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".EditSongActivity" >
+	  
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" >
+	    
+	    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            
+	        <LinearLayout
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content" >
+            
+		       <TextView
+		           android:id="@+id/editSongs"
+		           android:layout_width="match_parent"
+		           android:layout_height="wrap_content"
+		           android:gravity="center"
+		           android:paddingBottom="10dp"
+		           android:paddingTop="5dp"
+		           android:text="@string/editSong"
+		           android:textAppearance="?android:attr/textAppearanceLarge" />
+		       
+		   </LinearLayout>
+	       
+	       <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="fill_parent" >
+
+               <TextView
+                   android:id="@+id/editTrack"
+                   android:layout_width="wrap_content"
+                   android:layout_height="fill_parent"
+                   android:layout_gravity="center"
+                   android:gravity="center_vertical"
+                   android:paddingLeft="5dp"
+                   android:paddingRight="14dp"
+                   android:text="@string/song"
+                   android:textAppearance="?android:attr/textAppearanceMedium" />
+
+               <EditText
+                   android:id="@+id/txtEditTrack"
+                   android:layout_width="0dip"
+                   android:layout_height="fill_parent"	                   
+                   android:layout_weight="1"
+                   android:selectAllOnFocus="true"
+                   android:ems="10" />
+                   
+           </LinearLayout>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="fill_parent" >
+
+               <TextView
+                   android:id="@+id/txtEditAlbum"
+                   android:layout_width="wrap_content"
+                   android:layout_height="fill_parent"
+                   android:layout_gravity="center"
+                   android:gravity="center_vertical"
+                   android:paddingLeft="5dp"
+                   android:text="@string/album"
+                   android:textAppearance="?android:attr/textAppearanceMedium" />
+
+               <Spinner
+                   android:id="@+id/spinEditAlbums"
+                   android:layout_width="0dip"
+                   android:layout_height="fill_parent"
+                   android:paddingRight="8dp"
+                   android:layout_weight="1" />
+
+           </LinearLayout>
+            
+           <Button
+               android:id="@+id/btnEditSong"
+               style="?android:attr/buttonStyleSmall"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:onClick="editSong"
+               android:text="@string/editSong" />
+	           
+	 	</LinearLayout>
+	
+	</LinearLayout>
+
+</ScrollView>

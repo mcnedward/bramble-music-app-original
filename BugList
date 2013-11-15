@@ -1,0 +1,13 @@
+Refresh library doesn't load after inserting the first record into an empty table
+- Clean database, ViewArtist displays "No artists"
+- Add artist in Add Content
+- Back Button
+- Artist is not displayed after moving two tabs over, or restarting app
+
+Edit Content should only have one edit text view per entry
+Populate that view with the info, and on select the view should select all
+This way you can edit a single view without having to leave all others blank or updating each entry every time
+
+Edit Album Year entry should be changed to number text view
+
+Options from Add Songs

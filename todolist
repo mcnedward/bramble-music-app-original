@@ -1,0 +1,46 @@
+Remove logs for when selecting a view
+
+Clicking Artist, Genre, Album, and Songs - should this go to play or edit by default?
+
+Should I move all refresh methods into a single refresh (refreshLibrary())?
+Or will this be too slow with larger libraries?
+Maybe have this as only being pressed with a refresh button in action bar or menu
+
+Remove unnecessary variables from all activities and classes
+
+Does ViewAlbumActivity need its own viewDisplaySongsByAlbum()?
+
+Options for new lists populated by Control class
+
+After delete on Add Content activities, spinners must be refreshed
+Check the activity and if Add Content, refresh
+
+Parameterized stored procedures?
+
+Fix genres
+
+Look into AsyncTask class for running processes in the background
+Can this be used to check for new files after the first time a user installs the app?
+
+Why are years not being found right?
+
+Refresh methods should have List interface for params (Artist and Genre)
+
+Move all packages into droid.musiclibrary
+
+Check for npe at all list views in refresh methods
+
+Method for getSongs to get composer and other data???
+
+Remove AddContent from Control
+
+For all get methods in sdcardadapter change cursor gets to correct type (string, integer...)
+
+Try / catch in database create
+
+Might be faster to call getAllSongsForAlbum only when needed
+
+
+
+
+

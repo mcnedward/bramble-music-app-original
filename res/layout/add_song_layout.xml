@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+	  
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:orientation="vertical" >
+            
+    <TextView
+        android:id="@+id/addSongs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:text="@string/addSong"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:id="@+id/txtviewSongTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:paddingRight="14dp"
+                android:text="@string/song"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <EditText
+                android:id="@+id/txtAddSongTitle"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"	                   
+                android:layout_weight="1"
+                android:inputType="text"
+                android:singleLine="true"
+                android:ems="10" />
+                
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent" >
+
+            <TextView
+                android:id="@+id/txtviewAlbums"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="@string/album"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Spinner
+                android:id="@+id/spinAlbum"
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:paddingRight="8dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+        
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnAddSong"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addSongs"
+        android:text="@string/addSong" />
+    
+    <ListView
+        android:id="@+id/displaySongs2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:transcriptMode="alwaysScroll"  >
+    </ListView>
+
+</LinearLayout>
