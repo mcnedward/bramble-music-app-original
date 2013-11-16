@@ -42,7 +42,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 			albums = db.getAllAlbums();
 			songs = db.getAllSongs();
 		} catch (Exception e) {
-			Log.i(TAG, e.toString());
+			Log.i(TAG, e.getMessage(), e);
 		}
 		return refresh;
 	}

@@ -82,7 +82,7 @@ public class Refresh extends Activity {
 						Album album = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
 								groupPosition, childPosition);
 						// Get all songs for this album
-						List<Song> songList = mdb.getAllSongsForAlbum(album.getAlbumKey());
+						List<Song> songList = mdb.getAllSongsForAlbum(album);
 						album.setSongList(songList);
 						viewDisplaySongsByAlbum(album);
 					}
@@ -122,10 +122,6 @@ public class Refresh extends Activity {
 					return false;
 				}
 			});
-
-			exlaArtists.notifyDataSetChanged();
-			laArtists.notifyDataSetChanged();
-
 		} else {
 			LinearLayout expViewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.expViewArtist);
 			expViewArtist.setVisibility(LinearLayout.GONE);
@@ -134,6 +130,9 @@ public class Refresh extends Activity {
 			laArtists.setGroup(null);
 			lvArtists.setAdapter(laArtists);
 		}
+
+		exlaArtists.notifyDataSetChanged();
+		laArtists.notifyDataSetChanged();
 	}
 
 	public void refreshAlbums(List<Album> albumList) {
@@ -158,7 +157,7 @@ public class Refresh extends Activity {
 						if (view.isSelected() == false) {
 							Album album = (Album) parent.getItemAtPosition(position);
 							// Get all songs in album
-							List<Song> songList = mdb.getAllSongsForAlbum(album.getAlbumKey());
+							List<Song> songList = mdb.getAllSongsForAlbum(album);
 							album.setSongList(songList);
 							viewDisplaySongsByAlbum(album);
 						}

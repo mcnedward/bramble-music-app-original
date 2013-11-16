@@ -52,10 +52,10 @@ public class MainActivity extends FragmentActivity {
 		});
 
 		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Artist"), ViewArtistActivity.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Album"), ViewAlbumActivity.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Song"), ViewSongActivity.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Genre"), ViewGenreActivity.class, null);
+		mTabsAdapter.addTab(actionBar.newTab().setText("Artists"), ViewArtistActivity.class, null);
+		mTabsAdapter.addTab(actionBar.newTab().setText("Albums"), ViewAlbumActivity.class, null);
+		mTabsAdapter.addTab(actionBar.newTab().setText("Songs"), ViewSongActivity.class, null);
+		mTabsAdapter.addTab(actionBar.newTab().setText("Genres"), ViewGenreActivity.class, null);
 
 		if (savedInstanceState != null) {
 			actionBar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));

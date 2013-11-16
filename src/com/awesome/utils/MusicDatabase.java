@@ -62,27 +62,54 @@ public class MusicDatabase {
 
 	}
 
+	/**
+	 * Creates an instance of MusicDatabase. Used to insert and access data for the application.
+	 * 
+	 * @param context
+	 *            The context of the activity to use this database.
+	 */
 	public MusicDatabase(Context context) {
 		this.context = context;
 		dbHelper = new DatabaseHelper(context);
 	}
 
+	/**
+	 * Open the database for the Music Library for reading only.
+	 * 
+	 * @return A read-only database.
+	 * @throws android.database.SQLException
+	 */
 	public MusicDatabase openToRead() throws android.database.SQLException {
 		database = dbHelper.getReadableDatabase();
 		return this;
 	}
 
+	/**
+	 * Opens the database for the Music Library for writing.
+	 * 
+	 * @return A writable database.
+	 * @throws android.database.SQLException
+	 */
 	public MusicDatabase open() throws android.database.SQLException {
 		database = dbHelper.getWritableDatabase();
 		return this;
 	}
 
+	/**
+	 * Close the open database object.
+	 */
 	public void close() {
 		dbHelper.close();
 	}
 
 	/********** INSERT QUERIES **********/
 
+	/**
+	 * Insert an artist into the database.
+	 * 
+	 * @param artist
+	 *            The artist to insert.
+	 */
 	@SuppressWarnings("deprecation")
 	public void insertArtist(Artist artist) {
 		// Check if the artist is already in the database
@@ -125,10 +152,17 @@ public class MusicDatabase {
 		}
 	}
 
+	/**
+	 * Insert an album into the database.
+	 * 
+	 * @param album
+	 *            The album to insert.
+	 */
 	@SuppressWarnings("deprecation")
 	public void insertAlbum(Album album) {
 		// Check if the album is already in the database
 		if (albumExists(album)) {
+			Log.i(TAG, "ALBUM EXISTS");
 			return;
 		} else {
 			open();
@@ -144,8 +178,7 @@ public class MusicDatabase {
 			final Integer albumLastYear = album.getLastYear();
 			final String albumArt = album.getAlbumArt();
 
-			// Get the numeric indexes for each of the columns that we're
-			// updating
+			// Get the numeric indexes for each of the columns that we're updating
 			final int albumNameColumn = ih.getColumnIndex(ALBUM);
 			final int albumKeyColumn = ih.getColumnIndex(ALBUM_KEY);
 			final int albumArtistColumn = ih.getColumnIndex(ALBUM_ARTIST);
@@ -173,6 +206,8 @@ public class MusicDatabase {
 				// Insert the row into the database.
 				ih.execute();
 				x++;
+			} catch (Exception e) {
+				Log.i(TAG, e.getMessage(), e);
 			} finally {
 				ih.close();
 				close();
@@ -180,6 +215,12 @@ public class MusicDatabase {
 		}
 	}
 
+	/**
+	 * Inserts a song into the database.
+	 * 
+	 * @param song
+	 *            The song to insert.
+	 */
 	@SuppressWarnings("deprecation")
 	public void insertSong(Song song) {
 		// Check if the song is already in the database
@@ -194,7 +235,9 @@ public class MusicDatabase {
 			final String songTitle = song.getTitle();
 			final String songKey = song.getTitleKey();
 			final String songDisplayName = song.getDisplayName();
+			final String songArtist = song.getArtist();
 			final String songArtistKey = song.getArtistKey();
+			final String songAlbum = song.getAlbum();
 			final String songAlbumKey = song.getAlbumKey();
 			final String songComposer = song.getComposer();
 			final Integer songTrack = song.getTrack();
@@ -208,7 +251,9 @@ public class MusicDatabase {
 			final int songTitleColumn = ih.getColumnIndex(SONG_TITLE);
 			final int songKeyColumn = ih.getColumnIndex(SONG_KEY);
 			final int songDisplayNameColumn = ih.getColumnIndex(SONG_DISPLAY_NAME);
+			final int songArtistColumn = ih.getColumnIndex(SONG_ARTIST);
 			final int songArtistKeyColumn = ih.getColumnIndex(SONG_ARTIST_KEY);
+			final int songAlbumColumn = ih.getColumnIndex(SONG_ALBUM);
 			final int songAlbumKeyColumn = ih.getColumnIndex(SONG_ALBUM_KEY);
 			final int songComposerComlumn = ih.getColumnIndex(SONG_COMPOSER);
 			final int songTrackColumn = ih.getColumnIndex(SONG_TRACK);
@@ -229,7 +274,9 @@ public class MusicDatabase {
 				ih.bind(songTitleColumn, songTitle);
 				ih.bind(songKeyColumn, songKey);
 				ih.bind(songDisplayNameColumn, songDisplayName);
+				ih.bind(songArtistColumn, songArtist);
 				ih.bind(songArtistKeyColumn, songArtistKey);
+				ih.bind(songAlbumColumn, songAlbum);
 				ih.bind(songAlbumKeyColumn, songAlbumKey);
 				ih.bind(songComposerComlumn, songComposer);
 				ih.bind(songTrackColumn, songTrack);
@@ -251,6 +298,11 @@ public class MusicDatabase {
 
 	/********** SELECT QUERIES **********/
 
+	/**
+	 * Used to get all artists in the database. A list of all albums by each artist will also be generated here.
+	 * 
+	 * @return A list of all artists and their albums.
+	 */
 	public List<Artist> getAllArtists() {
 		List<Artist> artistList = new ArrayList<Artist>();
 
@@ -276,14 +328,22 @@ public class MusicDatabase {
 				return null;
 			} else
 				return artistList;
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		} finally {
 			if (c != null && !c.isClosed()) {
 				c.close();
 			}
 			close();
 		}
+		return artistList;
 	}
 
+	/**
+	 * Used to get all albums in the database.
+	 * 
+	 * @return A list of all albums in the database.
+	 */
 	public List<Album> getAllAlbums() {
 		List<Album> albumList = new ArrayList<Album>();
 
@@ -309,14 +369,22 @@ public class MusicDatabase {
 				return null;
 			} else
 				return albumList;
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		} finally {
 			if (c != null && !c.isClosed()) {
 				c.close();
 			}
 			close();
 		}
+		return albumList;
 	}
 
+	/**
+	 * Used to get all songs in the database.
+	 * 
+	 * @return A list of all songs in the database.
+	 */
 	public List<Song> getAllSongs() {
 		List<Song> songList = new ArrayList<Song>();
 
@@ -349,14 +417,24 @@ public class MusicDatabase {
 				return null;
 			} else
 				return songList;
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		} finally {
 			if (c != null && !c.isClosed()) {
 				c.close();
 			}
 			close();
 		}
+		return songList;
 	}
 
+	/**
+	 * Used to get all albums by a particular artist.
+	 * 
+	 * @param artist
+	 *            The artist who you want to get albums for.
+	 * @return A list of all albums by a particular artist.
+	 */
 	public List<Album> getAllAlbumsForArtist(String artist) {
 		List<Album> albumList = new ArrayList<Album>();
 
@@ -382,20 +460,30 @@ public class MusicDatabase {
 				return null;
 			} else
 				return albumList;
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		} finally {
 			if (c != null && !c.isClosed()) {
 				c.close();
 			}
 			close();
 		}
+		return albumList;
 	}
 
-	public List<Song> getAllSongsForAlbum(String albumKey) {
+	/**
+	 * Used to get all the songs that are contained on an album.
+	 * 
+	 * @param album
+	 *            The album that you want get a list of songs from.
+	 * @return A list of songs contained on an album.
+	 */
+	public List<Song> getAllSongsForAlbum(Album album) {
 		List<Song> songList = new ArrayList<Song>();
 
 		open();
 		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_SONGS + " WHERE " + SONG_ALBUM_KEY
-				+ " = ? ORDER BY " + SONG_TRACK, new String[] { albumKey });
+				+ " = ? ORDER BY " + SONG_TRACK, new String[] { album.getAlbumKey() });
 		try {
 			while (c.moveToNext()) {
 				Integer songId = c.getInt(c.getColumnIndexOrThrow(SONG_ID));
@@ -423,16 +511,26 @@ public class MusicDatabase {
 				return null;
 			} else
 				return songList;
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		} finally {
 			if (c != null && !c.isClosed()) {
 				c.close();
 			}
 			close();
 		}
+		return songList;
 	}
 
 	/********** SEARCH QUERIES **********/
 
+	/**
+	 * Used to retrieve album art from the database.
+	 * 
+	 * @param albumKey
+	 *            The key for the album to get artwork for.
+	 * @return The path for album art.
+	 */
 	public String getAlbumArt(String albumKey) {
 		String albumArt = null;
 
@@ -448,79 +546,116 @@ public class MusicDatabase {
 				return null;
 			} else
 				return albumArt;
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		} finally {
 			if (c != null && !c.isClosed()) {
 				c.close();
 			}
 			close();
 		}
+		return albumArt;
 	}
 
 	/********** OBJECT EXISTS QUERIES **********/
 
+	/**
+	 * Method for checking whether an artist exists in the database.
+	 * 
+	 * @param artist
+	 *            The artist to check the database for.
+	 * @return True if artist is in database, false if not yet in database.
+	 */
 	private boolean artistExists(Artist artist) {
 		open();
+		Cursor c = null;
 		try {
-			Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ARTISTS + " WHERE " + ARTIST_KEY + " = ?",
+			c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ARTISTS + " WHERE " + ARTIST_KEY + " = ?",
 					new String[] { artist.getArtistKey() });
 			c.moveToFirst();
 			if (c.getCount() > 0) {
-				c.close();
-				close();
 				return true;
-			} else
-				c.close();
+			}
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		} finally {
+			if (c != null && !c.isClosed()) {
+				c.close();
+			}
 			close();
 		}
 		return false;
 	}
 
+	/**
+	 * Method for checking whether an album exists in the database.
+	 * If the album to check has an artist that matches in the database, and also has a matching number of songs, then
+	 * the album exists.
+	 * 
+	 * @param album
+	 *            The album to check the database for.
+	 * @return True if album is in database, false if not yet in database.
+	 */
 	public boolean albumExists(Album album) {
 		open();
+		Cursor c = null;
 		try {
-			Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " WHERE " + ALBUM_KEY + " = ?",
-					new String[] { album.getAlbumKey() });
-			c.moveToFirst();
-			if (c.getCount() > 0) {
+			c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " WHERE " + ALBUM + " = ?",
+					new String[] { album.getAlbum() });
+			List<String> artistList = new ArrayList<String>();			// List of all artists that match the album
+			List<Integer> numberOfSongsList = new ArrayList<Integer>();	// List of number of songs that match that album
+			if (c.getCount() > 0) {	// If there are results from query
 				while (c.moveToNext()) {
+					// Add the album artist and number of songs to the list of all for that album
 					String albumArtist = c.getString(c.getColumnIndexOrThrow(ALBUM_ARTIST));
-					if (albumArtist.equals(album.getArtist())) {
-						c.close();
-						close();
-						return true;
-					}
+					Integer numberOfSongs = c.getInt(c.getColumnIndexOrThrow(NUMBER_OF_SONGS));
+					artistList.add(albumArtist);
+					numberOfSongsList.add(numberOfSongs);
 				}
-				c.close();
-				close();
-				return false;
-			} else
-				c.close();
+				// If the album to check is in the artist or number of songs list, then the album exists
+				if (artistList.contains(album.getArtist()) && numberOfSongsList.contains(album.getNumberOfSongs())) {
+					Log.i(TAG, "RETURNING TRUE");
+					return true;
+				} else {
+					Log.i(TAG, "RETURNING FALSE");
+					return false;
+				}
+			}
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		} finally {
+			if (c != null && !c.isClosed()) {
+				c.close();
+			}
 			close();
 		}
+		Log.i(TAG, "RETURNING FALSE");
 		return false;
 	}
 
+	/**
+	 * Method for checking whether a song exists in the database.
+	 * 
+	 * @param song
+	 *            The song to check the database for.
+	 * @return True if song is in database, false if not yet in database.
+	 */
 	private boolean songExists(Song song) {
 		open();
+		Cursor c = null;
 		try {
-			Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_SONGS + " WHERE " + SONG_KEY + " = ?",
+			c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_SONGS + " WHERE " + SONG_KEY + " = ?",
 					new String[] { song.getTitleKey() });
 			c.moveToFirst();
 			if (c.getCount() > 0) {
-				c.close();
-				close();
 				return true;
-			} else
-				c.close();
+			}
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		} finally {
+			if (c != null && !c.isClosed()) {
+				c.close();
+			}
 			close();
 		}
 		return false;

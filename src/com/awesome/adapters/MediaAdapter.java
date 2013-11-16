@@ -1,9 +1,7 @@
 package com.awesome.adapters;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -35,32 +33,32 @@ public class MediaAdapter extends ListActivity {
 	public List<Song> retrieveSongs() {
 		List<Song> songList = new ArrayList<Song>();
 
-		try {
-			Integer titleId = null;
-			String title = null;
-			String titleKey = null;
-			String displayName = null;
-			String artist = null;
-			String artistKey = null;
-			String album = null;
-			String albumKey = null;
-			String composer = null;
-			Integer track = null;
-			Integer duration = null;
-			Integer year = null;
-			Integer dateAdded = null;
-			String mimeType = null;
-			String data = null;
-			Integer isMusic;
+		Integer titleId = null;
+		String title = null;
+		String titleKey = null;
+		String displayName = null;
+		String artist = null;
+		String artistKey = null;
+		String album = null;
+		String albumKey = null;
+		String composer = null;
+		Integer track = null;
+		Integer duration = null;
+		Integer year = null;
+		Integer dateAdded = null;
+		String mimeType = null;
+		String data = null;
+		Integer isMusic;
 
+		try {
 			// Set the Uri and columns for extracting artist media data
 			final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 			final String[] cols = { MediaStore.Audio.Media._ID, MediaStore.Audio.Media.TITLE,
 					MediaStore.Audio.Media.TITLE_KEY, MediaStore.Audio.Media.DISPLAY_NAME,
-					MediaStore.Audio.Media.ARTIST_KEY, MediaStore.Audio.Media.ALBUM_KEY,
-					MediaStore.Audio.Media.COMPOSER, MediaStore.Audio.Media.TRACK, MediaStore.Audio.Media.DURATION,
-					MediaStore.Audio.Media.YEAR, MediaStore.Audio.Media.DATE_ADDED, MediaStore.Audio.Media.MIME_TYPE,
-					MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.IS_MUSIC };
+					MediaStore.Audio.Media.ARTIST, MediaStore.Audio.Media.ARTIST_KEY, MediaStore.Audio.Media.ALBUM,
+					MediaStore.Audio.Media.ALBUM_KEY, MediaStore.Audio.Media.COMPOSER, MediaStore.Audio.Media.TRACK,
+					MediaStore.Audio.Media.DURATION, MediaStore.Audio.Media.YEAR, MediaStore.Audio.Media.DATE_ADDED,
+					MediaStore.Audio.Media.MIME_TYPE, MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.IS_MUSIC };
 
 			final Cursor cursor = context.getContentResolver().query(uri, cols, null, null, null);
 
@@ -82,6 +80,7 @@ public class MediaAdapter extends ListActivity {
 				data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 				isMusic = Integer.parseInt(cursor.getString(cursor
 						.getColumnIndexOrThrow(MediaStore.Audio.Media.IS_MUSIC)));
+				String blaj = null;
 
 				// Check if the media file is a music file
 				if (isMusic == 1) {
@@ -90,14 +89,12 @@ public class MediaAdapter extends ListActivity {
 					songList.add(s);
 				}
 			}
-			Set<Song> hashedList = new LinkedHashSet<Song>(songList);
 
-			for (Song s : hashedList) {
+			for (Song s : songList) {
 				db.insertSong(s);
 			}
 		} catch (Exception e) {
-			Log.i(TAG, e.toString());
-			e.printStackTrace();
+			Log.i(TAG, e.getMessage(), e);
 		}
 		return songList;
 	}
@@ -113,7 +110,6 @@ public class MediaAdapter extends ListActivity {
 					MediaStore.Audio.Artists.ARTIST_KEY, MediaStore.Audio.Artists.NUMBER_OF_ALBUMS };
 			final Cursor cursor = context.getContentResolver().query(artistUri, artistCols, null, null, null);
 
-			// cursor.moveToFirst();
 			while (cursor.moveToNext()) {
 				// Get artist information
 				Integer artistId = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Artists._ID));
@@ -133,6 +129,7 @@ public class MediaAdapter extends ListActivity {
 					final Cursor cursor2 = context.getContentResolver().query(albumUri, albumCols, null, null, null);
 					while (cursor2.moveToNext()) {
 						// Get album information
+						// Integer albumId = cursor2.getInt(cursor2.getColumnIndexOrThrow("_id"));
 						String album = cursor2.getString(cursor2
 								.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM));
 						String albumKey = cursor2.getString(cursor2
@@ -163,7 +160,7 @@ public class MediaAdapter extends ListActivity {
 			}
 
 			for (Artist a : artistList) {
-				db.insertArtist(a);
+				// db.insertArtist(a);
 			}
 			for (Album a : albumList) {
 				db.insertAlbum(a);

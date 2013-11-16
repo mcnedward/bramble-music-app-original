@@ -61,7 +61,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 			Log.i(TAG, "Executing task");
 			mediaAdapter.retrieveArtistsAndAlbums();
 			publishProgress(50);
-			mediaAdapter.retrieveSongs();
+			// mediaAdapter.retrieveSongs();
 			publishProgress(70);
 			artists = db.getAllArtists();
 			publishProgress(80);

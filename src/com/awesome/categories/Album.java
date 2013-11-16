@@ -108,77 +108,77 @@ public class Album implements Serializable {
 		this.songList = songList;
 	}
 
-	// @Override
-	// public int hashCode() {
-	// final int prime = 31;
-	// int result = 1;
-	// result = prime * result + ((album == null) ? 0 : album.hashCode());
-	// result = prime * result + ((albumArt == null) ? 0 : albumArt.hashCode());
-	// result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
-	// result = prime * result + ((albumKey == null) ? 0 : albumKey.hashCode());
-	// result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-	// result = prime * result + ((firstYear == null) ? 0 : firstYear.hashCode());
-	// result = prime * result + ((lastYear == null) ? 0 : lastYear.hashCode());
-	// result = prime * result + ((numberOfSongs == null) ? 0 : numberOfSongs.hashCode());
-	// result = prime * result + ((songList == null) ? 0 : songList.hashCode());
-	// return result;
-	// }
-	//
-	// @Override
-	// public boolean equals(Object obj) {
-	// if (this == obj)
-	// return true;
-	// if (obj == null)
-	// return false;
-	// if (getClass() != obj.getClass())
-	// return false;
-	// Album other = (Album) obj;
-	// if (album == null) {
-	// if (other.album != null)
-	// return false;
-	// } else if (!album.equals(other.album))
-	// return false;
-	// if (albumArt == null) {
-	// if (other.albumArt != null)
-	// return false;
-	// } else if (!albumArt.equals(other.albumArt))
-	// return false;
-	// if (albumId == null) {
-	// if (other.albumId != null)
-	// return false;
-	// } else if (!albumId.equals(other.albumId))
-	// return false;
-	// if (albumKey == null) {
-	// if (other.albumKey != null)
-	// return false;
-	// } else if (!albumKey.equals(other.albumKey))
-	// return false;
-	// if (artist == null) {
-	// if (other.artist != null)
-	// return false;
-	// } else if (!artist.equals(other.artist))
-	// return false;
-	// if (firstYear == null) {
-	// if (other.firstYear != null)
-	// return false;
-	// } else if (!firstYear.equals(other.firstYear))
-	// return false;
-	// if (lastYear == null) {
-	// if (other.lastYear != null)
-	// return false;
-	// } else if (!lastYear.equals(other.lastYear))
-	// return false;
-	// if (numberOfSongs == null) {
-	// if (other.numberOfSongs != null)
-	// return false;
-	// } else if (!numberOfSongs.equals(other.numberOfSongs))
-	// return false;
-	// if (songList == null) {
-	// if (other.songList != null)
-	// return false;
-	// } else if (!songList.equals(other.songList))
-	// return false;
-	// return true;
-	// }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((album == null) ? 0 : album.hashCode());
+		result = prime * result + ((albumArt == null) ? 0 : albumArt.hashCode());
+		result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
+		result = prime * result + ((albumKey == null) ? 0 : albumKey.hashCode());
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		result = prime * result + ((firstYear == null) ? 0 : firstYear.hashCode());
+		result = prime * result + ((lastYear == null) ? 0 : lastYear.hashCode());
+		result = prime * result + ((numberOfSongs == null) ? 0 : numberOfSongs.hashCode());
+		result = prime * result + ((songList == null) ? 0 : songList.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Album other = (Album) obj;
+		if (album == null) {
+			if (other.album != null)
+				return false;
+		} else if (!album.equals(other.album))
+			return false;
+		if (albumArt == null) {
+			if (other.albumArt != null)
+				return false;
+		} else if (!albumArt.equals(other.albumArt))
+			return false;
+		if (albumId == null) {
+			if (other.albumId != null)
+				return false;
+		} else if (!albumId.equals(other.albumId))
+			return false;
+		if (albumKey == null) {
+			if (other.albumKey != null)
+				return false;
+		} else if (!albumKey.equals(other.albumKey))
+			return false;
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
+			return false;
+		if (firstYear == null) {
+			if (other.firstYear != null)
+				return false;
+		} else if (!firstYear.equals(other.firstYear))
+			return false;
+		if (lastYear == null) {
+			if (other.lastYear != null)
+				return false;
+		} else if (!lastYear.equals(other.lastYear))
+			return false;
+		if (numberOfSongs == null) {
+			if (other.numberOfSongs != null)
+				return false;
+		} else if (!numberOfSongs.equals(other.numberOfSongs))
+			return false;
+		if (songList == null) {
+			if (other.songList != null)
+				return false;
+		} else if (!songList.equals(other.songList))
+			return false;
+		return true;
+	}
 
 }

@@ -40,6 +40,8 @@ Try / catch in database create
 
 Might be faster to call getAllSongsForAlbum only when needed
 
+Add trim to all inserts???
+
 
 
 

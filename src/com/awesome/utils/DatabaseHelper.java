@@ -11,7 +11,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Database Name
 	private static String DB_NAME = "library.db";
 	// Database Version
-	private static final int DB_VERSION = 29;
+	private static final int DB_VERSION = 9;
 
 	/** Artist Table Variables **/
 	final private static String DATABASE_TABLE_ARTISTS = "Artists";
@@ -66,8 +66,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT, %s INTEGER)",
 						DATABASE_TABLE_ARTISTS, ARTIST_ID, ARTIST, ARTIST_KEY, NUMBER_OF_ALBUMS);
 
+		// Primary key does not autoincrement for this table to allow for proper checking of albumExists method
 		String createAlbumTable = String
-				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s TEXT)",
+				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY NOT NULL, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s TEXT)",
 						DATABASE_TABLE_ALBUMS, ALBUM_ID, ALBUM, ALBUM_KEY, ALBUM_ARTIST, NUMBER_OF_SONGS, FIRST_YEAR,
 						LAST_YEAR, ALBUM_ART);
 
@@ -77,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						SONG_ARTIST_KEY, SONG_ALBUM, SONG_ALBUM_KEY, SONG_COMPOSER, SONG_TRACK, SONG_DURATION,
 						SONG_YEAR, SONG_DATE_ADDED, SONG_MIME_TYPE, SONG_DATA);
 
-		Log.i(TAG, String.format("%s \n %s \n %s \n %s", createArtistTable, createAlbumTable, createSongTable));
+		Log.i(TAG, String.format("%s \n %s \n %s", createArtistTable, createAlbumTable, createSongTable));
 		db.execSQL(createArtistTable);
 		db.execSQL(createAlbumTable);
 		db.execSQL(createSongTable);
