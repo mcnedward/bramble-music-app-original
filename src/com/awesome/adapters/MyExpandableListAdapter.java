@@ -82,8 +82,6 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View itemView = inflater.inflate(R.layout.listview_item, null, false);
 
-		itemView.setBackgroundColor(context.getResources().getColor(R.color.WhiteSmoke));
-
 		txtName = (TextView) itemView.findViewById(R.id.txtAlbum);
 		albumArtView = (ImageView) itemView.findViewById(R.id.albumArt);
 
@@ -95,9 +93,13 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
 			String albumArt = album.getAlbumArt();
 			if (albumArt != null) {
+				// Create the album art bitmap and scale it to fit properly and avoid overusing memory
 				File imageFile = new File(album.getAlbumArt());
 				Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-				albumArtView.setImageBitmap(imageBitmap);
+				albumArtView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 92, 92, false));
+			} else {
+				Bitmap imageBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.noalbumart);
+				albumArtView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 92, 92, false));
 			}
 		}
 

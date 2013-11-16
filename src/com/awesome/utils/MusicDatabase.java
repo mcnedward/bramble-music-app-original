@@ -345,9 +345,12 @@ public class MusicDatabase {
 	 */
 	public List<Album> getAllAlbums() {
 		List<Album> albumList = new ArrayList<Album>();
+		List<String> artistList = new ArrayList<String>();			// List of all artists that match the album
+		List<Integer> numberOfSongsList = new ArrayList<Integer>();	// List of number of songs that match that album
 
 		open();
-		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " ORDER BY " + ALBUM, null);
+		Cursor c = database.rawQuery("SELECT * FROM " + DATABASE_TABLE_ALBUMS + " GROUP BY " + ALBUM_KEY + " ORDER BY "
+				+ ALBUM, null);
 		try {
 			while (c.moveToNext()) {
 				Integer albumId = c.getInt(c.getColumnIndexOrThrow(ALBUM_ID));
@@ -358,10 +361,15 @@ public class MusicDatabase {
 				Integer firstYear = c.getInt(c.getColumnIndexOrThrow(FIRST_YEAR));
 				Integer lastYear = c.getInt(c.getColumnIndexOrThrow(LAST_YEAR));
 				String albumArt = c.getString(c.getColumnIndexOrThrow(ALBUM_ART));
-				// List<Song> songList = getAllSongsForAlbum(albumKey);
+
+				// Add the album artist and number of songs to the list of all for that album
+				artistList.add(albumArtist);
+				numberOfSongsList.add(numberOfSongs);
 				Album album = new Album(albumId, albumName, albumKey, albumArtist, numberOfSongs, firstYear, lastYear,
 						albumArt, null);
-				albumList.add(album);
+				if (artistList.contains(albumArtist)) {
+					albumList.add(album);
+				}
 			}
 			if (albumList.isEmpty()) {
 				Log.i(TAG, "No albums");

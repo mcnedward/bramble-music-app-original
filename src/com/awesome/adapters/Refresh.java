@@ -269,7 +269,6 @@ public class Refresh extends Activity {
 		refreshArtists(artistList);
 		refreshAlbums(albumList);
 		refreshSongs(songList);
-
 	}
 
 	/********** View Methods **********/

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import com.awesome.musiclibrary.R;
  * 
  */
 public class MyListAdapter extends BaseAdapter {
+	final private static String TAG = "MyListAdapter";
 	private Context context;
 	private Boolean isDisplaySong = false;
 
@@ -97,43 +99,50 @@ public class MyListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View itemView = null;
 
-		Object object = getItem(position);
-		if (object == null) {
-			itemView = getGenericView();
-			((TextView) itemView).setText("No media");
-		} else if (object.getClass() == Album.class) {
-			Album album = (Album) getItem(position);
-			TextView txtName;
-			ImageView albumArtView;
+		try {
+			Object object = getItem(position);
+			if (object == null) {
+				itemView = getGenericView();
+				((TextView) itemView).setText("No media");
+			} else if (object.getClass() == Album.class) {
+				Album album = (Album) getItem(position);
+				TextView txtName;
+				ImageView albumArtView;
 
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			itemView = inflater.inflate(R.layout.listview_item, null, false);
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				itemView = inflater.inflate(R.layout.listview_item, null, false);
 
-			albumArtView = (ImageView) itemView.findViewById(R.id.albumArt);
-			txtName = (TextView) itemView.findViewById(R.id.txtAlbum);
+				albumArtView = (ImageView) itemView.findViewById(R.id.albumArt);
+				txtName = (TextView) itemView.findViewById(R.id.txtAlbum);
 
-			txtName.setTextSize(20);
-			txtName.setTypeface(null, Typeface.BOLD);
+				txtName.setTextSize(20);
+				txtName.setTypeface(null, Typeface.BOLD);
 
-			txtName.setText(album.getAlbum());
+				txtName.setText(album.getAlbum());
+				String albumArt = album.getAlbumArt();
+				if (albumArt != null) {
+					// Create the album art bitmap and scale it to fit properly and avoid overusing memory
+					File imageFile = new File(album.getAlbumArt());
+					Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+					albumArtView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 92, 92, false));
+				} else {
+					Bitmap imageBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.noalbumart);
+					albumArtView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 92, 92, false));
+				}
+			} else if (object.getClass() == Song.class) {
+				Song song = (Song) getItem(position);
+				itemView = getGenericView();
 
-			String albumArt = album.getAlbumArt();
-			if (albumArt != null) {
-				File imageFile = new File(album.getAlbumArt());
-				Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-				albumArtView.setImageBitmap(imageBitmap);
+				if (isDisplaySong) {
+					((TextView) itemView).setText(song.getTitle());
+					((TextView) itemView).setTypeface(null, Typeface.NORMAL);
+					((TextView) itemView).setPadding(20, 0, 20, 0);
+				} else {
+					((TextView) itemView).setText(song.getTitle());
+				}
 			}
-		} else if (object.getClass() == Song.class) {
-			Song song = (Song) getItem(position);
-			itemView = getGenericView();
-
-			if (isDisplaySong) {
-				((TextView) itemView).setText(song.getTitle());
-				((TextView) itemView).setTypeface(null, Typeface.NORMAL);
-				((TextView) itemView).setPadding(20, 0, 20, 0);
-			} else {
-				((TextView) itemView).setText(song.getTitle());
-			}
+		} catch (Exception e) {
+			Log.i(TAG, e.getMessage(), e);
 		}
 
 		return itemView;

@@ -20,8 +20,6 @@ import com.awesome.adapters.MyListAdapter;
 import com.awesome.categories.Album;
 import com.awesome.categories.Song;
 import com.awesome.musiclibrary.R;
-import com.awesome.musiclibrary.R.id;
-import com.awesome.musiclibrary.R.layout;
 
 public class DisplaySongsActivity extends Activity {
 
@@ -52,7 +50,10 @@ public class DisplaySongsActivity extends Activity {
 		if (albumArt != null) {
 			File imageFile = new File(album.getAlbumArt());
 			Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-			imgAlbumArt.setImageBitmap(imageBitmap);
+			imgAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 200, 200, false));
+		} else {
+			Bitmap imageBitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.noalbumart);
+			imgAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 200, 200, false));
 		}
 
 		ListView displaySongs = (ListView) findViewById(R.id.displaySongs3);

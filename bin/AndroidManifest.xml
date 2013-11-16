@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.awesome.musiclibrary"
     android:versionCode="1"
-    android:versionName="0.6.2" >
+    android:versionName="0.7.1" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -76,6 +76,13 @@
             android:label="@string/app_name"
             android:parentActivityName="MainActivity" >
         </activity>
+        
+        <!-- Display Songs Activity -->
+        <activity
+            android:name="com.awesome.musiclibrary.viewcontent.DisplaySongsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="MainActivity" >
+        </activity>
 
         <!-- ********** End View Activities ********** -->
 
@@ -120,14 +127,6 @@
         </activity>
 
         <!-- ********** End Add Activities ********** -->
-
-
-        <!-- Display Songs Activity -->
-        <activity
-            android:name="DisplaySongsActivity"
-            android:label="@string/app_name"
-            android:parentActivityName="MainActivity" >
-        </activity>
 
         <!-- ********** Edit Activities ********** -->
 

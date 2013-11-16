@@ -7,28 +7,25 @@ package com.awesome.musiclibrary;
  * Dates: January 1, 2013 April 25, 2013 April 29, 2013
  */
 
-import android.app.ActionBar;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
-import com.awesome.adapters.TabsAdapter;
 import com.awesome.asynctasks.LoadDatabase;
 import com.awesome.asynctasks.RetrieveMedia;
-import com.awesome.musiclibrary.viewcontent.ViewAlbumActivity;
-import com.awesome.musiclibrary.viewcontent.ViewArtistActivity;
-import com.awesome.musiclibrary.viewcontent.ViewGenreActivity;
-import com.awesome.musiclibrary.viewcontent.ViewSongActivity;
 
 public class MainActivity extends FragmentActivity {
 	private static String TAG = "MainActivity";
-	private static final String CACHE = "CachedFiles";
 
 	private ViewPager mViewPager;
-	private TabsAdapter mTabsAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,28 +33,79 @@ public class MainActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);	// Set the window to allow for progress spinner
 		setContentView(R.layout.activity_main);
 
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
 		new LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-			@Override
-			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
-			}
-		});
+		mViewPager.setAdapter(new CustomFragmentPagerAdapter());
+		mViewPager.setOffscreenPageLimit(4 - 1);
+	}
 
-		mTabsAdapter = new TabsAdapter(this, mViewPager);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Artists"), ViewArtistActivity.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Albums"), ViewAlbumActivity.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Songs"), ViewSongActivity.class, null);
-		mTabsAdapter.addTab(actionBar.newTab().setText("Genres"), ViewGenreActivity.class, null);
+	public class CustomFragmentPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
+		final int PAGE_COUNT = 4;
+		final int[] tabs = { R.layout.view_artist_layout, R.layout.view_album_layout, R.layout.view_song_layout,
+				R.layout.view_genre_layout };
+		final String[] titles = { "Artists", "Albums", "Songs", "Genres" };
 
-		if (savedInstanceState != null) {
-			actionBar.setSelectedNavigationItem(savedInstanceState.getInt("tab", 0));
+		public CustomFragmentPagerAdapter() {
+			super(getSupportFragmentManager());
+		}
+
+		@Override
+		public int getCount() {
+			return PAGE_COUNT;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			return PageFragment.createTab(tabs[position]);
+		}
+
+		@Override
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
+
+		}
+
+		@Override
+		public void onPageSelected(int arg0) {
+
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return titles[position];
+		}
+
+	}
+
+	public static class PageFragment extends Fragment {
+		public static final String LAYOUT_PAGE = "LAYOUT_PAGE";
+
+		private int layout;
+
+		public static PageFragment createTab(int layout) {
+			Bundle args = new Bundle();
+			args.putInt(LAYOUT_PAGE, layout);
+			PageFragment fragment = new PageFragment();
+			fragment.setArguments(args);
+			return fragment;
+		}
+
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			layout = getArguments().getInt(LAYOUT_PAGE);
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+			super.onCreateView(inflater, container, savedInstanceState);
+			return inflater.inflate(layout, container, false);
 		}
 	}
 
@@ -75,15 +123,5 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
 	}
-
-	/*
-	 * @Override public void onBackPressed() { if (mViewPager.getCurrentItem()
-	 * == 0) { // If the user is currently looking at the first step, allow the
-	 * system to handle the // Back button. This calls finish() on this activity
-	 * and pops the back stack. super.onBackPressed(); } else { // Otherwise,
-	 * select the previous step.
-	 * mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1); } }
-	 */
 }

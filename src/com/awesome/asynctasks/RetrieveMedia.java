@@ -64,9 +64,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	@Override
 	protected void onProgressUpdate(Integer... progress) {
 		super.onProgressUpdate(progress);
-		// Update the progress dialog
 		Log.i(TAG, "Progress: " + progress[0] + "%");
-		// progDialog.setProgress(progress[0]);
 	}
 
 	@Override
@@ -74,15 +72,10 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 		try {
 			Log.i(TAG, "Executing task");
 			mediaAdapter.retrieveArtistsAndAlbums();	// Retrieve the information for artists and albums
-			// publishProgress(40);
 			mediaAdapter.retrieveSongs();				// Retrieve the information for songs
-			// publishProgress(70);
 			artists = db.getAllArtists();				// Get the new list of artists
-			// publishProgress(80);
 			albums = db.getAllAlbums();					// Get the new list of albums
-			// publishProgress(90);
-			songs = db.getAllSongs();					// Get the new list of songs
-			// publishProgress(100);
+			songs = db.getAllSongs(); // Get the new list of songs
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}

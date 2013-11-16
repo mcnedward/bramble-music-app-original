@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center|bottom"
-    android:background="@color/white"
+    android:background="@color/WhiteSmoke"
     android:orientation="vertical"
     tools:context=".MainActivity" >
     

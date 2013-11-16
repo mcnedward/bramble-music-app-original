@@ -12,8 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-public class TabsAdapter extends FragmentPagerAdapter implements
-		ActionBar.TabListener, ViewPager.OnPageChangeListener {
+public class TabsAdapter extends FragmentPagerAdapter implements ActionBar.TabListener, ViewPager.OnPageChangeListener {
 	private final Context mContext;
 	private final ActionBar mActionBar;
 	private final ViewPager mViewPager;
@@ -60,8 +59,7 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	}
 
 	@Override
-	public void onPageScrolled(int position, float positionOffset,
-			int positionOffsetPixels) {
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 	}
 
@@ -93,5 +91,11 @@ public class TabsAdapter extends FragmentPagerAdapter implements
 	@Override
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 
+	}
+
+	@Override
+	public CharSequence getPageTitle(int position) {
+		TabInfo info = mTabs.get(position);
+		return info.clss.getName();
 	}
 }

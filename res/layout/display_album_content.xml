@@ -8,32 +8,43 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/imgAlbumArt"
-        android:layout_width="300dip"
-        android:layout_height="180dp"
-        android:layout_gravity="center"
-        android:padding="10dip"
-        android:scaleType="fitXY"
-        android:src="@drawable/noalbumart" />
-
-    <TextView
-        android:id="@+id/txtAlbumTitle"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:orientation="horizontal" >
 
-    <TextView
-        android:id="@+id/txtAlbumArtist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        <ImageView
+            android:id="@+id/imgAlbumArt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/txtAlbumTitle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtAlbumArtist"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"

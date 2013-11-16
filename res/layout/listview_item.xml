@@ -10,10 +10,9 @@
 
         <ImageView
             android:id="@+id/albumArt"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:padding="2dp"
-            android:src="@drawable/noalbumart" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp" />
 
         <TextView
             android:id="@+id/txtAlbum"
