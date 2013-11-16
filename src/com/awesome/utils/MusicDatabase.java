@@ -162,7 +162,6 @@ public class MusicDatabase {
 	public void insertAlbum(Album album) {
 		// Check if the album is already in the database
 		if (albumExists(album)) {
-			Log.i(TAG, "ALBUM EXISTS");
 			return;
 		} else {
 			open();

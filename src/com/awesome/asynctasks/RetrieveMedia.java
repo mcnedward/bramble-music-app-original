@@ -3,6 +3,7 @@ package com.awesome.asynctasks;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -57,22 +58,15 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		// Create a progress dialog
-		progDialog = new ProgressDialog(context);
-		progDialog.setIndeterminate(false);
-		progDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		progDialog.setTitle("Downloading Music Files...");
-		progDialog.setCancelable(true);
-		progDialog.show();
+		((Activity) context).setProgressBarIndeterminateVisibility(true);	// Show the progress spinner
 	}
 
 	@Override
 	protected void onProgressUpdate(Integer... progress) {
 		super.onProgressUpdate(progress);
 		// Update the progress dialog
-		progDialog.setProgress(progress[0]);
 		Log.i(TAG, "Progress: " + progress[0] + "%");
-		refresh.refreshLibrary(artists, albums, songs);	// Refresh the library
+		// progDialog.setProgress(progress[0]);
 	}
 
 	@Override
@@ -80,15 +74,15 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 		try {
 			Log.i(TAG, "Executing task");
 			mediaAdapter.retrieveArtistsAndAlbums();	// Retrieve the information for artists and albums
-			publishProgress(50);
-			artists = db.getAllArtists();				// Get the new list of artists
-			publishProgress(60);
-			albums = db.getAllAlbums();					// Get the new list of albums
-			publishProgress(70);
+			// publishProgress(40);
 			mediaAdapter.retrieveSongs();				// Retrieve the information for songs
-			publishProgress(90);
+			// publishProgress(70);
+			artists = db.getAllArtists();				// Get the new list of artists
+			// publishProgress(80);
+			albums = db.getAllAlbums();					// Get the new list of albums
+			// publishProgress(90);
 			songs = db.getAllSongs();					// Get the new list of songs
-			publishProgress(100);
+			// publishProgress(100);
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
@@ -96,8 +90,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	}
 
 	protected void onPostExecute(Refresh refresh) {
-		refresh.refreshLibrary(artists, albums, songs);	// Refresh the library
-		progDialog.dismiss();							// Remove the progress dialog, if it is still up
+		refresh.refreshLibrary(artists, albums, songs);						// Refresh the library
+		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}
 }

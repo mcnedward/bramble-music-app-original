@@ -152,7 +152,6 @@ public class Refresh extends Activity {
 			viewArtist.setVisibility(LinearLayout.HORIZONTAL);
 			laArtists.setGroup(null);
 			lvArtists.setAdapter(laArtists);
-			laArtists.notifyDataSetChanged();	// Refresh the list
 		}
 	}
 
@@ -210,6 +209,7 @@ public class Refresh extends Activity {
 		} else {
 			laAlbums.setGroup(null);
 			lvAlbums.setAdapter(laAlbums);
+			laAlbums.notifyDataSetChanged();
 		}
 	}
 
@@ -246,12 +246,12 @@ public class Refresh extends Activity {
 						return;
 					}
 				});
-
 				laSongs.notifyDataSetChanged();
 			}
 		} else {
 			laSongs.setGroup(null);
 			lvSongs.setAdapter(laSongs);
+			laSongs.notifyDataSetChanged();
 		}
 	}
 
