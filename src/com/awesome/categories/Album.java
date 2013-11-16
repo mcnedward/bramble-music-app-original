@@ -3,6 +3,12 @@ package com.awesome.categories;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * A class for containing all the information about an album.
+ * 
+ * @author Edward
+ * 
+ */
 public class Album implements Serializable {
 
 	/**
@@ -19,10 +25,35 @@ public class Album implements Serializable {
 	private String albumArt;
 	private List<Song> songList;
 
+	/**
+	 * Empty constructor.
+	 */
 	public Album() {
 
 	}
 
+	/**
+	 * Constructor for creating a new Album object.
+	 * 
+	 * @param albumId
+	 *            The id for the album.
+	 * @param album
+	 *            The name of the album.
+	 * @param albumKey
+	 *            A key for the album, used for searching, sorting, and grouping.
+	 * @param artist
+	 *            The artist of the album.
+	 * @param numberOfSongs
+	 *            The number of songs on the album.
+	 * @param firstYear
+	 *            The first year in which songs on the album were released.
+	 * @param lastYear
+	 *            The last year in which songs on the album were released.
+	 * @param albumArt
+	 *            The path to the art for this album.
+	 * @param songList
+	 *            A list of all songs on this album.
+	 */
 	public Album(Integer albumId, String album, String albumKey, String artist, Integer numberOfSongs,
 			Integer firstYear, Integer lastYear, String albumArt, List<Song> songList) {
 		this.albumId = albumId;
@@ -36,74 +67,137 @@ public class Album implements Serializable {
 		this.songList = songList;
 	}
 
+	/**
+	 * @return The albumId.
+	 */
 	public Integer getAlbumId() {
 		return albumId;
 	}
 
+	/**
+	 * @param albumId
+	 *            The albumId to set.
+	 */
 	public void setAlbumId(Integer albumId) {
 		this.albumId = albumId;
 	}
 
+	/**
+	 * @return The album.
+	 */
 	public String getAlbum() {
 		return album;
 	}
 
+	/**
+	 * @param album
+	 *            The album to set.
+	 */
 	public void setAlbum(String album) {
 		this.album = album;
 	}
 
+	/**
+	 * @return The albumKey.
+	 */
 	public String getAlbumKey() {
 		return albumKey;
 	}
 
+	/**
+	 * @param albumKey
+	 *            The albumKey to set.
+	 */
 	public void setAlbumKey(String albumKey) {
 		this.albumKey = albumKey;
 	}
 
+	/**
+	 * @return The artist.
+	 */
 	public String getArtist() {
 		return artist;
 	}
 
+	/**
+	 * @param artist
+	 *            The artist to set.
+	 */
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
 
+	/**
+	 * @return The numberOfSongs.
+	 */
 	public Integer getNumberOfSongs() {
 		return numberOfSongs;
 	}
 
+	/**
+	 * @param numberOfSongs
+	 *            The numberOfSongs to set.
+	 */
 	public void setNumberOfSongs(Integer numberOfSongs) {
 		this.numberOfSongs = numberOfSongs;
 	}
 
+	/**
+	 * @return The firstYear.
+	 */
 	public Integer getFirstYear() {
 		return firstYear;
 	}
 
+	/**
+	 * @param firstYear
+	 *            The firstYear to set.
+	 */
 	public void setFirstYear(Integer firstYear) {
 		this.firstYear = firstYear;
 	}
 
+	/**
+	 * @return The lastYear.
+	 */
 	public Integer getLastYear() {
 		return lastYear;
 	}
 
+	/**
+	 * @param lastYear
+	 *            The lastYear to set.
+	 */
 	public void setLastYear(Integer lastYear) {
 		this.lastYear = lastYear;
 	}
 
+	/**
+	 * @return The albumArt.
+	 */
 	public String getAlbumArt() {
 		return albumArt;
 	}
 
+	/**
+	 * @param albumArt
+	 *            The albumArt to set.
+	 */
 	public void setAlbumArt(String albumArt) {
 		this.albumArt = albumArt;
 	}
 
+	/**
+	 * @return The songList.
+	 */
 	public List<Song> getSongList() {
 		return songList;
 	}
 
+	/**
+	 * @param songList
+	 *            The songList to set.
+	 */
 	public void setSongList(List<Song> songList) {
 		this.songList = songList;
 	}

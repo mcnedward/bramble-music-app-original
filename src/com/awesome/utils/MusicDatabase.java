@@ -614,10 +614,8 @@ public class MusicDatabase {
 				}
 				// If the album to check is in the artist or number of songs list, then the album exists
 				if (artistList.contains(album.getArtist()) && numberOfSongsList.contains(album.getNumberOfSongs())) {
-					Log.i(TAG, "RETURNING TRUE");
 					return true;
 				} else {
-					Log.i(TAG, "RETURNING FALSE");
 					return false;
 				}
 			}
@@ -629,7 +627,6 @@ public class MusicDatabase {
 			}
 			close();
 		}
-		Log.i(TAG, "RETURNING FALSE");
 		return false;
 	}
 

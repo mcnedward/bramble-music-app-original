@@ -8,14 +8,11 @@ package com.awesome.musiclibrary;
  */
 
 import android.app.ActionBar;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 
 import com.awesome.adapters.TabsAdapter;
 import com.awesome.asynctasks.LoadDatabase;
@@ -74,18 +71,6 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle item selection
-		switch (item.getItemId()) {
-		case R.id.add_content:
-			viewAddContent();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
-	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt("tab", getActionBar().getSelectedNavigationIndex());
@@ -99,11 +84,4 @@ public class MainActivity extends FragmentActivity {
 	 * select the previous step.
 	 * mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1); } }
 	 */
-
-	public void viewAddContent() { // Change the view to Add Content page
-		Intent addContent = new Intent(this, AddContentActivity.class);
-		startActivity(addContent);
-		Log.e("M", "Changing view to Add Content"); // Display message in log
-													// cat
-	}
 }

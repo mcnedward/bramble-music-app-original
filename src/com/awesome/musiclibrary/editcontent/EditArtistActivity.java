@@ -1,9 +1,5 @@
 package com.awesome.musiclibrary.editcontent;
 
-import com.awesome.musiclibrary.DatabaseHelper;
-import com.awesome.musiclibrary.MainActivity;
-import com.awesome.musiclibrary.R;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -15,10 +11,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.awesome.musiclibrary.MainActivity;
+import com.awesome.musiclibrary.R;
+
 public class EditArtistActivity extends Activity {
 
-	// Initializes all variables here=
-	private DatabaseHelper dbh;
+	// Initializes all variables here
 	private EditText txtEditArtist;
 	private String currentArtist; // String for the artist name
 
@@ -29,17 +27,7 @@ public class EditArtistActivity extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		dbh = new DatabaseHelper(this); // Start the database helper
-
-		currentArtist = getIntent().getExtras().getString("artistName"); // Get
-																			// the
-																			// Artist
-																			// from
-																			// the
-																			// bundle
-																			// of
-																			// main
-																			// activity
+		currentArtist = getIntent().getExtras().getString("artistName");
 
 		// Set the current artist in the text view
 		txtEditArtist = (EditText) findViewById(R.id.txtEditArtist);
@@ -59,8 +47,7 @@ public class EditArtistActivity extends Activity {
 			// This is called when the Home (Up) button is pressed
 			// in the Action Bar.
 			Intent parentActivityIntent = new Intent(this, MainActivity.class);
-			parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-					| Intent.FLAG_ACTIVITY_NEW_TASK);
+			parentActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(parentActivityIntent);
 			finish();
 			return true;
@@ -74,27 +61,16 @@ public class EditArtistActivity extends Activity {
 
 		if (newArtist.equals("")) {
 			Context context = getApplicationContext();
-			Toast toast = Toast.makeText(context,
-					"You need to enter a new artist name.", Toast.LENGTH_SHORT);
+			Toast toast = Toast.makeText(context, "You need to enter a new artist name.", Toast.LENGTH_SHORT);
 			toast.show();
 		} else {
-			int artistID = dbh.getArtistID(currentArtist); // Get the artist id
-															// of the current
-															// artist
-			dbh.open(); // Open the database
-			dbh.updateArtist(artistID, newArtist); // Update the artist
-													// information
-			dbh.close(); // Close the database
-
 			Context context = getApplicationContext();
 			if (currentArtist.equals(newArtist)) {
-				Toast toast = Toast.makeText(context,
-						"The artist was not changed.", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(context, "The artist was not changed.", Toast.LENGTH_SHORT);
 				toast.show(); // Display toast
 			} else {
-				Toast toast = Toast.makeText(context, "The artist "
-						+ currentArtist + " has been changed to " + newArtist
-						+ ".", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(context, "The artist " + currentArtist + " has been changed to "
+						+ newArtist + ".", Toast.LENGTH_SHORT);
 				toast.show(); // Display toast
 			}
 			this.finish(); // Close the Activity

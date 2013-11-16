@@ -1,4 +1,4 @@
-package com.awesome.musiclibrary;
+package com.awesome.musiclibrary.viewcontent;
 
 import java.io.File;
 import java.util.List;
@@ -19,7 +19,9 @@ import android.widget.TextView;
 import com.awesome.adapters.MyListAdapter;
 import com.awesome.categories.Album;
 import com.awesome.categories.Song;
-import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
+import com.awesome.musiclibrary.R;
+import com.awesome.musiclibrary.R.id;
+import com.awesome.musiclibrary.R.layout;
 
 public class DisplaySongsActivity extends Activity {
 

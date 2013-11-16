@@ -28,6 +28,40 @@ public class Song implements Serializable {
 
 	}
 
+	/**
+	 * Constructor used to create a new Song object.
+	 * 
+	 * @param titleId
+	 *            The id for the song.
+	 * @param title
+	 *            The title of the song.
+	 * @param titleKey
+	 *            A key for the song, used for searching, sorting, and grouping.
+	 * @param displayName
+	 *            The display name of the song.
+	 * @param artist
+	 *            The artist of the song.
+	 * @param artistKey
+	 *            A key for the artist, used for searching, sorting, and grouping.
+	 * @param album
+	 *            The album on which the song appears.
+	 * @param albumKey
+	 *            A key for the album, used for searching, sorting, and grouping.
+	 * @param composer
+	 *            The composer of the song.
+	 * @param track
+	 *            The track number of the song.
+	 * @param duration
+	 *            The duration of the song.
+	 * @param year
+	 *            The year the song was released.
+	 * @param dateAdded
+	 *            The time the song was added to the media provider.
+	 * @param mimeType
+	 *            The MIME type for the song.
+	 * @param data
+	 *            The data stream for the song.
+	 */
 	public Song(Integer titleId, String title, String titleKey, String displayName, String artist, String artistKey,
 			String album, String albumKey, String composer, Integer track, Integer duration, Integer year,
 			Integer dateAdded, String mimeType, String data) {
@@ -48,122 +82,227 @@ public class Song implements Serializable {
 		this.data = data;
 	}
 
-	public String getArtist() {
-		return artist;
-	}
-
-	public void setArtist(String artist) {
-		this.artist = artist;
-	}
-
-	public String getAlbum() {
-		return album;
-	}
-
-	public void setAlbum(String album) {
-		this.album = album;
-	}
-
-	public String getComposer() {
-		return composer;
-	}
-
-	public void setComposer(String composer) {
-		this.composer = composer;
-	}
-
+	/**
+	 * @return The titleId.
+	 */
 	public Integer getTitleId() {
 		return titleId;
 	}
 
+	/**
+	 * @param titleId
+	 *            The titleId to set.
+	 */
 	public void setTitleId(Integer titleId) {
 		this.titleId = titleId;
 	}
 
+	/**
+	 * @return The title.
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * @param title
+	 *            The title to set.
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**
+	 * @return The titleKey.
+	 */
 	public String getTitleKey() {
 		return titleKey;
 	}
 
+	/**
+	 * @param titleKey
+	 *            The titleKey to set.
+	 */
 	public void setTitleKey(String titleKey) {
 		this.titleKey = titleKey;
 	}
 
+	/**
+	 * @return The displayName.
+	 */
 	public String getDisplayName() {
 		return displayName;
 	}
 
+	/**
+	 * @param displayName
+	 *            The displayName to set.
+	 */
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
 
+	/**
+	 * @return The artist.
+	 */
+	public String getArtist() {
+		return artist;
+	}
+
+	/**
+	 * @param artist
+	 *            The artist to set.
+	 */
+	public void setArtist(String artist) {
+		this.artist = artist;
+	}
+
+	/**
+	 * @return The artistKey.
+	 */
 	public String getArtistKey() {
 		return artistKey;
 	}
 
+	/**
+	 * @param artistKey
+	 *            The artistKey to set.
+	 */
 	public void setArtistKey(String artistKey) {
 		this.artistKey = artistKey;
 	}
 
+	/**
+	 * @return The album.
+	 */
+	public String getAlbum() {
+		return album;
+	}
+
+	/**
+	 * @param album
+	 *            The album to set.
+	 */
+	public void setAlbum(String album) {
+		this.album = album;
+	}
+
+	/**
+	 * @return The albumKey.
+	 */
 	public String getAlbumKey() {
 		return albumKey;
 	}
 
+	/**
+	 * @param albumKey
+	 *            The albumKey to set.
+	 */
 	public void setAlbumKey(String albumKey) {
 		this.albumKey = albumKey;
 	}
 
+	/**
+	 * @return The composer.
+	 */
+	public String getComposer() {
+		return composer;
+	}
+
+	/**
+	 * @param composer
+	 *            The composer to set.
+	 */
+	public void setComposer(String composer) {
+		this.composer = composer;
+	}
+
+	/**
+	 * @return The track.
+	 */
 	public Integer getTrack() {
 		return track;
 	}
 
+	/**
+	 * @param track
+	 *            The track to set.
+	 */
 	public void setTrack(Integer track) {
 		this.track = track;
 	}
 
+	/**
+	 * @return The duration.
+	 */
 	public Integer getDuration() {
 		return duration;
 	}
 
+	/**
+	 * @param duration
+	 *            The duration to set.
+	 */
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
 
+	/**
+	 * @return The year.
+	 */
 	public Integer getYear() {
 		return year;
 	}
 
+	/**
+	 * @param year
+	 *            The year to set.
+	 */
 	public void setYear(Integer year) {
 		this.year = year;
 	}
 
+	/**
+	 * @return The dateAdded.
+	 */
 	public Integer getDateAdded() {
 		return dateAdded;
 	}
 
+	/**
+	 * @param dateAdded
+	 *            The dateAdded to set.
+	 */
 	public void setDateAdded(Integer dateAdded) {
 		this.dateAdded = dateAdded;
 	}
 
+	/**
+	 * @return The mimeType.
+	 */
 	public String getMimeType() {
 		return mimeType;
 	}
 
+	/**
+	 * @param mimeType
+	 *            The mimeType to set.
+	 */
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
 	}
 
+	/**
+	 * @return The data.
+	 */
 	public String getData() {
 		return data;
 	}
 
+	/**
+	 * @param data
+	 *            The data to set.
+	 */
 	public void setData(String data) {
 		this.data = data;
 	}

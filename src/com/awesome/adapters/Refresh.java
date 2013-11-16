@@ -23,29 +23,51 @@ import android.widget.Toast;
 import com.awesome.categories.Album;
 import com.awesome.categories.Artist;
 import com.awesome.categories.Song;
-import com.awesome.musiclibrary.DisplaySongsActivity;
 import com.awesome.musiclibrary.R;
 import com.awesome.musiclibrary.editcontent.EditAlbumActivity;
 import com.awesome.musiclibrary.editcontent.EditArtistActivity;
 import com.awesome.musiclibrary.editcontent.EditGenreActivity;
 import com.awesome.musiclibrary.editcontent.EditSongActivity;
+import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 import com.awesome.utils.MusicDatabase;
 
+/**
+ * An adapter that is used for refreshing the list views used to display the contents of the Music Library. The pop-up
+ * menus for the list views are also created here.
+ * 
+ * @author Edward
+ * 
+ */
 public class Refresh extends Activity {
 
 	private Context context;
 	MusicDatabase mdb;
 
+	/**
+	 * Empty constructor for the Refresh adapter
+	 */
 	public Refresh() {
 
 	}
 
+	/**
+	 * Create a new instance of the Refresh adapter
+	 * 
+	 * @param context
+	 *            THe context of the activity to use this adapter
+	 */
 	public Refresh(Context context) {
 		this.context = context;
 		mdb = new MusicDatabase(context);
 	}
 
+	/**
+	 * Refresh the list of all artists in the Music Library
+	 * 
+	 * @param artistList
+	 *            A list of all artists to display
+	 */
 	public void refreshArtists(List<Artist> artistList) {
 		// Initialize the List Views here
 		ExpandableListView exlvArtists = (ExpandableListView) ((Activity) context).findViewById(R.id.displayArtists);
@@ -101,7 +123,7 @@ public class Refresh extends Activity {
 						if (view.isSelected() == false) {
 							Album title = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
 									groupPosition, childPosition);
-							// Show options menu; the second param (1) is the type album
+							// Show options menu; the second parameter (1) is the type album
 							showOptions(title.getAlbumId(), title.getAlbum(), 1);
 							return true;
 						}
@@ -113,8 +135,8 @@ public class Refresh extends Activity {
 							Artist artist = (Artist) ((ExpandableListView) parent).getExpandableListAdapter().getGroup(
 									groupPosition);
 							if (!artist.equals("No artists")) {
-								showOptions(artist.getArtistId(), artist.getArtist(), 0); // The first param (0) is the
-																							// type artist
+								// The first parameter (0) is the type artist
+								showOptions(artist.getArtistId(), artist.getArtist(), 0);
 								return true;
 							}
 						}
@@ -122,6 +144,7 @@ public class Refresh extends Activity {
 					return false;
 				}
 			});
+			exlaArtists.notifyDataSetChanged();	// Refresh the list
 		} else {
 			LinearLayout expViewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.expViewArtist);
 			expViewArtist.setVisibility(LinearLayout.GONE);
@@ -129,12 +152,16 @@ public class Refresh extends Activity {
 			viewArtist.setVisibility(LinearLayout.HORIZONTAL);
 			laArtists.setGroup(null);
 			lvArtists.setAdapter(laArtists);
+			laArtists.notifyDataSetChanged();	// Refresh the list
 		}
-
-		exlaArtists.notifyDataSetChanged();
-		laArtists.notifyDataSetChanged();
 	}
 
+	/**
+	 * Refresh the list of all albums in the Music Library
+	 * 
+	 * @param albumList
+	 *            A list of all albums to display
+	 */
 	public void refreshAlbums(List<Album> albumList) {
 		// Initialize the List View here
 		ListView lvAlbums = (ListView) ((Activity) context).findViewById(R.id.displayAlbums);
@@ -186,6 +213,12 @@ public class Refresh extends Activity {
 		}
 	}
 
+	/**
+	 * Refresh the list of all songs in the Music Library
+	 * 
+	 * @param songList
+	 *            A list of all songs to display
+	 */
 	public void refreshSongs(List<Song> songList) {
 		// Initialize the List View here
 		ListView lvSongs = (ListView) ((Activity) context).findViewById(R.id.displaySongs);
@@ -222,6 +255,16 @@ public class Refresh extends Activity {
 		}
 	}
 
+	/**
+	 * Refresh the entire library all at once. Fills all list views with the appropriate catagory
+	 * 
+	 * @param artistList
+	 *            A list of all artists to display
+	 * @param albumList
+	 *            A list of all albums to display
+	 * @param songList
+	 *            A list of all songs to displays
+	 */
 	public void refreshLibrary(List<Artist> artistList, List<Album> albumList, List<Song> songList) {
 		refreshArtists(artistList);
 		refreshAlbums(albumList);
@@ -231,48 +274,80 @@ public class Refresh extends Activity {
 
 	/********** View Methods **********/
 
+	/**
+	 * Opens the activity for viewing all songs in an album
+	 * 
+	 * @param album
+	 *            The album that you want to view
+	 */
 	public void viewDisplaySongsByAlbum(Album album) {
 		Intent displaySongs = new Intent(context, DisplaySongsActivity.class);
 		displaySongs.putExtra("album", album);
 		context.startActivity(displaySongs);
 	}
 
+	/**
+	 * Opens the activity for viewing the currently playing song
+	 * 
+	 * @param song
+	 *            The song to play
+	 */
 	public void viewNowPlaying(Song song) {
 		Intent nowPlaying = new Intent(context, NowPlayingActivity.class);
 		nowPlaying.putExtra("song", song);
 		context.startActivity(nowPlaying);
 	}
 
-	public void viewEdit(String catagory, int type) {
+	/**
+	 * Opens the activity for editing a certain category.
+	 * 
+	 * @param category
+	 *            The category that you want to edit. This will be the artist name, album name, genre type, or song.
+	 *            title
+	 * @param type
+	 *            The type that you want to edit. 0 = Artist; 1 = Album; 2 = Song; 3 = Genre.
+	 */
+	public void viewEdit(String category, int type) {
 		switch (type) {
 		case 0: // Artist
 			Intent editArtist = new Intent(context, EditArtistActivity.class);
-			editArtist.putExtra("artistName", catagory);
+			editArtist.putExtra("artistName", category);
 			editArtist.putExtra("activity", "MainActivity");
 			context.startActivity(editArtist);
 			return;
 		case 1: // Album
 			Intent editAlbum = new Intent(context, EditAlbumActivity.class);
-			editAlbum.putExtra("albumName", catagory);
+			editAlbum.putExtra("albumName", category);
 			editAlbum.putExtra("activity", "MainActivity");
 			context.startActivity(editAlbum);
 			return;
-		case 2: // Genre
-			Intent editGenre = new Intent(context, EditGenreActivity.class);
-			editGenre.putExtra("genreName", catagory);
-			editGenre.putExtra("activity", "MainActivity");
-			context.startActivity(editGenre);
-			return;
-		case 3: // Song
+		case 2:
+			// Song
 			Intent editSong = new Intent(context, EditSongActivity.class);
-			editSong.putExtra("title", catagory);
+			editSong.putExtra("title", category);
 			editSong.putExtra("activity", "MainActivity");
 			context.startActivity(editSong);
+			return;
+		case 3: // Genre
+			Intent editGenre = new Intent(context, EditGenreActivity.class);
+			editGenre.putExtra("genreName", category);
+			editGenre.putExtra("activity", "MainActivity");
+			context.startActivity(editGenre);
 			return;
 		}
 	}
 
-	// Throw a pop up menu up for when the user selects an album title
+	/**
+	 * Throw a pop up menu for when the user long presses on an item in a list view. This will allow the user to select
+	 * between options such as editing the selection or deleting the selection.
+	 * 
+	 * @param rowId
+	 *            The id for the item that you want to choose an option for.
+	 * @param title
+	 *            The title for the pop up menu. This will be the artist name, album name, genre type, or song.
+	 * @param type
+	 *            The type that you want to choose an option for. 0 = Artist; 1 = Album; 2 = Song; 3 = Genre.
+	 */
 	public void showOptions(final int rowId, final String title, final int type) {
 		AlertDialog.Builder helpBuilder = new AlertDialog.Builder(context);
 		helpBuilder.setTitle(title); // Set the title for the options popup
@@ -305,7 +380,16 @@ public class Refresh extends Activity {
 
 	}
 
-	// Throw a confirmation dialog for when user attempts to delete
+	/**
+	 * Throw a confirmation dialog for when user attempts to delete.
+	 * 
+	 * @param rowId
+	 *            The id for the item that you want to delete.
+	 * @param title
+	 *            The title for the pop up menu. This will be the artist name, album name, genre type, or song.
+	 * @param type
+	 *            The type that you want to delete. 0 = Artist; 1 = Album; 2 = Song; 3 = Genre.
+	 */
 	public void showConfirm(final int rowId, final String title, int type) {
 		AlertDialog.Builder confirm = new AlertDialog.Builder(context);
 		AlertDialog confirmDialog;

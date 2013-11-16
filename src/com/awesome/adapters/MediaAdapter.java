@@ -3,7 +3,6 @@ package com.awesome.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,22 +14,44 @@ import com.awesome.categories.Artist;
 import com.awesome.categories.Song;
 import com.awesome.utils.MusicDatabase;
 
-public class MediaAdapter extends ListActivity {
+/**
+ * An adapter that is used to retrieve information from the Media Store for each media file on the user's device. The
+ * methods here are very time consuming, and should be run from an AsyncTask.
+ * 
+ * @author Edward
+ * 
+ */
+public class MediaAdapter {
 	private static String TAG = "MediaAdapter";
 
 	private MusicDatabase db;
 	private Context context;
 
+	/**
+	 * Empty Constructor
+	 */
 	public MediaAdapter() {
-		// Empty Constructor
+
 	}
 
-	public MediaAdapter(Context context) { // Start the Media Adapter
+	/**
+	 * Constructor for creating a new MediaAdapter. Creates a MusicDatabase object that will be used for inserting the
+	 * media information taken from the Media Store.
+	 * 
+	 * @param context
+	 *            The context of the activity that will use this adapter
+	 */
+	public MediaAdapter(Context context) {
 		db = new MusicDatabase(context);
 		this.context = context;
 	}
 
-	public List<Song> retrieveSongs() {
+	/**
+	 * Retrieves media information for each song. This is the most time consuming method because it needs to run through
+	 * every media file, and then attempt to insert that file into the database.
+	 * 
+	 */
+	public void retrieveSongs() {
 		List<Song> songList = new ArrayList<Song>();
 
 		Integer titleId = null;
@@ -80,7 +101,6 @@ public class MediaAdapter extends ListActivity {
 				data = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
 				isMusic = Integer.parseInt(cursor.getString(cursor
 						.getColumnIndexOrThrow(MediaStore.Audio.Media.IS_MUSIC)));
-				String blaj = null;
 
 				// Check if the media file is a music file
 				if (isMusic == 1) {
@@ -96,9 +116,12 @@ public class MediaAdapter extends ListActivity {
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
-		return songList;
 	}
 
+	/**
+	 * Retrieves media information for each artist and for each album. This uses the artist id to find the URI for
+	 * retrieving album information. This is to ensure that all albums are retrieved.
+	 */
 	public void retrieveArtistsAndAlbums() {
 		List<Artist> artistList = new ArrayList<Artist>();	// List of all artists
 		List<Album> albumList = new ArrayList<Album>();		// List of all albums
@@ -129,7 +152,6 @@ public class MediaAdapter extends ListActivity {
 					final Cursor cursor2 = context.getContentResolver().query(albumUri, albumCols, null, null, null);
 					while (cursor2.moveToNext()) {
 						// Get album information
-						// Integer albumId = cursor2.getInt(cursor2.getColumnIndexOrThrow("_id"));
 						String album = cursor2.getString(cursor2
 								.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM));
 						String albumKey = cursor2.getString(cursor2
@@ -160,7 +182,7 @@ public class MediaAdapter extends ListActivity {
 			}
 
 			for (Artist a : artistList) {
-				// db.insertArtist(a);
+				db.insertArtist(a);
 			}
 			for (Album a : albumList) {
 				db.insertAlbum(a);

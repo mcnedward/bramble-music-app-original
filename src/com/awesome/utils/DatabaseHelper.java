@@ -5,13 +5,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * A helper class that is used to create, update, and delete the database for the Music Library
+ * 
+ * @author Edward
+ * 
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 	private static String TAG = "DatabaseAdapter";
 
 	// Database Name
 	private static String DB_NAME = "library.db";
 	// Database Version
-	private static final int DB_VERSION = 9;
+	private static final int DB_VERSION = 9;	// Increment this number in order to upgrade the database
 
 	/** Artist Table Variables **/
 	final private static String DATABASE_TABLE_ARTISTS = "Artists";
@@ -66,7 +72,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT, %s INTEGER)",
 						DATABASE_TABLE_ARTISTS, ARTIST_ID, ARTIST, ARTIST_KEY, NUMBER_OF_ALBUMS);
 
-		// Primary key does not autoincrement for this table to allow for proper checking of albumExists method
+		// Primary key does not auto-increment for this table to allow for proper checking of albumExists method
 		String createAlbumTable = String
 				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY NOT NULL, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s TEXT)",
 						DATABASE_TABLE_ALBUMS, ALBUM_ID, ALBUM, ALBUM_KEY, ALBUM_ARTIST, NUMBER_OF_SONGS, FIRST_YEAR,
