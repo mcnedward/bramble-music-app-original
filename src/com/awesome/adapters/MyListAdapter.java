@@ -121,7 +121,7 @@ public class MyListAdapter extends BaseAdapter {
 				txtName.setText(album.getAlbum());
 				String albumArt = album.getAlbumArt();
 				if (albumArt != null) {
-					// Create the album art bitmap and scale it to fit properly and avoid overusing memory
+					// Create the album art bitmap and scale it to fit properly and avoid over using memory
 					File imageFile = new File(album.getAlbumArt());
 					Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
 					albumArtView.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 92, 92, false));

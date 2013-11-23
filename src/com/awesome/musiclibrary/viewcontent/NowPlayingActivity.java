@@ -1,32 +1,29 @@
 package com.awesome.musiclibrary.viewcontent;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.asynctasks.PlayMediaTask;
 import com.awesome.categories.Album;
 import com.awesome.categories.Song;
+import com.awesome.musiclibrary.MainActivity;
 import com.awesome.musiclibrary.R;
 import com.awesome.utils.MusicDatabase;
 
 public class NowPlayingActivity extends Activity {
 	private static String TAG = "NowPlaying";
 
-	private MediaPlayer mPlayer;			// Instance of the MediaPlayer
 	private ToggleButton btnPlayPause;		// ToggleButton for playing and pausing
 	private SeekBar mSeekBar;				// Seek bar for displaying the progress of the track
 	private TextView txtCurrentTrackTime;	// TextView for displaying the current time of the track
@@ -47,8 +44,6 @@ public class NowPlayingActivity extends Activity {
 		Album album = (Album) getIntent().getSerializableExtra("album");
 		Song song = (Song) getIntent().getSerializableExtra("song");
 
-		new PlayMediaTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, song);
-
 		// Set the title, artist name, and album art
 		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
 		TextView txtArtist = (TextView) findViewById(R.id.txtArtist);
@@ -62,31 +57,27 @@ public class NowPlayingActivity extends Activity {
 			Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
 			imgAlbumArt.setImageBitmap(imageBitmap);
 		}
-	}
 
-	/**
-	 * This is used to play the media for the current song. A thread is started to display the current progress of the
-	 * song as text and in the seek bar.
-	 */
-	public void playMedia(Uri songUri) {
-		try {
-			mPlayer.setDataSource(getApplicationContext(), songUri);
-			mPlayer.prepare();
-			mPlayer.start();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		// Start a new thread to check the current duration and display the time and seek bar progress
+		btnPlayPause = (ToggleButton) findViewById(R.id.btnPlayPause);
+
+		btnPlayPause.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Perform action on clicks
+				if (btnPlayPause.isChecked()) { // Checked - Pause icon visible
+					pause();
+				} else { // Unchecked - Play icon visible
+					play();
+				}
+			}
+		});
+
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (mPlayer != null && mPlayer.getCurrentPosition() < mPlayer.getDuration()) {
+				// if (MainActivity.mPlayer.isPlaying()) {
+				while (MainActivity.mPlayer != null
+						&& MainActivity.mPlayer.getCurrentPosition() < MainActivity.mPlayer.getDuration()) {
 					// Sleep for 100 milliseconds
 					try {
 						Thread.sleep(100);
@@ -94,13 +85,13 @@ public class NowPlayingActivity extends Activity {
 						e.printStackTrace();
 					}
 					// Set the seek bar max position, current position, and change listener
-					mSeekBar.setMax(mPlayer.getDuration());
-					mSeekBar.setProgress(mPlayer.getCurrentPosition());
+					mSeekBar.setMax(MainActivity.mPlayer.getDuration());
+					mSeekBar.setProgress(MainActivity.mPlayer.getCurrentPosition());
 					mSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 						@Override
 						public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 							if (fromUser == true) {
-								mPlayer.seekTo(seekBar.getProgress());
+								MainActivity.mPlayer.seekTo(seekBar.getProgress());
 							} else {
 								// Do nothing
 							}
@@ -118,13 +109,14 @@ public class NowPlayingActivity extends Activity {
 
 						}
 					});
+
 					// Start a new thread on the NowPlayingActivity UI
 					activity.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
 							// Get the current time and total duration and display on the UI
-							String currentTime = getTimeString(mPlayer.getCurrentPosition());
-							String duration = getTimeString(mPlayer.getDuration());
+							String currentTime = getTimeString(MainActivity.mPlayer.getCurrentPosition());
+							String duration = getTimeString(MainActivity.mPlayer.getDuration());
 							Log.i(TAG, String.valueOf(currentTime));
 
 							// Find the TextViews from the NowPlayingActivity and update UI
@@ -136,16 +128,17 @@ public class NowPlayingActivity extends Activity {
 						}
 					});
 				}
+				// }
 			}
 		}).start();
 	}
 
 	public void play() {
-		mPlayer.start();
+		MainActivity.mPlayer.start();
 	}
 
 	public void pause() {
-		mPlayer.pause();
+		MainActivity.mPlayer.pause();
 	}
 
 	/**

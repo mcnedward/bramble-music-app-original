@@ -55,11 +55,13 @@ public class PlayMediaTask extends AsyncTask<Song, Integer, Void> {
 	protected Void doInBackground(Song... songList) {
 		Log.i(TAG, "Starting Play Media Task");
 
-		Song song = songList[0];
+		if (songList.length != 0) {
+			Song song = songList[0];
 
-		final Uri songUri = Uri.parse(song.getData());
+			final Uri songUri = Uri.parse(song.getData());
 
-		playMedia(songUri);
+			playMedia(songUri);
+		}
 		return null;
 	}
 
@@ -69,6 +71,9 @@ public class PlayMediaTask extends AsyncTask<Song, Integer, Void> {
 	 */
 	public void playMedia(Uri songUri) {
 		try {
+			if (mPlayer.isPlaying()) {
+				mPlayer.stop();
+			}
 			mPlayer.setDataSource(context, songUri);
 			mPlayer.prepare();
 			mPlayer.start();

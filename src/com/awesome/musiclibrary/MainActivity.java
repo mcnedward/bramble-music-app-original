@@ -7,6 +7,10 @@ package com.awesome.musiclibrary;
  * Dates: January 1, 2013 April 25, 2013 April 29, 2013
  */
 
+import android.app.IntentService;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,18 +18,29 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.awesome.asynctasks.LoadDatabase;
 import com.awesome.asynctasks.RetrieveMedia;
+import com.awesome.categories.Song;
 
 public class MainActivity extends FragmentActivity {
 	private static String TAG = "MainActivity";
 
 	private ViewPager mViewPager;
+
+	public static AsyncTask<Song, Integer, Void> playMediaTask;
+	public static MediaPlayer mPlayer = null;
+	public static IntentService mediaPlayerService;
+	public static ToggleButton mainBtnPlayPause;
+	public static ImageView mainAlbumArt;
+	public static TextView mainSong;
+	public static TextView mainAlbum;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +54,28 @@ public class MainActivity extends FragmentActivity {
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(new CustomFragmentPagerAdapter());
 		mViewPager.setOffscreenPageLimit(4 - 1);
+
+		mainBtnPlayPause = (ToggleButton) findViewById(R.id.mainBtnPlayPause);
+		mainAlbumArt = (ImageView) findViewById(R.id.mainNowPlayingAlbumArt);
+		mainSong = (TextView) findViewById(R.id.mainNowPlayingSong);
+		mainAlbum = (TextView) findViewById(R.id.mainNowPlayingAlbum);
+
+		Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
+		MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+
+		if (mPlayer == null || !mPlayer.isPlaying()) {
+			mainBtnPlayPause.setEnabled(false);
+		} else
+			mainBtnPlayPause.setEnabled(true);
+	}
+
+	public MainActivity() {
+		// Constructor
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
 	}
 
 	public class CustomFragmentPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
@@ -107,21 +144,5 @@ public class MainActivity extends FragmentActivity {
 			super.onCreateView(inflater, container, savedInstanceState);
 			return inflater.inflate(layout, container, false);
 		}
-	}
-
-	public MainActivity() {
-		// Constructor
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.library_menu, menu);
-		return true;
-	}
-
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
 	}
 }

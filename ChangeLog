@@ -276,6 +276,10 @@
 - Updated database structure to match Media Store more closely
 - Updated database queries
 - Updated retrieval of Media Store information to retrieve albums based on artist ID
+- Changed tabs to be PagerTabStrip
+- New fragments for each category are all inflated through Main Activity, instead of separate classes for each category
+- Album art work is now scaled to prevent OutOfMemory exceptions
+- Changed display for viewing songs in an album to be updated with better album art viewing
 
 
 

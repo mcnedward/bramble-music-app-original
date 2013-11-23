@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.awesome.adapters.MyListAdapter;
 import com.awesome.categories.Album;
 import com.awesome.categories.Song;
+import com.awesome.musiclibrary.MediaPlayerService;
 import com.awesome.musiclibrary.R;
 
 public class DisplaySongsActivity extends Activity {
@@ -59,6 +60,9 @@ public class DisplaySongsActivity extends Activity {
 		ListView displaySongs = (ListView) findViewById(R.id.displaySongs3);
 		MyListAdapter songAdapter = new MyListAdapter(this);
 
+		final Intent playSong = new Intent(this, MediaPlayerService.class);
+		playSong.putExtra("album", album);
+
 		if (songList != null) {
 			for (Song song : songList) {
 				songAdapter.setGroup(song);
@@ -73,6 +77,8 @@ public class DisplaySongsActivity extends Activity {
 							Song song = (Song) parent.getItemAtPosition(position);
 							// TODO Change this
 							viewNowPlaying(album, song);
+							playSong.putExtra("song", song);
+							activity.startService(playSong);
 						}
 						return;
 					}

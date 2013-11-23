@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.awesome.categories.Album;
 import com.awesome.categories.Artist;
 import com.awesome.categories.Song;
+import com.awesome.musiclibrary.MainActivity;
 import com.awesome.musiclibrary.R;
 import com.awesome.musiclibrary.editcontent.EditAlbumActivity;
 import com.awesome.musiclibrary.editcontent.EditArtistActivity;
@@ -42,7 +43,8 @@ import com.awesome.utils.MusicDatabase;
 public class Refresh extends Activity {
 
 	private Context context;
-	MusicDatabase mdb;
+	private MainActivity mainActivity;
+	private MusicDatabase mdb;
 
 	/**
 	 * Empty constructor for the Refresh adapter
@@ -60,6 +62,7 @@ public class Refresh extends Activity {
 	public Refresh(Context context) {
 		this.context = context;
 		mdb = new MusicDatabase(context);
+
 	}
 
 	/**

@@ -50,6 +50,8 @@
         <item>Songs</item>
     </string-array>
     <string name="albumArtGoesHere">Album Art Goes Here</string>
+    <string name="noCurrentSong">No current song</string>
+    <string name="noCurrentAlbum">No current album</string>
     <string name="startTime">0:00</string>
     
 </resources>
