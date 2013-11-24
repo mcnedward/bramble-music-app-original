@@ -60,9 +60,6 @@ public class DisplaySongsActivity extends Activity {
 		ListView displaySongs = (ListView) findViewById(R.id.displaySongs3);
 		MyListAdapter songAdapter = new MyListAdapter(this);
 
-		final Intent playSong = new Intent(this, MediaPlayerService.class);
-		playSong.putExtra("album", album);
-
 		if (songList != null) {
 			for (Song song : songList) {
 				songAdapter.setGroup(song);
@@ -77,8 +74,7 @@ public class DisplaySongsActivity extends Activity {
 							Song song = (Song) parent.getItemAtPosition(position);
 							// TODO Change this
 							viewNowPlaying(album, song);
-							playSong.putExtra("song", song);
-							activity.startService(playSong);
+							startMediaService(album, song);
 						}
 						return;
 					}
@@ -88,6 +84,13 @@ public class DisplaySongsActivity extends Activity {
 			songAdapter.setGroup(null);
 			displaySongs.setAdapter(songAdapter);
 		}
+	}
+
+	public void startMediaService(Album album, Song song) {
+		Intent playSong = new Intent(this, MediaPlayerService.class);
+		playSong.putExtra("album", album);
+		playSong.putExtra("song", song);
+		this.startService(playSong);
 	}
 
 	public void viewNowPlaying(Album album, Song song) {

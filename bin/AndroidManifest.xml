@@ -20,8 +20,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
-        <service android:name="com.awesome.adapters.ExtractService" />
-
         <activity
             android:name="com.awesome.musiclibrary.MainActivity"
             android:label="@string/app_name" >
@@ -69,14 +67,15 @@
             android:label="@string/app_name"
             android:parentActivityName="MainActivity" >
         </activity>
-        
+
         <!-- View Now Playing Activity -->
         <activity
             android:name="com.awesome.musiclibrary.viewcontent.NowPlayingActivity"
             android:label="@string/app_name"
-            android:parentActivityName="MainActivity" >
+            android:parentActivityName="MainActivity"
+            android:alwaysRetainTaskState="true" >
         </activity>
-        
+
         <!-- Display Songs Activity -->
         <activity
             android:name="com.awesome.musiclibrary.viewcontent.DisplaySongsActivity"
@@ -85,6 +84,17 @@
         </activity>
 
         <!-- ********** End View Activities ********** -->
+
+
+        <!-- ********** Services ********** -->
+
+        <service
+            android:name="com.awesome.musiclibrary.MediaPlayerService"
+            android:enabled="true"
+            android:label="@string/app_name" >
+        </service>
+
+        <!-- ********** End Services ********** -->
 
 
         <!-- ********** Add Activities ********** -->
@@ -127,6 +137,7 @@
         </activity>
 
         <!-- ********** End Add Activities ********** -->
+
 
         <!-- ********** Edit Activities ********** -->
 

@@ -135,10 +135,12 @@ public class NowPlayingActivity extends Activity {
 
 	public void play() {
 		MainActivity.mPlayer.start();
+		MainActivity.mainBtnPlayPause.setChecked(false);
 	}
 
 	public void pause() {
 		MainActivity.mPlayer.pause();
+		MainActivity.mainBtnPlayPause.setChecked(true);
 	}
 
 	/**

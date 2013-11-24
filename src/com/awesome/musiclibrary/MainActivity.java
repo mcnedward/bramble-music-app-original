@@ -8,6 +8,8 @@ package com.awesome.musiclibrary;
  */
 
 import android.app.IntentService;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -17,17 +19,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.awesome.asynctasks.LoadDatabase;
-import com.awesome.asynctasks.RetrieveMedia;
+import com.awesome.categories.Album;
 import com.awesome.categories.Song;
+import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 
 public class MainActivity extends FragmentActivity {
 	private static String TAG = "MainActivity";
@@ -41,6 +48,11 @@ public class MainActivity extends FragmentActivity {
 	public static ImageView mainAlbumArt;
 	public static TextView mainSong;
 	public static TextView mainAlbum;
+	public static LinearLayout nowPlayingInformationLayout;
+	public static Song currentSong;
+	public static Album currentAlbum;
+
+	public static Context context;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +61,9 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 
 		new LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		// new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+		this.context = getApplicationContext();
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(new CustomFragmentPagerAdapter());
@@ -59,14 +73,44 @@ public class MainActivity extends FragmentActivity {
 		mainAlbumArt = (ImageView) findViewById(R.id.mainNowPlayingAlbumArt);
 		mainSong = (TextView) findViewById(R.id.mainNowPlayingSong);
 		mainAlbum = (TextView) findViewById(R.id.mainNowPlayingAlbum);
+		nowPlayingInformationLayout = (LinearLayout) findViewById(R.id.nowPlayingInformationLayout);
 
-		Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
-		MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
-
+		/**
+		 * If there is no media playing, set the play/pause button to be disable and set the album art for currently
+		 * playing to be blank.
+		 * If there is media playing, get the current media information and set the text views and album art. Also
+		 * update the layout for currently playing information to start the Now Playing activity when touched.
+		 */
 		if (mPlayer == null || !mPlayer.isPlaying()) {
 			mainBtnPlayPause.setEnabled(false);
-		} else
+			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
+			MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+		} else {
 			mainBtnPlayPause.setEnabled(true);
+			MainActivity.mainSong.setText(currentSong.getTitle());
+			MainActivity.mainAlbum.setText(currentAlbum.getAlbum());
+			if (currentAlbum.getAlbumArt() != null) {
+				Bitmap imageBitmap = BitmapFactory.decodeFile(currentAlbum.getAlbumArt());
+				MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+			} else {
+				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
+				MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+			}
+			MainActivity.nowPlayingInformationLayout.setOnTouchListener(new OnTouchListener() {
+
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					Log.i(TAG, "Now Playing Information Touched!!!");
+					Intent nowPlaying = new Intent(MainActivity.context, NowPlayingActivity.class);
+					nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					nowPlaying.putExtra("album", MainActivity.currentAlbum);
+					nowPlaying.putExtra("song", MainActivity.currentSong);
+					MainActivity.context.startActivity(nowPlaying);
+					return false;
+				}
+
+			});
+		}
 	}
 
 	public MainActivity() {

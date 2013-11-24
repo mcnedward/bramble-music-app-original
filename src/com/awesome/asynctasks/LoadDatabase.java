@@ -2,6 +2,7 @@ package com.awesome.asynctasks;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 
 	private MusicDatabase db;	// Initialize the MusicDatabase
 	private Refresh refresh;	// Initialize the Refresh adapter
+	private Context context;
 
 	/**
 	 * Constructor for the LoadDatabase AsyncTask. Creates a database object to retrieve media files, and a refresh
@@ -39,6 +41,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 	 *            The context of the activity that will run this AsyncTask.
 	 */
 	public LoadDatabase(Context context) {
+		this.context = context;
 		db = new MusicDatabase(context);
 		refresh = new Refresh(context);
 	}
@@ -46,6 +49,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		((Activity) context).setProgressBarIndeterminateVisibility(true);	// Show the progress spinner
 	}
 
 	@Override
@@ -54,8 +58,8 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 			Log.i(TAG, "Executing task");
 			// Get all the media files from the database
 			artists = db.getAllArtists();
-			albums = db.getAllAlbums();
-			songs = db.getAllSongs();
+			// TODO albums = db.getAllAlbums();
+			// songs = db.getAllSongs();
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
@@ -64,6 +68,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 
 	protected void onPostExecute(Refresh refresh) {
 		refresh.refreshLibrary(artists, albums, songs);	// Refresh the list views
+		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}
 }
