@@ -75,7 +75,6 @@ public class NowPlayingActivity extends Activity {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// if (MainActivity.mPlayer.isPlaying()) {
 				while (MainActivity.mPlayer != null
 						&& MainActivity.mPlayer.getCurrentPosition() < MainActivity.mPlayer.getDuration()) {
 					// Sleep for 100 milliseconds
@@ -128,7 +127,6 @@ public class NowPlayingActivity extends Activity {
 						}
 					});
 				}
-				// }
 			}
 		}).start();
 	}

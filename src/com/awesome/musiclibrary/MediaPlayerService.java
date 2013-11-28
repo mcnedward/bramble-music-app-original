@@ -6,15 +6,17 @@ package com.awesome.musiclibrary;
 import java.io.IOException;
 import java.util.Iterator;
 
-import android.app.IntentService;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,9 +31,11 @@ import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
  * @author Edward
  * 
  */
-public class MediaPlayerService extends IntentService {
+public class MediaPlayerService extends Service {
 	private static String TAG = "MediaPlayerService";
 
+	private Album album;
+	private Song song;
 	private String title;
 	private String albumTitle;
 	private String albumArt;
@@ -40,25 +44,46 @@ public class MediaPlayerService extends IntentService {
 	 * @param name
 	 */
 	public MediaPlayerService(String name) {
-		super(name);
+		super();
 	}
 
 	public MediaPlayerService() {
-		super("MediaPlayerService");
+		super();
 	}
 
 	@Override
-	protected void onHandleIntent(Intent intent) {
-		// Get the album and song from the bundle
-		Album album = (Album) intent.getSerializableExtra("album");
-		Song song = (Song) intent.getSerializableExtra("song");
+	public void onCreate() {
 
+	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+
+		// Get the album and song from the bundle
+		album = (Album) intent.getSerializableExtra("album");
+		song = (Song) intent.getSerializableExtra("song");
+
+		playMedia();
+
+		return START_STICKY;
+	}
+
+	@Override
+	public void onDestroy() {
+	}
+
+	/**
+	 * This is used to play the media for the current song. A thread is started to display the current progress of the
+	 * song as text and in the seek bar.
+	 */
+	public void playMedia() {
 		if (MainActivity.mPlayer == null) {
 			MainActivity.mPlayer = new MediaPlayer();
 			MainActivity.mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 			MainActivity.currentSong = song;
 			MainActivity.currentAlbum = album;
-		} else if (!MainActivity.currentSong.getTitleKey().equals(song.getTitleKey())) {
+		}
+		if (!MainActivity.currentSong.getTitleKey().equals(song.getTitleKey())) {
 			MainActivity.currentSong = song;
 			MainActivity.currentAlbum = album;
 			MainActivity.mPlayer.reset();
@@ -68,20 +93,11 @@ public class MediaPlayerService extends IntentService {
 		albumTitle = album.getAlbum();
 		albumArt = album.getAlbumArt();
 
-		final Uri songUri = Uri.parse(song.getData());
+		Uri songUri = Uri.parse(song.getData());
 
-		playMedia(songUri);
-	}
-
-	/**
-	 * This is used to play the media for the current song. A thread is started to display the current progress of the
-	 * song as text and in the seek bar.
-	 */
-	public void playMedia(Uri songUri) {
 		try {
-			MainActivity.mPlayer.setDataSource(getApplicationContext(), songUri);
+			MainActivity.mPlayer.setDataSource(this, songUri);
 			MainActivity.mPlayer.prepare();
-			MainActivity.mPlayer.start();
 		} catch (IllegalArgumentException e) {
 			Log.i(TAG, e.getMessage(), e);
 			e.printStackTrace();
@@ -95,6 +111,12 @@ public class MediaPlayerService extends IntentService {
 			Log.i(TAG, e.getMessage(), e);
 			e.printStackTrace();
 		}
+		MainActivity.mPlayer.setOnPreparedListener(new OnPreparedListener() {
+			@Override
+			public void onPrepared(MediaPlayer mp) {
+				mp.start();
+			}
+		});
 
 		new Handler(getMainLooper()).post(new Runnable() {
 			@Override
@@ -207,6 +229,11 @@ public class MediaPlayerService extends IntentService {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public IBinder onBind(Intent intent) {
+		return null;
 	}
 
 }
