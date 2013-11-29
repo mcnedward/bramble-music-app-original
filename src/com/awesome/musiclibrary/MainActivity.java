@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,7 +45,9 @@ public class MainActivity extends FragmentActivity {
 	public static AsyncTask<Song, Integer, Void> playMediaTask;
 	public static MediaPlayer mPlayer = null;
 	public static IntentService mediaPlayerService;
-	public static ToggleButton mainBtnPlayPause;
+	public static ToggleButton btnPlayPause;
+	public static Button btnPrevious;
+	public static Button btnNext;
 	public static ImageView mainAlbumArt;
 	public static TextView mainSong;
 	public static TextView mainAlbum;
@@ -69,7 +72,9 @@ public class MainActivity extends FragmentActivity {
 		mViewPager.setAdapter(new CustomFragmentPagerAdapter());
 		mViewPager.setOffscreenPageLimit(4 - 1);
 
-		mainBtnPlayPause = (ToggleButton) findViewById(R.id.mainBtnPlayPause);
+		btnPlayPause = (ToggleButton) findViewById(R.id.mainBtnPlayPause);
+		btnPrevious = (Button) findViewById(R.id.mainBtnPrevious);
+		btnNext = (Button) findViewById(R.id.mainBtnNext);
 		mainAlbumArt = (ImageView) findViewById(R.id.mainNowPlayingAlbumArt);
 		mainSong = (TextView) findViewById(R.id.mainNowPlayingSong);
 		mainAlbum = (TextView) findViewById(R.id.mainNowPlayingAlbum);
@@ -82,11 +87,11 @@ public class MainActivity extends FragmentActivity {
 		 * update the layout for currently playing information to start the Now Playing activity when touched.
 		 */
 		if (mPlayer == null || !mPlayer.isPlaying()) {
-			mainBtnPlayPause.setEnabled(false);
+			btnPlayPause.setEnabled(false);
 			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
 			MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
 		} else {
-			mainBtnPlayPause.setEnabled(true);
+			btnPlayPause.setEnabled(true);
 			MainActivity.mainSong.setText(currentSong.getTitle());
 			MainActivity.mainAlbum.setText(currentAlbum.getAlbum());
 			if (currentAlbum.getAlbumArt() != null) {

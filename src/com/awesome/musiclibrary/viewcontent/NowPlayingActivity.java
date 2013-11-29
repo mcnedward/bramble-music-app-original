@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -26,9 +27,15 @@ public class NowPlayingActivity extends Activity {
 
 	private ToggleButton btnPlayPause;		// ToggleButton for playing and pausing
 	private SeekBar mSeekBar;				// Seek bar for displaying the progress of the track
+	private Activity activity;				// Instance of the NowPlayingActivity activity
+
 	private TextView txtCurrentTrackTime;	// TextView for displaying the current time of the track
 	private TextView txtDuration;			// TextView for displaying the duration of the track
-	private Activity activity;				// Instance of the NowPlayingActivity activity
+
+	public static TextView txtTitle;
+	public static TextView txtArtist;
+	public static Button btnPrevious;
+	public static Button btnNext;
 
 	// Called as soon as this view is opened
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,15 +48,16 @@ public class NowPlayingActivity extends Activity {
 		mSeekBar = (SeekBar) findViewById(R.id.seekBar);
 
 		// Get the album and song from the bundle
-		Album album = (Album) getIntent().getSerializableExtra("album");
-		Song song = (Song) getIntent().getSerializableExtra("song");
+		Album album = MainActivity.currentAlbum;
+		Song song = MainActivity.currentSong;
 
 		// Set the title, artist name, and album art
-		TextView txtTitle = (TextView) findViewById(R.id.txtTitle);
-		TextView txtArtist = (TextView) findViewById(R.id.txtArtist);
+		txtTitle = (TextView) findViewById(R.id.txtTitle);
+		txtArtist = (TextView) findViewById(R.id.txtArtist);
 		ImageView imgAlbumArt = (ImageView) findViewById(R.id.imgAlbumArtNowPlaying);
-		txtTitle.setText(song.getTitle());
-		txtArtist.setText(song.getArtist());
+
+		btnPrevious = (Button) findViewById(R.id.btnPrevious);
+		btnNext = (Button) findViewById(R.id.btnNext);
 
 		String albumArt = mdb.getAlbumArt(song.getAlbumKey());
 		if (albumArt != null) {
@@ -133,12 +141,12 @@ public class NowPlayingActivity extends Activity {
 
 	public void play() {
 		MainActivity.mPlayer.start();
-		MainActivity.mainBtnPlayPause.setChecked(false);
+		MainActivity.btnPlayPause.setChecked(false);
 	}
 
 	public void pause() {
 		MainActivity.mPlayer.pause();
-		MainActivity.mainBtnPlayPause.setChecked(true);
+		MainActivity.btnPlayPause.setChecked(true);
 	}
 
 	/**

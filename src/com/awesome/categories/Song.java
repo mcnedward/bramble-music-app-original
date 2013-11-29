@@ -2,6 +2,8 @@ package com.awesome.categories;
 
 import java.io.Serializable;
 
+import android.net.Uri;
+
 public class Song implements Serializable {
 
 	/**
@@ -305,6 +307,15 @@ public class Song implements Serializable {
 	 */
 	public void setData(String data) {
 		this.data = data;
+	}
+
+	/**
+	 * This will return the song data as a uri, to be used for setting the data source of the media player.
+	 * 
+	 * @return The song data as a uri.
+	 */
+	public Uri getUri() {
+		return Uri.parse(data);
 	}
 
 	@Override
