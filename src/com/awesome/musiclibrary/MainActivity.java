@@ -7,6 +7,9 @@ package com.awesome.musiclibrary;
  * Dates: January 1, 2013 April 25, 2013 April 29, 2013
  */
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -35,12 +39,14 @@ import android.widget.ToggleButton;
 import com.awesome.asynctasks.LoadDatabase;
 import com.awesome.categories.Album;
 import com.awesome.categories.Song;
+import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 
 public class MainActivity extends FragmentActivity {
 	private static String TAG = "MainActivity";
 
-	private ViewPager mViewPager;
+	public static ViewPager mViewPager;
+	public static MyPagerAdapter mPagerAdapter;
 
 	public static AsyncTask<Song, Integer, Void> playMediaTask;
 	public static MediaPlayer mPlayer = null;
@@ -68,8 +74,9 @@ public class MainActivity extends FragmentActivity {
 
 		this.context = getApplicationContext();
 
+		mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(new CustomFragmentPagerAdapter());
+		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOffscreenPageLimit(4 - 1);
 
 		btnPlayPause = (ToggleButton) findViewById(R.id.mainBtnPlayPause);
@@ -127,14 +134,26 @@ public class MainActivity extends FragmentActivity {
 		super.onSaveInstanceState(outState);
 	}
 
-	public class CustomFragmentPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
+	public void viewDisplaySongsByAlbum(Album album) {
+		Intent displaySongs = new Intent(context, DisplaySongsActivity.class);
+		displaySongs.putExtra("album", album);
+		context.startActivity(displaySongs);
+	}
+
+	public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
 		final int PAGE_COUNT = 4;
+		private List<Fragment> fragments = new ArrayList<Fragment>();
 		final int[] tabs = { R.layout.view_artist_layout, R.layout.view_album_layout, R.layout.view_song_layout,
 				R.layout.view_genre_layout };
 		final String[] titles = { "Artists", "Albums", "Songs", "Genres" };
+		private FragmentManager fm;
 
-		public CustomFragmentPagerAdapter() {
-			super(getSupportFragmentManager());
+		public MyPagerAdapter(FragmentManager fm) {
+			super(fm);
+			this.fm = fm;
+			for (int tab : tabs) {
+				fragments.add(PageFragment.createTab(tab));
+			}
 		}
 
 		@Override
@@ -144,7 +163,17 @@ public class MainActivity extends FragmentActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			return PageFragment.createTab(tabs[position]);
+			return fragments.get(position);
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return titles[position];
+		}
+
+		@Override
+		public int getItemPosition(Object object) {
+			return POSITION_NONE;
 		}
 
 		@Override
@@ -160,11 +189,6 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onPageSelected(int arg0) {
 
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return titles[position];
 		}
 
 	}
