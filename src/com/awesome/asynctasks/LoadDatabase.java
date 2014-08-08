@@ -68,6 +68,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 
 	protected void onPostExecute(Refresh refresh) {
 		refresh.refreshLibrary(artists, albums, songs);	// Refresh the list views
+		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}
 }

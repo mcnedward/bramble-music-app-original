@@ -3,10 +3,10 @@ package com.awesome.asynctasks;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.awesome.adapters.MediaAdapter;
@@ -58,6 +58,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
+		((Activity) context).setProgressBarIndeterminateVisibility(true);	// Show the progress spinner
 	}
 
 	@Override
@@ -83,6 +84,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 
 	protected void onPostExecute(Refresh refresh) {
 		refresh.refreshLibrary(artists, albums, songs);						// Refresh the library
+		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}
 }

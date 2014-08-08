@@ -57,7 +57,7 @@ public class Refresh extends Activity {
 	 * Create a new instance of the Refresh adapter
 	 * 
 	 * @param context
-	 *            The context of the activity to use this adapter
+	 *            THe context of the activity to use this adapter
 	 */
 	public Refresh(Context context) {
 		this.context = context;
