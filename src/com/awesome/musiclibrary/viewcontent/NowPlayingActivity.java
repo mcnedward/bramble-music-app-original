@@ -16,11 +16,11 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.categories.Album;
-import com.awesome.categories.Song;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Song;
 import com.awesome.musiclibrary.MainActivity;
 import com.awesome.musiclibrary.R;
-import com.awesome.utils.MusicDatabase;
 
 public class NowPlayingActivity extends Activity {
 	private static String TAG = "NowPlaying";
@@ -43,7 +43,7 @@ public class NowPlayingActivity extends Activity {
 		setContentView(R.layout.now_playing);
 
 		activity = this;	// Set the activity to NowPlayingActivity
-		MusicDatabase mdb = new MusicDatabase(this);	// Instantiate the database
+		MediaDatabase mdb = new MediaDatabase(this);	// Instantiate the database
 
 		mSeekBar = (SeekBar) findViewById(R.id.seekBar);
 

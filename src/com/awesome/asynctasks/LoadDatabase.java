@@ -7,11 +7,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Artist;
+import com.awesome.Dto.Song;
 import com.awesome.adapters.Refresh;
-import com.awesome.categories.Album;
-import com.awesome.categories.Artist;
-import com.awesome.categories.Song;
-import com.awesome.utils.MusicDatabase;
 
 /**
  * AsyncTask used to load media from the database. This should be called as soon as the application is created, so that
@@ -29,7 +29,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 	public List<Album> albums;
 	public List<Song> songs;
 
-	private MusicDatabase db;	// Initialize the MusicDatabase
+	private MediaDatabase db;	// Initialize the MusicDatabase
 	private Refresh refresh;	// Initialize the Refresh adapter
 	private Context context;
 
@@ -42,7 +42,7 @@ public class LoadDatabase extends AsyncTask<Void, Object, Refresh> {
 	 */
 	public LoadDatabase(Context context) {
 		this.context = context;
-		db = new MusicDatabase(context);
+		db = new MediaDatabase(context);
 		refresh = new Refresh(context);
 	}
 

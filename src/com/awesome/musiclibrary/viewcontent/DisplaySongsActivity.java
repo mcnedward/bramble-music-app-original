@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Song;
 import com.awesome.adapters.MyListAdapter;
-import com.awesome.categories.Album;
-import com.awesome.categories.Song;
 import com.awesome.musiclibrary.MediaPlayerService;
 import com.awesome.musiclibrary.R;
 

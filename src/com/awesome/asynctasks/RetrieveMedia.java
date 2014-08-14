@@ -9,13 +9,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.awesome.adapters.MediaAdapter;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Artist;
+import com.awesome.Dto.Genre;
+import com.awesome.Dto.Song;
 import com.awesome.adapters.Refresh;
-import com.awesome.categories.Album;
-import com.awesome.categories.Artist;
-import com.awesome.categories.Genre;
-import com.awesome.categories.Song;
-import com.awesome.utils.MusicDatabase;
+import com.awesome.utils.MediaLoader;
 
 /**
  * AsyncTask used to retrieve media information from the Media Store. This should be called as soon as the application
@@ -34,8 +34,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	public List<Song> songs;
 	public ArrayList<Genre> genres;
 
-	private MediaAdapter mediaAdapter;
-	private MusicDatabase db;
+	private MediaLoader loader;
+	private MediaDatabase db;
 	private Refresh refresh;
 	private Context context;
 	private ProgressDialog progDialog;
@@ -50,8 +50,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	 */
 	public RetrieveMedia(Context context) {
 		this.context = context;
-		mediaAdapter = new MediaAdapter(context);
-		db = new MusicDatabase(context);
+		loader = new MediaLoader(context);
+		db = new MediaDatabase(context);
 		refresh = new Refresh(context);
 	}
 
@@ -71,11 +71,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	protected Refresh doInBackground(Void... object) {
 		try {
 			Log.i(TAG, "Executing task");
-			mediaAdapter.retrieveArtistsAndAlbums();	// Retrieve the information for artists and albums
-			mediaAdapter.retrieveSongs();				// Retrieve the information for songs
+			loader.retrieveArtists();	
 			artists = db.getAllArtists();				// Get the new list of artists
-			albums = db.getAllAlbums();					// Get the new list of albums
-			songs = db.getAllSongs(); // Get the new list of songs
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}

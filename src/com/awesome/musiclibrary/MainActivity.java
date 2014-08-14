@@ -36,9 +36,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.asynctasks.LoadDatabase;
-import com.awesome.categories.Album;
-import com.awesome.categories.Song;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Song;
+import com.awesome.asynctasks.RetrieveMedia;
 import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 
@@ -62,6 +63,7 @@ public class MainActivity extends FragmentActivity {
 	public static Album currentAlbum;
 
 	public static Context context;
+	public static MediaDatabase database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +71,10 @@ public class MainActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);	// Set the window to allow for progress spinner
 		setContentView(R.layout.activity_main);
 
-		new LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		// new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		database = new MediaDatabase(getApplicationContext());
+		
+		//new LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		this.context = getApplicationContext();
 

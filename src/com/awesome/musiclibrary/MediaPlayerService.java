@@ -21,8 +21,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
-import com.awesome.categories.Album;
-import com.awesome.categories.Song;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Song;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 
 /**

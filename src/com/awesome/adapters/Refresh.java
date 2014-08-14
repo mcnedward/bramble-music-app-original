@@ -20,9 +20,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awesome.categories.Album;
-import com.awesome.categories.Artist;
-import com.awesome.categories.Song;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Artist;
+import com.awesome.Dto.Song;
 import com.awesome.musiclibrary.MainActivity;
 import com.awesome.musiclibrary.R;
 import com.awesome.musiclibrary.editcontent.EditAlbumActivity;
@@ -31,7 +32,6 @@ import com.awesome.musiclibrary.editcontent.EditGenreActivity;
 import com.awesome.musiclibrary.editcontent.EditSongActivity;
 import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
-import com.awesome.utils.MusicDatabase;
 
 /**
  * An adapter that is used for refreshing the list views used to display the contents of the Music Library. The pop-up
@@ -44,7 +44,7 @@ public class Refresh extends Activity {
 
 	private Context context;
 	private MainActivity mainActivity;
-	private MusicDatabase mdb;
+	private MediaDatabase mdb;
 
 	/**
 	 * Empty constructor for the Refresh adapter
@@ -61,7 +61,7 @@ public class Refresh extends Activity {
 	 */
 	public Refresh(Context context) {
 		this.context = context;
-		mdb = new MusicDatabase(context);
+		mdb = new MediaDatabase(context);
 
 	}
 

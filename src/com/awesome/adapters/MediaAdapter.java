@@ -9,10 +9,10 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.awesome.categories.Album;
-import com.awesome.categories.Artist;
-import com.awesome.categories.Song;
-import com.awesome.utils.MusicDatabase;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Artist;
+import com.awesome.Dto.Song;
 
 /**
  * An adapter that is used to retrieve information from the Media Store for each media file on the user's device. The
@@ -24,7 +24,7 @@ import com.awesome.utils.MusicDatabase;
 public class MediaAdapter {
 	private static String TAG = "MediaAdapter";
 
-	private MusicDatabase db;
+	private MediaDatabase db;
 	private Context context;
 
 	/**
@@ -42,7 +42,7 @@ public class MediaAdapter {
 	 *            The context of the activity that will use this adapter
 	 */
 	public MediaAdapter(Context context) {
-		db = new MusicDatabase(context);
+		db = new MediaDatabase(context);
 		this.context = context;
 	}
 

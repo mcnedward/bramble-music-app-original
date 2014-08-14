@@ -16,7 +16,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.categories.Song;
+import com.awesome.Dto.Song;
 import com.awesome.musiclibrary.R;
 
 public class PlayMediaTask extends AsyncTask<Song, Integer, Void> {

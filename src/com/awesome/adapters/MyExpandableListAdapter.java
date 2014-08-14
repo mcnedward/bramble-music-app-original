@@ -25,8 +25,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.awesome.categories.Album;
-import com.awesome.categories.Artist;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Artist;
 import com.awesome.musiclibrary.R;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
