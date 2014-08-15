@@ -1,15 +1,15 @@
 package com.awesome.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.awesome.Data.ArtistDataSource;
+import com.awesome.Data.DatabaseHelper;
+import com.awesome.Data.Source.ArtistDataSource;
+import com.awesome.Data.Source.DataSource;
+import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 
 /**
@@ -21,16 +21,17 @@ import com.awesome.Dto.Artist;
 public class MediaLoader {
 	private final static String TAG = "MediaLoader";
 
-	private ArtistDataSource mDataSource;
+	private DataSource artistDataSource;
+	private DataSource albumDataSource;
 	private Context context;
 
 	public MediaLoader(Context context) {
 		this.context = context;
+		DatabaseHelper helper = new DatabaseHelper(context);
+		//artistDataSource = new ArtistDataSource(helper);
 	}
 
-	public void retrieveArtists() {
-		List<Artist> artists = new ArrayList<Artist>();
-
+	public void retrieveMedia() {
 		try {
 			// Set the Uri and columns for extracting artist media data
 			final Uri artistUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
@@ -54,14 +55,40 @@ public class MediaLoader {
 				Integer numberOfAlbums = cursor
 						.getInt(cursor
 								.getColumnIndexOrThrow(MediaStore.Audio.Artists.NUMBER_OF_ALBUMS));
-				// Create a new Artist and add to the list
-				Artist a = new Artist(artistId, artist, artistKey,
+				
+				// Create a new Artist and add to the database
+				Artist artistEntity = new Artist(artistId, artist, artistKey,
 						numberOfAlbums, null);
-				artists.add(a);
-			}
+				artistDataSource.insert(artistEntity);
+				
+				// Get the album information for each artist
+				final Uri albumUri = MediaStore.Audio.Artists.Albums.getContentUri("external", artistId);
+				final String[] albumCols = { MediaStore.Audio.Artists.Albums.ALBUM,
+						MediaStore.Audio.Artists.Albums.ALBUM_KEY, MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS,
+						MediaStore.Audio.Artists.Albums.FIRST_YEAR, MediaStore.Audio.Artists.Albums.LAST_YEAR,
+						MediaStore.Audio.Artists.Albums.ALBUM_ART,
+						MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS_FOR_ARTIST };
+				final Cursor cursor2 = context.getContentResolver().query(albumUri, albumCols, null, null, null);
+				while (cursor2.moveToNext()) {
+					// Get album information
+					String album = cursor2.getString(cursor2
+							.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM));
+					String albumKey = cursor2.getString(cursor2
+							.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_KEY));
+					Integer numberOfSongs = cursor2.getInt(cursor2
+							.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS));
+					Integer firstYear = cursor2.getInt(cursor2
+							.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.FIRST_YEAR));
+					Integer lastYear = cursor2.getInt(cursor2
+							.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.LAST_YEAR));
+					String albumArt = cursor2.getString(cursor2
+							.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ART));
 
-			for (Artist artist : artists) {
-				mDataSource.insert(artist);
+					// Create a new album and add it to the total album list and the artist album list
+					Album albumEntity = new Album(null, album, albumKey, artist, numberOfSongs, firstYear, lastYear,
+							albumArt, null);
+					albumDataSource.insert(albumEntity);
+				}
 			}
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);

@@ -50,8 +50,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	 */
 	public RetrieveMedia(Context context) {
 		this.context = context;
-		loader = new MediaLoader(context);
 		db = new MediaDatabase(context);
+		loader = new MediaLoader(context);
 		refresh = new Refresh(context);
 	}
 
@@ -71,8 +71,9 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	protected Refresh doInBackground(Void... object) {
 		try {
 			Log.i(TAG, "Executing task");
-			loader.retrieveArtists();	
+			loader.retrieveMedia();	
 			artists = db.getAllArtists();				// Get the new list of artists
+			albums = db.getAllAlbums();
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}

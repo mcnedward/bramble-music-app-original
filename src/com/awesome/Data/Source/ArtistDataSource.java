@@ -1,4 +1,4 @@
-package com.awesome.Data;
+package com.awesome.Data.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class ArtistDataSource extends DataSource<Artist> {
 			return false;
 		int result = mDatabase.update(TABLE_NAME,
 				generateContentValuesFromEntity(entity), ARTIST_ID + " = "
-						+ entity.getArtistId(), null);
+						+ entity.getId(), null);
 		return result != 0;
 	}
 
@@ -81,10 +81,12 @@ public class ArtistDataSource extends DataSource<Artist> {
 		return artists;
 	}
 
+	@Override
 	public String[] getAllColumns() {
 		return new String[] { ARTIST_ID, ARTIST, ARTIST_KEY, NUMBER_OF_ALBUMS };
 	}
 
+	@Override
 	public Artist generateObjectFromCursor(Cursor cursor) {
 		if (cursor == null)
 			return null;
@@ -104,6 +106,7 @@ public class ArtistDataSource extends DataSource<Artist> {
 		return artist;
 	}
 
+	@Override
 	public ContentValues generateContentValuesFromEntity(Artist entity) {
 		if (entity == null)
 			return null;

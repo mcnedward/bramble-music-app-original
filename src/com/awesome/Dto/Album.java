@@ -9,7 +9,7 @@ import java.util.List;
  * @author Edward
  * 
  */
-public class Album implements Serializable {
+public class Album extends Media implements Serializable {
 
 	/**
 	 * Default serial version id

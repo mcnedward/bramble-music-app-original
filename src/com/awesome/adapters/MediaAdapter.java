@@ -164,8 +164,6 @@ public class MediaAdapter {
 								.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.LAST_YEAR));
 						String albumArt = cursor2.getString(cursor2
 								.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ART));
-						Integer numberOfSongsForArtist = cursor2.getInt(cursor2
-								.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS_FOR_ARTIST));
 
 						// Create a new album and add it to the total album list and the artist album list
 						Album al = new Album(null, album, albumKey, artist, numberOfSongs, firstYear, lastYear,

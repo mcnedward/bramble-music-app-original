@@ -9,7 +9,7 @@ package com.awesome.Dto;
  */
 import java.util.List;
 
-public class Artist {
+public class Artist extends Media {
 
 	private Integer artistId;
 	private String artist;
