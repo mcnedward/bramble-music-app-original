@@ -5,11 +5,9 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.MediaStore;
 
+import com.awesome.Data.MediaDatabase;
 import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
 
 public class AlbumDataSource extends DataSource<Album> {
 
@@ -24,7 +22,7 @@ public class AlbumDataSource extends DataSource<Album> {
 	final private static String LAST_YEAR = "MaxYear";
 	final private static String ALBUM_ART = "AlbumArt";
 
-	public AlbumDataSource(SQLiteDatabase database) {
+	public AlbumDataSource(MediaDatabase database) {
 		super(database);
 	}
 

@@ -7,6 +7,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.awesome.Data.DatabaseHelper;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Data.Source.AlbumDataSource;
 import com.awesome.Data.Source.ArtistDataSource;
 import com.awesome.Data.Source.DataSource;
 import com.awesome.Dto.Album;
@@ -21,14 +23,14 @@ import com.awesome.Dto.Artist;
 public class MediaLoader {
 	private final static String TAG = "MediaLoader";
 
-	private DataSource artistDataSource;
-	private DataSource albumDataSource;
+	private DataSource<Artist> artistDataSource;
+	private DataSource<Album> albumDataSource;
 	private Context context;
 
-	public MediaLoader(Context context) {
+	public MediaLoader(Context context, MediaDatabase database) {
 		this.context = context;
-		DatabaseHelper helper = new DatabaseHelper(context);
-		//artistDataSource = new ArtistDataSource(helper);
+		artistDataSource = new ArtistDataSource(database);
+		albumDataSource = new AlbumDataSource(database);
 	}
 
 	public void retrieveMedia() {

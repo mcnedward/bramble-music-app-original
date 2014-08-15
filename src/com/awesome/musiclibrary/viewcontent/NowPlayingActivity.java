@@ -16,7 +16,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.Data.MediaDatabase;
+import com.awesome.Data.MediaDatabase3;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Song;
 import com.awesome.musiclibrary.MainActivity;
@@ -43,7 +43,7 @@ public class NowPlayingActivity extends Activity {
 		setContentView(R.layout.now_playing);
 
 		activity = this;	// Set the activity to NowPlayingActivity
-		MediaDatabase mdb = new MediaDatabase(this);	// Instantiate the database
+		MediaDatabase3 mdb = new MediaDatabase3(this);	// Instantiate the database
 
 		mSeekBar = (SeekBar) findViewById(R.id.seekBar);
 

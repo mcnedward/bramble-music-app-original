@@ -47,7 +47,7 @@ public class MainActivity extends FragmentActivity {
 	private static String TAG = "MainActivity";
 
 	public static ViewPager mViewPager;
-	public static MyPagerAdapter mPagerAdapter;
+	public static PagerAdapter mPagerAdapter;
 
 	public static AsyncTask<Song, Integer, Void> playMediaTask;
 	public static MediaPlayer mPlayer = null;
@@ -63,22 +63,27 @@ public class MainActivity extends FragmentActivity {
 	public static Album currentAlbum;
 
 	public static Context context;
-	public static MediaDatabase database;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);	// Set the window to allow for progress spinner
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); // Set the
+																		// window
+																		// to
+																		// allow
+																		// for
+																		// progress
+																		// spinner
 		setContentView(R.layout.activity_main);
 
-		database = new MediaDatabase(getApplicationContext());
-		
-		//new LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		// new
+		// LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		new RetrieveMedia(this)
+				.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		this.context = getApplicationContext();
 
-		mPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOffscreenPageLimit(4 - 1);
@@ -92,40 +97,52 @@ public class MainActivity extends FragmentActivity {
 		nowPlayingInformationLayout = (LinearLayout) findViewById(R.id.nowPlayingInformationLayout);
 
 		/**
-		 * If there is no media playing, set the play/pause button to be disable and set the album art for currently
-		 * playing to be blank.
-		 * If there is media playing, get the current media information and set the text views and album art. Also
-		 * update the layout for currently playing information to start the Now Playing activity when touched.
+		 * If there is no media playing, set the play/pause button to be disable
+		 * and set the album art for currently playing to be blank. If there is
+		 * media playing, get the current media information and set the text
+		 * views and album art. Also update the layout for currently playing
+		 * information to start the Now Playing activity when touched.
 		 */
 		if (mPlayer == null || !mPlayer.isPlaying()) {
 			btnPlayPause.setEnabled(false);
-			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
-			MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
+					R.drawable.noalbumart);
+			MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(
+					imageBitmap, 60, 60, false));
 		} else {
 			btnPlayPause.setEnabled(true);
 			MainActivity.mainSong.setText(currentSong.getTitle());
 			MainActivity.mainAlbum.setText(currentAlbum.getAlbum());
 			if (currentAlbum.getAlbumArt() != null) {
-				Bitmap imageBitmap = BitmapFactory.decodeFile(currentAlbum.getAlbumArt());
-				MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+				Bitmap imageBitmap = BitmapFactory.decodeFile(currentAlbum
+						.getAlbumArt());
+				MainActivity.mainAlbumArt.setImageBitmap(Bitmap
+						.createScaledBitmap(imageBitmap, 60, 60, false));
 			} else {
-				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
-				MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
+				Bitmap imageBitmap = BitmapFactory.decodeResource(
+						getResources(), R.drawable.noalbumart);
+				MainActivity.mainAlbumArt.setImageBitmap(Bitmap
+						.createScaledBitmap(imageBitmap, 60, 60, false));
 			}
-			MainActivity.nowPlayingInformationLayout.setOnTouchListener(new OnTouchListener() {
+			MainActivity.nowPlayingInformationLayout
+					.setOnTouchListener(new OnTouchListener() {
 
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					Log.i(TAG, "Now Playing Information Touched!!!");
-					Intent nowPlaying = new Intent(MainActivity.context, NowPlayingActivity.class);
-					nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					nowPlaying.putExtra("album", MainActivity.currentAlbum);
-					nowPlaying.putExtra("song", MainActivity.currentSong);
-					MainActivity.context.startActivity(nowPlaying);
-					return false;
-				}
+						@Override
+						public boolean onTouch(View v, MotionEvent event) {
+							Log.i(TAG, "Now Playing Information Touched!!!");
+							Intent nowPlaying = new Intent(
+									MainActivity.context,
+									NowPlayingActivity.class);
+							nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							nowPlaying.putExtra("album",
+									MainActivity.currentAlbum);
+							nowPlaying.putExtra("song",
+									MainActivity.currentSong);
+							MainActivity.context.startActivity(nowPlaying);
+							return false;
+						}
 
-			});
+					});
 		}
 	}
 
@@ -144,15 +161,17 @@ public class MainActivity extends FragmentActivity {
 		context.startActivity(displaySongs);
 	}
 
-	public class MyPagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
+	public class PagerAdapter extends FragmentPagerAdapter implements
+			ViewPager.OnPageChangeListener {
 		final int PAGE_COUNT = 4;
 		private List<Fragment> fragments = new ArrayList<Fragment>();
-		final int[] tabs = { R.layout.view_artist_layout, R.layout.view_album_layout, R.layout.view_song_layout,
+		final int[] tabs = { R.layout.view_artist_layout,
+				R.layout.view_album_layout, R.layout.view_song_layout,
 				R.layout.view_genre_layout };
 		final String[] titles = { "Artists", "Albums", "Songs", "Genres" };
 		private FragmentManager fm;
 
-		public MyPagerAdapter(FragmentManager fm) {
+		public PagerAdapter(FragmentManager fm) {
 			super(fm);
 			this.fm = fm;
 			for (int tab : tabs) {
@@ -181,7 +200,8 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		@Override
-		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
 
 		}
 
@@ -197,7 +217,7 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	public static class PageFragment extends Fragment {
+	public static class PageFragment extends Fragment{
 		public static final String LAYOUT_PAGE = "LAYOUT_PAGE";
 
 		private int layout;
@@ -217,7 +237,8 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
 			super.onCreateView(inflater, container, savedInstanceState);
 			return inflater.inflate(layout, container, false);
 		}

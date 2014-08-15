@@ -5,8 +5,8 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
+import com.awesome.Data.MediaDatabase;
 import com.awesome.Dto.Artist;
 
 public class ArtistDataSource extends DataSource<Artist> {
@@ -18,10 +18,12 @@ public class ArtistDataSource extends DataSource<Artist> {
 	private final static String ARTIST_KEY = "ArtistKey";
 	private final static String NUMBER_OF_ALBUMS = "NumberOfAlbums";
 
-	public ArtistDataSource(SQLiteDatabase database) {
+	public ArtistDataSource(MediaDatabase database) {
 		super(database);
 	}
 
+	/********** CRUD OPERATIONS **********/
+	
 	@Override
 	public boolean insert(Artist entity) {
 		if (entity == null)
@@ -36,7 +38,7 @@ public class ArtistDataSource extends DataSource<Artist> {
 		if (entity == null)
 			return false;
 		int result = mDatabase.delete(TABLE_NAME,
-				ARTIST_ID + " = " + entity.getArtistId(), null);
+				ARTIST_ID + " = " + entity.getId(), null);
 		return result != 0;
 	}
 
@@ -49,7 +51,13 @@ public class ArtistDataSource extends DataSource<Artist> {
 						+ entity.getId(), null);
 		return result != 0;
 	}
+	
+	/********** GET QUERIES **********/
+	
+	
 
+	/********** READ QUERIES **********/
+	
 	@Override
 	public List<Artist> read() {
 		Cursor cursor = mDatabase.query(TABLE_NAME, getAllColumns(), null,
@@ -81,6 +89,8 @@ public class ArtistDataSource extends DataSource<Artist> {
 		return artists;
 	}
 
+	/********** GET DATA COLUMNS AND OBJECTS **********/
+	
 	@Override
 	public String[] getAllColumns() {
 		return new String[] { ARTIST_ID, ARTIST, ARTIST_KEY, NUMBER_OF_ALBUMS };

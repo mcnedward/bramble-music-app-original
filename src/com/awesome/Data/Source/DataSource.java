@@ -4,13 +4,14 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+
+import com.awesome.Data.MediaDatabase;
 
 public abstract class DataSource<T> {
 
-	protected SQLiteDatabase mDatabase;
+	protected MediaDatabase mDatabase;
 	
-	public DataSource(SQLiteDatabase database) {
+	public DataSource(MediaDatabase database) {
 		mDatabase = database;
 	}
 	

@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awesome.Data.MediaDatabase;
+import com.awesome.Data.MediaDatabase3;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.Dto.Song;
@@ -44,7 +44,7 @@ public class Refresh extends Activity {
 
 	private Context context;
 	private MainActivity mainActivity;
-	private MediaDatabase mdb;
+	private MediaDatabase3 mdb;
 
 	/**
 	 * Empty constructor for the Refresh adapter
@@ -61,7 +61,7 @@ public class Refresh extends Activity {
 	 */
 	public Refresh(Context context) {
 		this.context = context;
-		mdb = new MediaDatabase(context);
+		mdb = new MediaDatabase3(context);
 
 	}
 

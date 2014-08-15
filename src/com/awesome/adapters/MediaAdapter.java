@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.awesome.Data.MediaDatabase;
+import com.awesome.Data.MediaDatabase3;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.Dto.Song;
@@ -24,7 +24,7 @@ import com.awesome.Dto.Song;
 public class MediaAdapter {
 	private static String TAG = "MediaAdapter";
 
-	private MediaDatabase db;
+	private MediaDatabase3 db;
 	private Context context;
 
 	/**
@@ -42,7 +42,7 @@ public class MediaAdapter {
 	 *            The context of the activity that will use this adapter
 	 */
 	public MediaAdapter(Context context) {
-		db = new MediaDatabase(context);
+		db = new MediaDatabase3(context);
 		this.context = context;
 	}
 

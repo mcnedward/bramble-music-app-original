@@ -14,11 +14,11 @@ import android.support.v4.content.AsyncTaskLoader;
  * 
  * @param <T>
  */
-public class DataLoader<T> extends AsyncTaskLoader<List<T>> {
+public class DataLoader2<T> extends AsyncTaskLoader<List<T>> {
 
 	private List<T> mData;
 
-	public DataLoader(Context context) {
+	public DataLoader2(Context context) {
 		super(context);
 	}
 

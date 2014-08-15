@@ -10,11 +10,13 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.awesome.Data.MediaDatabase;
+import com.awesome.Data.MediaDatabase3;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.Dto.Genre;
 import com.awesome.Dto.Song;
 import com.awesome.adapters.Refresh;
+import com.awesome.musiclibrary.MainActivity;
 import com.awesome.utils.MediaLoader;
 
 /**
@@ -35,7 +37,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	public ArrayList<Genre> genres;
 
 	private MediaLoader loader;
-	private MediaDatabase db;
+	private MediaDatabase mDatabase;
 	private Refresh refresh;
 	private Context context;
 	private ProgressDialog progDialog;
@@ -50,8 +52,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	 */
 	public RetrieveMedia(Context context) {
 		this.context = context;
-		db = new MediaDatabase(context);
-		loader = new MediaLoader(context);
+		mDatabase = new MediaDatabase(context);
+		loader = new MediaLoader(context, mDatabase);
 		refresh = new Refresh(context);
 	}
 
@@ -72,8 +74,8 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 		try {
 			Log.i(TAG, "Executing task");
 			loader.retrieveMedia();	
-			artists = db.getAllArtists();				// Get the new list of artists
-			albums = db.getAllAlbums();
+			//artists = mDatabase.getAllArtists();				// Get the new list of artists
+			//albums = mDatabase.getAllAlbums();
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
