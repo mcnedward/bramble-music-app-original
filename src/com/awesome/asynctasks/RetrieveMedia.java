@@ -27,7 +27,7 @@ import com.awesome.utils.MediaLoader;
  * @author Edward
  * 
  */
-public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
+public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 	private static String TAG = "RetrieveMedia";
 
 	// Initialize lists for each category
@@ -53,6 +53,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	public RetrieveMedia(Context context) {
 		this.context = context;
 		mDatabase = new MediaDatabase(context);
+		Log.d(TAG, "### Opening the Media Database for RetrieveMedia ###");
 		loader = new MediaLoader(context, mDatabase);
 		refresh = new Refresh(context);
 	}
@@ -70,20 +71,18 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	}
 
 	@Override
-	protected Refresh doInBackground(Void... object) {
+	protected Void doInBackground(Void... object) {
 		try {
 			Log.i(TAG, "Executing task");
 			loader.retrieveMedia();	
-			//artists = mDatabase.getAllArtists();				// Get the new list of artists
-			//albums = mDatabase.getAllAlbums();
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
-		return refresh;
+		return null;
 	}
 
-	protected void onPostExecute(Refresh refresh) {
-		//refresh.refreshLibrary(artists, albums, songs);						// Refresh the library
+	protected void onPostExecute() {
+		Log.d(TAG, "### Closing the Media Database for RetrieveMedia ###");
 		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}

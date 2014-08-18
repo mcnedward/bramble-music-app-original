@@ -29,7 +29,7 @@ public class MediaLoader {
 
 	public MediaLoader(Context context, MediaDatabase database) {
 		this.context = context;
-		artistDataSource = new ArtistDataSource(database);
+		//artistDataSource = new ArtistDataSource(database); TODO UNCOMMENT!!!
 		albumDataSource = new AlbumDataSource(database);
 	}
 

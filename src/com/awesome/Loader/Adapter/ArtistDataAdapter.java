@@ -67,7 +67,7 @@ public class ArtistDataAdapter extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 
 		mDatabase = new MediaDatabase(getActivity());
-		mArtistDataSource = new ArtistDataSource(mDatabase);
+		//mArtistDataSource = new ArtistDataSource(mDatabase); TODO UNCOMMENT!!
 
 		mContext = getActivity();
 

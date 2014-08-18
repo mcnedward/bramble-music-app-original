@@ -30,7 +30,7 @@ public class AlbumDataSource extends DataSource<Album> {
 	public boolean insert(Album entity) {
 		if (entity == null)
 			return false;
-		long result = mDatabase.insert(TABLE_NAME, null,
+		long result = mMediaDatabase.insert(TABLE_NAME, null,
 				generateContentValuesFromEntity(entity));
 		return result != -1;
 	}
@@ -39,7 +39,7 @@ public class AlbumDataSource extends DataSource<Album> {
 	public boolean delete(Album entity) {
 		if (entity == null)
 			return false;
-		int result = mDatabase.delete(TABLE_NAME,
+		int result = mMediaDatabase.delete(TABLE_NAME,
 				ALBUM_ID + " = " + entity.getId(), null);
 		return result != 0;
 	}
@@ -48,7 +48,7 @@ public class AlbumDataSource extends DataSource<Album> {
 	public boolean update(Album entity) {
 		if (entity == null)
 			return false;
-		int result = mDatabase.update(TABLE_NAME,
+		int result = mMediaDatabase.update(TABLE_NAME,
 				generateContentValuesFromEntity(entity), ALBUM_ID + " = "
 						+ entity.getId(), null);
 		return result != 0;
@@ -56,7 +56,7 @@ public class AlbumDataSource extends DataSource<Album> {
 
 	@Override
 	public List<Album> read() {
-		Cursor cursor = mDatabase.query(TABLE_NAME, getAllColumns(), null,
+		Cursor cursor = mMediaDatabase.query(TABLE_NAME, getAllColumns(), null,
 				null, null, null, null);
 		List<Album> albums = new ArrayList<Album>();
 		if (cursor != null && cursor.moveToFirst()) {
@@ -66,14 +66,13 @@ public class AlbumDataSource extends DataSource<Album> {
 			}
 			cursor.close();
 		}
-		mDatabase.close();
 		return albums;
 	}
 
 	@Override
 	public List<Album> read(String selection, String[] selectionArgs,
 			String groupBy, String having, String orderBy) {
-		Cursor cursor = mDatabase.query(TABLE_NAME, getAllColumns(), selection,
+		Cursor cursor = mMediaDatabase.query(TABLE_NAME, getAllColumns(), selection,
 				selectionArgs, groupBy, having, orderBy);
 		List<Album> albums = new ArrayList<Album>();
 		if (cursor != null && cursor.moveToFirst()) {
@@ -83,7 +82,6 @@ public class AlbumDataSource extends DataSource<Album> {
 			}
 			cursor.close();
 		}
-		mDatabase.close();
 		return albums;
 	}
 
@@ -116,6 +114,7 @@ public class AlbumDataSource extends DataSource<Album> {
 		if (entity == null)
 			return null;
 		ContentValues values = new ContentValues();
+		values.put(ALBUM_ID, entity.getAlbumId());
 		values.put(ALBUM, entity.getAlbum());
 		values.put(ALBUM_KEY, entity.getAlbumKey());
 		values.put(ALBUM_ARTIST, entity.getArtist());
@@ -124,6 +123,12 @@ public class AlbumDataSource extends DataSource<Album> {
 		values.put(LAST_YEAR, entity.getLastYear());
 		values.put(ALBUM_ART, entity.getAlbumArt());
 		return values;
+	}
+
+	@Override
+	public String getTableName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

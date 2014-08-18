@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 public class MediaDatabase {
-	private static String TAG = "MediaDatabase2";
+	private static String TAG = "MediaDatabase";
 
 	private DatabaseHelper mDBHelper;
 	private SQLiteDatabase mDatabase;
@@ -25,6 +25,7 @@ public class MediaDatabase {
 	 */
 	public MediaDatabase(Context context) {
 		mDBHelper = new DatabaseHelper(context);
+		open();
 	}
 
 	/**
@@ -53,57 +54,66 @@ public class MediaDatabase {
 	 * Close the open database object.
 	 */
 	public void close() {
-		mDBHelper.close();
+		if (mDBHelper != null)
+			mDBHelper.close();
 	}
 
 	public long insert(String table, String nullColumnHack, ContentValues values) {
 		try {
-			open();
+			mDatabase.beginTransaction();
 			long result = mDatabase.insert(table, null, values);
-			close();
+			mDatabase.setTransactionSuccessful();
 			return result;
 		} catch (Exception e) {
 			Log.d(TAG,
 					"Problem with inserting into " + table + ";\n"
 							+ e.getLocalizedMessage());
 			return -1;
+		} finally {
+			mDatabase.endTransaction();
 		}
 	}
 
 	public int delete(String table, String whereClause, String[] whereArgs) {
 		try {
-			open();
+			mDatabase.beginTransaction();
 			int result = mDatabase.delete(table, whereClause, whereArgs);
-			close();
+			mDatabase.setTransactionSuccessful();
 			return result;
 		} catch (Exception e) {
 			Log.d(TAG, "Problem with deleting from " + table + " "
 					+ whereClause + ";\n" + e.getLocalizedMessage());
 			return -1;
+		} finally {
+			mDatabase.endTransaction();
 		}
 	}
 
 	public int update(String table, ContentValues values, String whereClause,
 			String[] whereArgs) {
 		try {
-			open();
+			mDatabase.beginTransaction();
 			int result = mDatabase
 					.update(table, values, whereClause, whereArgs);
-			close();
+			mDatabase.setTransactionSuccessful();
 			return result;
 		} catch (Exception e) {
 			Log.d(TAG, "Problem with updating from " + table + " "
 					+ whereClause + ";\n" + e.getLocalizedMessage());
 			return -1;
+		} finally {
+			mDatabase.endTransaction();
 		}
 	}
 
-	public Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
+	public Cursor query(String table, String[] columns, String selection,
+			String[] selectionArgs, String groupBy, String having,
+			String orderBy) {
 		try {
-			open();
-			Cursor cursor = mDatabase.query(table, columns, selection, selectionArgs, groupBy, having, orderBy);
+			Cursor cursor = mDatabase.query(table, columns, selection,
+					selectionArgs, groupBy, having, orderBy);
 			return cursor;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			Log.d(TAG, "Problem executing query for " + table);
 			return null;
 		}
