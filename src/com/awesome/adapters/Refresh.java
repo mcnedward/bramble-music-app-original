@@ -77,7 +77,7 @@ public class Refresh extends Activity {
 		ListView lvArtists = (ListView) ((Activity) context).findViewById(R.id.displayArtists2);
 
 		// Initialize the adapters
-		MyExpandableListAdapter exlaArtists = new MyExpandableListAdapter(context);
+		MediaExpandableListAdapter exlaArtists = new MediaExpandableListAdapter(context);
 		MyListAdapter laArtists = new MyListAdapter(context);
 
 		// Clear the adapters

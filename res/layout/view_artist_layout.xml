@@ -7,43 +7,40 @@
     android:background="@color/WhiteSmoke"
     android:orientation="vertical"
     tools:context=".MainActivity" >
-    
+
     <LinearLayout
-	    android:id="@+id/expViewArtist"
-	    android:layout_width="wrap_content"
-	    android:layout_height="match_parent"
-	    android:layout_gravity="center|bottom"
-	    android:baselineAligned="false"
-	    android:orientation="vertical" >
-	
-	    <ExpandableListView
-	        android:id="@+id/displayArtists"
-	        android:layout_width="wrap_content"
-	        android:layout_height="0dip"
-	        android:layout_weight="1"
-	        android:splitMotionEvents="true"
-	        android:transcriptMode="disabled" >
-	
-	    </ExpandableListView>
-	
-	</LinearLayout>
-	
+        android:id="@+id/expViewArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|bottom"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <ExpandableListView
+            android:id="@+id/displayArtists"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:splitMotionEvents="true"
+            android:transcriptMode="disabled" >
+        </ExpandableListView>
+    </LinearLayout>
+
     <LinearLayout
-	    android:id="@+id/viewArtist"
-	    android:layout_width="wrap_content"
-	    android:layout_height="match_parent"
-	    android:layout_gravity="center|bottom"
-	    android:baselineAligned="false"
-	    android:orientation="vertical" >
-	
-	    <ListView
-		    android:id="@+id/displayArtists2"
-		    android:layout_width="wrap_content"
-		    android:layout_height="0dip"
-		    android:layout_weight="1"
-	        android:transcriptMode="alwaysScroll"  >
-		</ListView>
-	
-	</LinearLayout>
-    
+        android:id="@+id/viewArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center|bottom"
+        android:baselineAligned="false"
+        android:orientation="vertical" >
+
+        <ListView
+            android:id="@+id/displayArtists2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:transcriptMode="alwaysScroll" >
+        </ListView>
+    </LinearLayout>
+
 </LinearLayout>

@@ -70,6 +70,7 @@ public class ArtistDataSource extends DataSource<Artist> {
 			}
 			cursor.close();
 		}
+		mDatabase.close();
 		return artists;
 	}
 
@@ -86,6 +87,7 @@ public class ArtistDataSource extends DataSource<Artist> {
 			}
 			cursor.close();
 		}
+		mDatabase.close();
 		return artists;
 	}
 

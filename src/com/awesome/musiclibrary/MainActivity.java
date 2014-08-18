@@ -36,9 +36,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.Data.MediaDatabase;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Song;
+import com.awesome.Loader.Adapter.ArtistDataAdapter;
 import com.awesome.asynctasks.RetrieveMedia;
 import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
@@ -175,7 +175,7 @@ public class MainActivity extends FragmentActivity {
 			super(fm);
 			this.fm = fm;
 			for (int tab : tabs) {
-				fragments.add(PageFragment.createTab(tab));
+				fragments.add(new ArtistDataAdapter());
 			}
 		}
 

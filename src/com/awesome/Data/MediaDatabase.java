@@ -102,7 +102,6 @@ public class MediaDatabase {
 		try {
 			open();
 			Cursor cursor = mDatabase.query(table, columns, selection, selectionArgs, groupBy, having, orderBy);
-			close();
 			return cursor;
 		} catch(Exception e) {
 			Log.d(TAG, "Problem executing query for " + table);

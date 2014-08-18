@@ -65,8 +65,8 @@ public class AlbumDataSource extends DataSource<Album> {
 				cursor.moveToNext();
 			}
 			cursor.close();
-
 		}
+		mDatabase.close();
 		return albums;
 	}
 
@@ -83,6 +83,7 @@ public class AlbumDataSource extends DataSource<Album> {
 			}
 			cursor.close();
 		}
+		mDatabase.close();
 		return albums;
 	}
 

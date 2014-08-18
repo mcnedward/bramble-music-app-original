@@ -4,6 +4,7 @@ package com.awesome.adapters;
  * Edward McNealy Music Library - MyExpandableListAdapter Class Class that sets
  * the parent and child items in the drop down boxes located on Main Activity
  * View
+ * TODO Make this generic and allow for removing and adding objects from and to the groups and children
  * 
  * April 25, 2013
  */
@@ -29,13 +30,15 @@ import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.musiclibrary.R;
 
-public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 	private Context context;
 
 	private List<Artist> groups = new ArrayList<Artist>();
 	private List<List<Album>> children = new ArrayList<List<Album>>();
+	
+	private Object mLock = new Object();
 
-	public MyExpandableListAdapter(Context context) {
+	public MediaExpandableListAdapter(Context context) {
 		this.context = context;
 	}
 
@@ -58,6 +61,18 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 			children.add(index, child);
 		} else {
 			children.add(index, child);
+		}
+	}
+	
+	public void clear() {
+		synchronized (mLock) {
+			if (groups != null) {
+				groups.clear();
+			}
+			if (children != null) {
+				children.clear();
+			}
+			notifyDataSetChanged();
 		}
 	}
 

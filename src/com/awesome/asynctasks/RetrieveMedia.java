@@ -83,7 +83,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Refresh> {
 	}
 
 	protected void onPostExecute(Refresh refresh) {
-		refresh.refreshLibrary(artists, albums, songs);						// Refresh the library
+		//refresh.refreshLibrary(artists, albums, songs);						// Refresh the library
 		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}
