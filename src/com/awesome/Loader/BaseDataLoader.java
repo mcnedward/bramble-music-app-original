@@ -5,7 +5,7 @@ import java.util.List;
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.awesome.Data.Source.DataSource;
+import com.awesome.Data.Source.IDataSource;
 
 /**
  * Source:
@@ -21,7 +21,7 @@ public abstract class BaseDataLoader<T> extends AsyncTaskLoader<List<T>> {
 	protected List<T> mDataList = null;
 	protected abstract List<T> buildList();
 
-	public BaseDataLoader(Context context, DataSource<T> dataSource) {
+	public BaseDataLoader(Context context, IDataSource<T> dataSource) {
 		super(context);
 	}
 

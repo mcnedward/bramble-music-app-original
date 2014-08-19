@@ -4,7 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 
-import com.awesome.Data.Source.DataSource;
+import com.awesome.Data.Source.IDataSource;
 import com.awesome.Dto.Album;
 import com.awesome.Loader.Task.DeleteTask;
 import com.awesome.Loader.Task.InsertTask;
@@ -12,14 +12,14 @@ import com.awesome.Loader.Task.UpdateTask;
 
 public class AlbumDataLoader extends BaseDataLoader<Album> {
 	
-	private DataSource<Album> mDataSource;
+	private IDataSource<Album> mDataSource;
 	private String mSelection;
 	private String[] mSelectionArgs;
 	private String mGroupBy;
 	private String mHaving;
 	private String mOrderBy;
 	
-	public AlbumDataLoader(Context context, DataSource<Album> dataSource,
+	public AlbumDataLoader(Context context, IDataSource<Album> dataSource,
 			String selection, String[] selectionArgs, String groupBy,
 			String having, String orderBy) {
 		super(context, dataSource);

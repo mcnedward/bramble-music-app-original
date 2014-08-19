@@ -18,9 +18,8 @@ import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ListView;
 
 import com.awesome.Data.MediaDatabase;
-import com.awesome.Data.Source.AlbumDataSource;
 import com.awesome.Data.Source.ArtistDataSource;
-import com.awesome.Data.Source.DataSource;
+import com.awesome.Data.Source.IDataSource;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.Loader.ArtistDataLoader;
@@ -46,7 +45,7 @@ public class ArtistDataAdapter extends Fragment implements
 	private static final int LOADER_ID = 1;
 
 	private MediaDatabase mDatabase;
-	private DataSource<Artist> mArtistDataSource;
+	private IDataSource<Artist> mArtistDataSource;
 	private Context mContext;
 
 	private ExpandableListView mEView;
@@ -67,7 +66,7 @@ public class ArtistDataAdapter extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 
 		mDatabase = new MediaDatabase(getActivity());
-		//mArtistDataSource = new ArtistDataSource(mDatabase); TODO UNCOMMENT!!
+		mArtistDataSource = new ArtistDataSource(mDatabase.open());
 
 		mContext = getActivity();
 

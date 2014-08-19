@@ -1,6 +1,5 @@
 package com.awesome.Data.Source;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -9,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.awesome.Dto.Artist;
 
-public class ArtistDataSource extends BaseDataSource<Artist> {
+public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSource<Artist> {
 
 	/** Artist Table Variables **/
 	private final static String TABLE_NAME = "Artists";
@@ -22,68 +21,15 @@ public class ArtistDataSource extends BaseDataSource<Artist> {
 		super(database);
 	}
 
-	/********** CRUD OPERATIONS **********/
-
 	@Override
 	public boolean save(Artist entity) {
-		if (entity != null && !entityExists(entity.getId()))
-			return insert(entity);
-		return false;
+		return insert(entity);
 	}
-
-	@Override
-	public boolean delete(Artist entity) {
-		// if (entity == null)
-		return false;
-		// int result = mMediaDatabase.delete(TABLE_NAME,
-		// ARTIST_ID + " = " + entity.getId(), null);
-		// return result != 0;
-	}
-
-	@Override
-	public boolean update(Artist entity) {
-		// if (entity == null)
-		return false;
-		// int result = mMediaDatabase.update(TABLE_NAME,
-		// generateContentValuesFromEntity(entity), ARTIST_ID + " = "
-		// + entity.getId(), null);
-		// return result != 0;
-	}
-
-	/********** GET QUERIES **********/
-
-	/********** READ QUERIES **********/
-
-	@Override
-	public List<Artist> read() {
-		// Cursor cursor = mMediaDatabase.query(TABLE_NAME, getAllColumns(),
-		// null,
-		// null, null, null, null);
-		List<Artist> artists = new ArrayList<Artist>();
-		// if (cursor != null && cursor.moveToFirst()) {
-		// while (!cursor.isAfterLast()) {
-		// artists.add(generateObjectFromCursor(cursor));
-		// cursor.moveToNext();
-		// }
-		// cursor.close();
-		// }
-		return artists;
-	}
-
+	
 	@Override
 	public List<Artist> read(String selection, String[] selectionArgs,
 			String groupBy, String having, String orderBy) {
-		// Cursor cursor = mMediaDatabase.query(TABLE_NAME, getAllColumns(),
-		// selection,
-		// selectionArgs, groupBy, having, orderBy);
-		List<Artist> artists = new ArrayList<Artist>();
-		// if (cursor != null && cursor.moveToFirst()) {
-		// while (!cursor.isAfterLast()) {
-		// artists.add(generateObjectFromCursor(cursor));
-		// cursor.moveToNext();
-		// }
-		// cursor.close();
-		// }
+		List<Artist> artists = query(selection, selectionArgs, groupBy, having, orderBy);
 		return artists;
 	}
 
@@ -92,6 +38,11 @@ public class ArtistDataSource extends BaseDataSource<Artist> {
 	@Override
 	public String[] getAllColumns() {
 		return new String[] { ARTIST_ID, ARTIST, ARTIST_KEY, NUMBER_OF_ALBUMS };
+	}
+	
+	@Override
+	public String getTableName() {
+		return TABLE_NAME;
 	}
 
 	@Override
@@ -127,8 +78,14 @@ public class ArtistDataSource extends BaseDataSource<Artist> {
 	}
 
 	@Override
-	public String getTableName() {
-		return TABLE_NAME;
+	public boolean delete(Artist entity) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
+	@Override
+	public boolean update(Artist entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

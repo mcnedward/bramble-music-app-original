@@ -2,17 +2,18 @@ package com.awesome.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.awesome.Data.DatabaseHelper;
 import com.awesome.Data.MediaDatabase;
 import com.awesome.Data.Source.AlbumDataSource;
 import com.awesome.Data.Source.ArtistDataSource;
-import com.awesome.Data.Source.DataSource;
+import com.awesome.Data.Source.IDataSource;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
+import com.awesome.Loader.ArtistDataLoader;
 
 /**
  * TODO Change this name later
@@ -23,14 +24,17 @@ import com.awesome.Dto.Artist;
 public class MediaLoader {
 	private final static String TAG = "MediaLoader";
 
-	private DataSource<Artist> artistDataSource;
-	private DataSource<Album> albumDataSource;
+	private ArtistDataLoader artistDataLoader;
+	//private AlbumtDataLoader albumDataSource;
 	private Context context;
 
-	public MediaLoader(Context context, MediaDatabase database) {
+	public MediaLoader(Context context, MediaDatabase mediaDatabase) {
 		this.context = context;
-		//artistDataSource = new ArtistDataSource(database); TODO UNCOMMENT!!!
-		albumDataSource = new AlbumDataSource(database);
+		SQLiteDatabase database = mediaDatabase.open();
+		IDataSource<Artist> artistDataSource = new ArtistDataSource(database);
+		IDataSource<Album> albumDataSource = new AlbumDataSource(database);
+		
+		artistDataLoader = new ArtistDataLoader(context, artistDataSource, null, null, null, null, null);
 	}
 
 	public void retrieveMedia() {
@@ -61,7 +65,7 @@ public class MediaLoader {
 				// Create a new Artist and add to the database
 				Artist artistEntity = new Artist(artistId, artist, artistKey,
 						numberOfAlbums, null);
-				artistDataSource.insert(artistEntity);
+				artistDataLoader.insert(artistEntity);
 				
 				// Get the album information for each artist
 				final Uri albumUri = MediaStore.Audio.Artists.Albums.getContentUri("external", artistId);
@@ -89,7 +93,7 @@ public class MediaLoader {
 					// Create a new album and add it to the total album list and the artist album list
 					Album albumEntity = new Album(null, album, albumKey, artist, numberOfSongs, firstYear, lastYear,
 							albumArt, null);
-					albumDataSource.insert(albumEntity);
+					//albumDataSource.insert(albumEntity);
 				}
 			}
 		} catch (Exception e) {

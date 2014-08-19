@@ -49,7 +49,7 @@ public class MediaDatabase {
 		mDatabase = mDBHelper.getWritableDatabase();
 		return mDatabase;
 	}
-
+	
 	/**
 	 * Close the open database object.
 	 */

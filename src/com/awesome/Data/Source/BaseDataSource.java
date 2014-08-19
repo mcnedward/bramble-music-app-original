@@ -7,6 +7,20 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+/**
+ * This is the base class for all Data Sources. The basic data operations (CRUD)
+ * are defined here. All other Data Sources need to extend this class in order
+ * to be able to access the database. To save an entity to the database, you
+ * need to call save() and pass in an entity. For Media files, you need to
+ * validate that it does not already exists in the database. To do this, all
+ * Data Sources that handle Media need to Override the save method and use the
+ * saveWithValidation method instead.
+ * 
+ * @author Edward
+ * 
+ * @param <T>
+ *            The type of Data object that is being handled.
+ */
 public abstract class BaseDataSource<T> {
 	private final static String TAG = "BaseDataSource";
 
@@ -17,20 +31,32 @@ public abstract class BaseDataSource<T> {
 	}
 
 	/**
-	 * Attempts to insert an entity into the database. This method uses
-	 * validation to check if the entity exists before adding it to the
-	 * database.
+	 * Save an entity in the database.
 	 * 
 	 * @param entity
-	 *            The entity to insert into the database.
+	 *            The entity to save to the database.
+	 * @return True if the entity was saved, false otherwise.
+	 */
+	public boolean save(T entity) {
+		if (entity == null)
+			return false;
+		return insert(entity);
+	}
+
+	/**
+	 * Attempts to save an entity in the database. This method uses validation
+	 * to check if the entity exists before adding it to the database.
+	 * 
+	 * @param entity
+	 *            The entity to save in the database.
 	 * @param id
 	 *            The id of the entity. Used to check if the entity already
 	 *            exists in the database.
 	 * @return False if the entity exists, then true or false depending on if
 	 *         the entity was successfully inserted.
 	 */
-	public boolean insert(T entity, int id) {
-		if (entityExists(id))
+	protected boolean saveWithValidation(T entity, int id) {
+		if (entity == null || entityExists(id))
 			return false;
 		return insert(entity);
 	}
@@ -43,7 +69,7 @@ public abstract class BaseDataSource<T> {
 	 *            The entity to insert into the database.
 	 * @return True if the entity was inserted, false otherwise.
 	 */
-	protected final boolean insert(T entity) {
+	private final boolean insert(T entity) {
 		try {
 			mDatabase.beginTransaction();
 			mDatabase.insert(getTableName(), null,
@@ -57,18 +83,7 @@ public abstract class BaseDataSource<T> {
 		return false;
 	}
 
-	/**
-	 * Save an entity in the database.
-	 * 
-	 * @param entity
-	 *            The entity to save to the database.
-	 * @return True if the entity was saved, false otherwise.
-	 */
-	public boolean save(T entity) {
-		return insert(entity);
-	}
-
-	public abstract boolean delete(T entity);
+	protected abstract boolean delete(T entity);
 
 	public abstract boolean update(T entity);
 
@@ -93,7 +108,7 @@ public abstract class BaseDataSource<T> {
 	 *            The id of the entity of check.
 	 * @return True if the entity already exists, false otherwise.
 	 */
-	protected boolean entityExists(int id) {
+	private boolean entityExists(int id) {
 		Cursor cursor = null;
 		try {
 			cursor = mDatabase.query(getTableName(), new String[] { "_id" },

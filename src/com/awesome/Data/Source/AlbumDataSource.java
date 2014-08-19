@@ -5,11 +5,11 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
-import com.awesome.Data.MediaDatabase;
 import com.awesome.Dto.Album;
 
-public class AlbumDataSource extends DataSource<Album> {
+public class AlbumDataSource extends BaseDataSource<Album> implements IDataSource<Album> {
 
 	/** Album Table Variables **/
 	final private static String TABLE_NAME = "Albums";
@@ -22,24 +22,23 @@ public class AlbumDataSource extends DataSource<Album> {
 	final private static String LAST_YEAR = "MaxYear";
 	final private static String ALBUM_ART = "AlbumArt";
 
-	public AlbumDataSource(MediaDatabase database) {
+	private SQLiteDatabase database;
+	
+	public AlbumDataSource(SQLiteDatabase database) {
 		super(database);
+		this.database = database;
 	}
 
 	@Override
-	public boolean insert(Album entity) {
-		if (entity == null)
-			return false;
-		long result = mMediaDatabase.insert(TABLE_NAME, null,
-				generateContentValuesFromEntity(entity));
-		return result != -1;
+	public boolean save(Album entity) {
+		return super.save(entity);
 	}
 
 	@Override
 	public boolean delete(Album entity) {
 		if (entity == null)
 			return false;
-		int result = mMediaDatabase.delete(TABLE_NAME,
+		int result = database.delete(TABLE_NAME,
 				ALBUM_ID + " = " + entity.getId(), null);
 		return result != 0;
 	}
@@ -48,7 +47,7 @@ public class AlbumDataSource extends DataSource<Album> {
 	public boolean update(Album entity) {
 		if (entity == null)
 			return false;
-		int result = mMediaDatabase.update(TABLE_NAME,
+		int result = database.update(TABLE_NAME,
 				generateContentValuesFromEntity(entity), ALBUM_ID + " = "
 						+ entity.getId(), null);
 		return result != 0;
@@ -56,7 +55,7 @@ public class AlbumDataSource extends DataSource<Album> {
 
 	@Override
 	public List<Album> read() {
-		Cursor cursor = mMediaDatabase.query(TABLE_NAME, getAllColumns(), null,
+		Cursor cursor = database.query(TABLE_NAME, getAllColumns(), null,
 				null, null, null, null);
 		List<Album> albums = new ArrayList<Album>();
 		if (cursor != null && cursor.moveToFirst()) {
@@ -72,7 +71,7 @@ public class AlbumDataSource extends DataSource<Album> {
 	@Override
 	public List<Album> read(String selection, String[] selectionArgs,
 			String groupBy, String having, String orderBy) {
-		Cursor cursor = mMediaDatabase.query(TABLE_NAME, getAllColumns(), selection,
+		Cursor cursor = database.query(TABLE_NAME, getAllColumns(), selection,
 				selectionArgs, groupBy, having, orderBy);
 		List<Album> albums = new ArrayList<Album>();
 		if (cursor != null && cursor.moveToFirst()) {
