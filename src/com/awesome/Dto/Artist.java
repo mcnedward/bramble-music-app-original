@@ -1,17 +1,16 @@
 package com.awesome.Dto;
 
+import java.util.List;
 /**
- * Edward McNealy
  * Music Library - Artist Class
  * Used to instantiate an instance of an artist
  * 
  * April 25, 2013
+ * @author emcnealy
+ *
  */
-import java.util.List;
-
 public class Artist extends Media {
 
-	private Integer artistId;
 	private String artist;
 	private String artistKey;
 	private Integer numberOfAlbums;
@@ -39,26 +38,11 @@ public class Artist extends Media {
 	 *            A list of all albums by this artist.
 	 */
 	public Artist(Integer artistId, String artist, String artistKey, Integer numberOfAlbums, List<Album> albumList) {
-		this.artistId = artistId;
+		id = artistId;
 		this.artist = artist;
 		this.artistKey = artistKey;
 		this.numberOfAlbums = numberOfAlbums;
 		this.albumList = albumList;
-	}
-
-	/**
-	 * @return The artistId.
-	 */
-	public Integer getArtistId() {
-		return artistId;
-	}
-
-	/**
-	 * @param artistId
-	 *            The artistId to set.
-	 */
-	public void setArtistId(Integer artistId) {
-		this.artistId = artistId;
 	}
 
 	/**
@@ -120,6 +104,11 @@ public class Artist extends Media {
 	public void setAlbumList(List<Album> albumList) {
 		this.albumList = albumList;
 	}
+	
+	@Override
+	public String toString() {
+		return artist;
+	}
 
 	@Override
 	public int hashCode() {
@@ -127,7 +116,6 @@ public class Artist extends Media {
 		int result = 1;
 		result = prime * result + ((albumList == null) ? 0 : albumList.hashCode());
 		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-		result = prime * result + ((artistId == null) ? 0 : artistId.hashCode());
 		result = prime * result + ((artistKey == null) ? 0 : artistKey.hashCode());
 		result = prime * result + ((numberOfAlbums == null) ? 0 : numberOfAlbums.hashCode());
 		return result;
@@ -151,11 +139,6 @@ public class Artist extends Media {
 			if (other.artist != null)
 				return false;
 		} else if (!artist.equals(other.artist))
-			return false;
-		if (artistId == null) {
-			if (other.artistId != null)
-				return false;
-		} else if (!artistId.equals(other.artistId))
 			return false;
 		if (artistKey == null) {
 			if (other.artistKey != null)

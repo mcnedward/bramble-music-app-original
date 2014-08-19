@@ -70,7 +70,7 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 		if (entity == null)
 			return null;
 		ContentValues values = new ContentValues();
-		values.put(ARTIST_ID, entity.getArtistId());
+		values.put(ARTIST_ID, entity.getId());
 		values.put(ARTIST, entity.getArtist());
 		values.put(ARTIST_KEY, entity.getArtistKey());
 		values.put(NUMBER_OF_ALBUMS, entity.getNumberOfAlbums());

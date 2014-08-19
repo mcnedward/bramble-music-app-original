@@ -15,7 +15,6 @@ public class Album extends Media implements Serializable {
 	 * Default serial version id
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer albumId;
 	private String album;
 	private String albumKey;
 	private String artist;
@@ -35,8 +34,6 @@ public class Album extends Media implements Serializable {
 	/**
 	 * Constructor for creating a new Album object.
 	 * 
-	 * @param albumId
-	 *            The id for the album.
 	 * @param album
 	 *            The name of the album.
 	 * @param albumKey
@@ -56,7 +53,7 @@ public class Album extends Media implements Serializable {
 	 */
 	public Album(Integer albumId, String album, String albumKey, String artist, Integer numberOfSongs,
 			Integer firstYear, Integer lastYear, String albumArt, List<Song> songList) {
-		this.albumId = albumId;
+		id = albumId;
 		this.album = album;
 		this.albumKey = albumKey;
 		this.artist = artist;
@@ -65,21 +62,6 @@ public class Album extends Media implements Serializable {
 		this.lastYear = lastYear;
 		this.albumArt = albumArt;
 		this.songList = songList;
-	}
-
-	/**
-	 * @return The albumId.
-	 */
-	public Integer getAlbumId() {
-		return albumId;
-	}
-
-	/**
-	 * @param albumId
-	 *            The albumId to set.
-	 */
-	public void setAlbumId(Integer albumId) {
-		this.albumId = albumId;
 	}
 
 	/**
@@ -201,6 +183,11 @@ public class Album extends Media implements Serializable {
 	public void setSongList(List<Song> songList) {
 		this.songList = songList;
 	}
+	
+	@Override
+	public String toString() {
+		return album;
+	}
 
 	@Override
 	public int hashCode() {
@@ -208,7 +195,6 @@ public class Album extends Media implements Serializable {
 		int result = 1;
 		result = prime * result + ((album == null) ? 0 : album.hashCode());
 		result = prime * result + ((albumArt == null) ? 0 : albumArt.hashCode());
-		result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
 		result = prime * result + ((albumKey == null) ? 0 : albumKey.hashCode());
 		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
 		result = prime * result + ((firstYear == null) ? 0 : firstYear.hashCode());
@@ -236,11 +222,6 @@ public class Album extends Media implements Serializable {
 			if (other.albumArt != null)
 				return false;
 		} else if (!albumArt.equals(other.albumArt))
-			return false;
-		if (albumId == null) {
-			if (other.albumId != null)
-				return false;
-		} else if (!albumId.equals(other.albumId))
 			return false;
 		if (albumKey == null) {
 			if (other.albumKey != null)

@@ -2,7 +2,7 @@ package com.awesome.Dto;
 
 public class Media {
 	
-	private Integer id;
+	protected Integer id;
 
 	public Integer getId() {
 		return id;

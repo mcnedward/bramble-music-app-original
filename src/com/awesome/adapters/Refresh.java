@@ -127,7 +127,7 @@ public class Refresh extends Activity {
 							Album title = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
 									groupPosition, childPosition);
 							// Show options menu; the second parameter (1) is the type album
-							showOptions(title.getAlbumId(), title.getAlbum(), 1);
+							showOptions(title.getId(), title.getAlbum(), 1);
 							return true;
 						}
 						return true;
@@ -139,7 +139,7 @@ public class Refresh extends Activity {
 									groupPosition);
 							if (!artist.equals("No artists")) {
 								// The first parameter (0) is the type artist
-								showOptions(artist.getArtistId(), artist.getArtist(), 0);
+								showOptions(artist.getId(), artist.getArtist(), 0);
 								return true;
 							}
 						}
@@ -201,7 +201,7 @@ public class Refresh extends Activity {
 						if (view.isSelected() == false) {
 							Album album = (Album) parent.getItemAtPosition(position);
 							// Show options menu; the second param (1) the type album
-							showOptions(album.getAlbumId(), album.getAlbum(), 1);
+							showOptions(album.getId(), album.getAlbum(), 1);
 							return true;
 						}
 						return false;

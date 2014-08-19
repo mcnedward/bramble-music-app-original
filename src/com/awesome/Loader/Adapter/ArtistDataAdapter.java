@@ -65,10 +65,9 @@ public class ArtistDataAdapter extends Fragment implements
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		mDatabase = new MediaDatabase(getActivity());
-		mArtistDataSource = new ArtistDataSource(mDatabase.open());
-
 		mContext = getActivity();
+		mDatabase = new MediaDatabase(mContext);
+		mArtistDataSource = new ArtistDataSource(mDatabase.open());
 
 		mEView = (ExpandableListView) ((Activity) mContext)
 				.findViewById(R.id.displayArtists);

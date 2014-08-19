@@ -30,17 +30,9 @@ import com.awesome.utils.MediaLoader;
 public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 	private static String TAG = "RetrieveMedia";
 
-	// Initialize lists for each category
-	private List<Artist> artists;
-	public List<Album> albums;
-	public List<Song> songs;
-	public ArrayList<Genre> genres;
-
 	private MediaLoader loader;
 	private MediaDatabase mDatabase;
-	private Refresh refresh;
 	private Context context;
-	private ProgressDialog progDialog;
 
 	/**
 	 * Constructor for this AsyncTask. Creates a MediaAdapter to retrieve information from the Media Store, a
@@ -55,7 +47,6 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 		mDatabase = new MediaDatabase(context);
 		Log.d(TAG, "### Opening the Media Database for RetrieveMedia ###");
 		loader = new MediaLoader(context, mDatabase);
-		refresh = new Refresh(context);
 	}
 
 	@Override
@@ -65,15 +56,9 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 	}
 
 	@Override
-	protected void onProgressUpdate(Integer... progress) {
-		super.onProgressUpdate(progress);
-		Log.i(TAG, "Progress: " + progress[0] + "%");
-	}
-
-	@Override
 	protected Void doInBackground(Void... object) {
+		Log.i(TAG, "Executing task");
 		try {
-			Log.i(TAG, "Executing task");
 			loader.retrieveMedia();	
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
@@ -81,9 +66,15 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 		return null;
 	}
 
-	protected void onPostExecute() {
-		Log.d(TAG, "### Closing the Media Database for RetrieveMedia ###");
+	@Override
+	protected void onPostExecute(Void v) {
 		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
+	}
+
+	@Override
+	protected void onProgressUpdate(Integer... progress) {
+		super.onProgressUpdate(progress);
+		Log.i(TAG, "Progress: " + progress[0] + "%");
 	}
 }

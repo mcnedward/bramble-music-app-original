@@ -113,7 +113,7 @@ public class AlbumDataSource extends BaseDataSource<Album> implements IDataSourc
 		if (entity == null)
 			return null;
 		ContentValues values = new ContentValues();
-		values.put(ALBUM_ID, entity.getAlbumId());
+		values.put(ALBUM_ID, entity.getId());
 		values.put(ALBUM, entity.getAlbum());
 		values.put(ALBUM_KEY, entity.getAlbumKey());
 		values.put(ALBUM_ARTIST, entity.getArtist());
