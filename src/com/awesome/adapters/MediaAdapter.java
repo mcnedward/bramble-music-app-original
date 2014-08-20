@@ -166,7 +166,7 @@ public class MediaAdapter {
 								.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ART));
 
 						// Create a new album and add it to the total album list and the artist album list
-						Album al = new Album(null, album, albumKey, artist, numberOfSongs, firstYear, lastYear,
+						Album al = new Album(null, album, albumKey, artistId, artist, numberOfSongs, firstYear, lastYear,
 								albumArt, null);
 						albumList.add(al);
 					}

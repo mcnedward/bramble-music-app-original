@@ -17,6 +17,7 @@ public class Album extends Media implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String album;
 	private String albumKey;
+	private Integer artistId;
 	private String artist;
 	private Integer numberOfSongs;
 	private Integer firstYear;
@@ -37,7 +38,10 @@ public class Album extends Media implements Serializable {
 	 * @param album
 	 *            The name of the album.
 	 * @param albumKey
-	 *            A key for the album, used for searching, sorting, and grouping.
+	 *            A key for the album, used for searching, sorting, and
+	 *            grouping.
+	 * @param artistId
+	 *            The id for the artist of the album.
 	 * @param artist
 	 *            The artist of the album.
 	 * @param numberOfSongs
@@ -51,11 +55,14 @@ public class Album extends Media implements Serializable {
 	 * @param songList
 	 *            A list of all songs on this album.
 	 */
-	public Album(Integer albumId, String album, String albumKey, String artist, Integer numberOfSongs,
-			Integer firstYear, Integer lastYear, String albumArt, List<Song> songList) {
+	public Album(Integer albumId, String album, String albumKey,
+			Integer artistId, String artist, Integer numberOfSongs,
+			Integer firstYear, Integer lastYear, String albumArt,
+			List<Song> songList) {
 		id = albumId;
 		this.album = album;
 		this.albumKey = albumKey;
+		this.artistId = artistId;
 		this.artist = artist;
 		this.numberOfSongs = numberOfSongs;
 		this.firstYear = firstYear;
@@ -69,6 +76,14 @@ public class Album extends Media implements Serializable {
 	 */
 	public String getAlbum() {
 		return album;
+	}
+
+	public Integer getArtistId() {
+		return artistId;
+	}
+
+	public void setArtistId(Integer artistId) {
+		this.artistId = artistId;
 	}
 
 	/**
@@ -183,7 +198,7 @@ public class Album extends Media implements Serializable {
 	public void setSongList(List<Song> songList) {
 		this.songList = songList;
 	}
-	
+
 	@Override
 	public String toString() {
 		return album;
@@ -194,13 +209,21 @@ public class Album extends Media implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((album == null) ? 0 : album.hashCode());
-		result = prime * result + ((albumArt == null) ? 0 : albumArt.hashCode());
-		result = prime * result + ((albumKey == null) ? 0 : albumKey.hashCode());
+		result = prime * result
+				+ ((albumArt == null) ? 0 : albumArt.hashCode());
+		result = prime * result
+				+ ((albumKey == null) ? 0 : albumKey.hashCode());
 		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-		result = prime * result + ((firstYear == null) ? 0 : firstYear.hashCode());
-		result = prime * result + ((lastYear == null) ? 0 : lastYear.hashCode());
-		result = prime * result + ((numberOfSongs == null) ? 0 : numberOfSongs.hashCode());
-		result = prime * result + ((songList == null) ? 0 : songList.hashCode());
+		result = prime * result
+				+ ((artistId == null) ? 0 : artistId.hashCode());
+		result = prime * result
+				+ ((firstYear == null) ? 0 : firstYear.hashCode());
+		result = prime * result
+				+ ((lastYear == null) ? 0 : lastYear.hashCode());
+		result = prime * result
+				+ ((numberOfSongs == null) ? 0 : numberOfSongs.hashCode());
+		result = prime * result
+				+ ((songList == null) ? 0 : songList.hashCode());
 		return result;
 	}
 
@@ -232,6 +255,11 @@ public class Album extends Media implements Serializable {
 			if (other.artist != null)
 				return false;
 		} else if (!artist.equals(other.artist))
+			return false;
+		if (artistId == null) {
+			if (other.artistId != null)
+				return false;
+		} else if (!artistId.equals(other.artistId))
 			return false;
 		if (firstYear == null) {
 			if (other.firstYear != null)

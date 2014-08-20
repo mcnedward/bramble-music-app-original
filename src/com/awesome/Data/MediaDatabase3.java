@@ -33,6 +33,7 @@ public class MediaDatabase3 {
 	final private static String ALBUM_ID = "_id";
 	final private static String ALBUM = "Album";
 	final private static String ALBUM_KEY = "AlbumKey";
+	final private static String ALBUM_ARTIST_ID = "ArtistId";
 	final private static String ALBUM_ARTIST = "Artist";
 	final private static String NUMBER_OF_SONGS = "NumberOfSongs";
 	final private static String FIRST_YEAR = "MinYear";
@@ -365,7 +366,7 @@ public class MediaDatabase3 {
 				// Add the album artist and number of songs to the list of all for that album
 				artistList.add(albumArtist);
 				numberOfSongsList.add(numberOfSongs);
-				Album album = new Album(albumId, albumName, albumKey, albumArtist, numberOfSongs, firstYear, lastYear,
+				Album album = new Album(albumId, albumName, albumKey, 0, albumArtist, numberOfSongs, firstYear, lastYear,
 						albumArt, null);
 				if (artistList.contains(albumArtist)) {
 					albumList.add(album);
@@ -459,7 +460,7 @@ public class MediaDatabase3 {
 				Integer lastYear = c.getInt(c.getColumnIndexOrThrow(LAST_YEAR));
 				String albumArt = c.getString(c.getColumnIndexOrThrow(ALBUM_ART));
 				// List<Song> songList = getAllSongsForAlbum(albumKey);
-				Album album = new Album(albumId, albumName, albumKey, albumArtist, numberOfSongs, firstYear, lastYear,
+				Album album = new Album(albumId, albumName, albumKey, 0, albumArtist, numberOfSongs, firstYear, lastYear,
 						albumArt, null);
 				albumList.add(album);
 			}

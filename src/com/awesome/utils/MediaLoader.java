@@ -125,7 +125,7 @@ public class MediaLoader {
 						// Create a new album and add it to the total album list
 						// and the artist album list
 						Album albumEntity = new Album(albumId, album, albumKey,
-								artist, numberOfSongs, firstYear, lastYear,
+								artistId, artist, numberOfSongs, firstYear, lastYear,
 								albumArt, null);
 						albumDataLoader.insert(albumEntity);
 						Log.d(TAG, "Starting insert task for  " + album

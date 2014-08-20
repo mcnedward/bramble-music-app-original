@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.awesome.Data.DatabaseHelper;
+import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 
 public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSource<Artist> {
@@ -25,6 +27,18 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 	public boolean save(Artist entity) {
 		return insert(entity);
 	}
+
+	@Override
+	public boolean delete(Artist entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean update(Artist entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	@Override
 	public List<Artist> read(String selection, String[] selectionArgs,
@@ -32,6 +46,13 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 		List<Artist> artists = query(selection, selectionArgs, groupBy, having, orderBy);
 		return artists;
 	}
+	
+//	public List<Album> getAlbums(Artist artist) {
+//		String sql = "SELECT * FROM " + DatabaseHelper.ALBUMS_TABLE + " WHERE ArtistId = ?";
+//		String[] selectionArgs = new String[] { String.valueOf(artist.getId()) };
+//		Cursor cursor = rawQuery(sql, selectionArgs);
+//		
+//	}
 
 	/********** GET DATA COLUMNS AND OBJECTS **********/
 
@@ -75,17 +96,5 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 		values.put(ARTIST_KEY, entity.getArtistKey());
 		values.put(NUMBER_OF_ALBUMS, entity.getNumberOfAlbums());
 		return values;
-	}
-
-	@Override
-	public boolean delete(Artist entity) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean update(Artist entity) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

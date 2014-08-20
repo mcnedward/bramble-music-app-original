@@ -67,7 +67,7 @@ public class AlbumDataAdapter extends Fragment implements
 			Log.d(TAG, "### Reconnecting with existing Loader (id " + LOADER_ID
 					+ ")... ###");
 		}
-		// Initialize a Loader with id '1'. If the Loader with this id already
+		// Initialize a Loader. If the Loader with this id already
 		// exists, then the LoaderManager will reuse the existing Loader.
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 	}
@@ -89,7 +89,6 @@ public class AlbumDataAdapter extends Fragment implements
 
 			mLView.setAdapter(mMediaAdapter);
 			mLView.setClickable(true);
-			//mMediaAdapter.notifyDataSetChanged();
 		}
 	}
 

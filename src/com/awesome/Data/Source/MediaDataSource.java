@@ -7,7 +7,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.awesome.Data.DatabaseHelper;
+import com.awesome.Dto.Album;
+import com.awesome.Dto.Artist;
 import com.awesome.Dto.Media;
+import com.awesome.Dto.Song;
 
 public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 	private static final String TAG = "MediaDataSource";
@@ -68,6 +72,11 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 		return entities;
 	}
 	
+	@Override
+	public Cursor rawQuery(String sql, String[] selectionArgs) {
+		return mDatabase.rawQuery(sql, selectionArgs);
+	}
+	
 	/**
 	 * This checks if an entity with a certain id already exists in the
 	 * database.
@@ -93,5 +102,9 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 			}
 		}
 		return false;
+	}
+	
+	protected String[] getArtistColumns() {
+		return new String[] { DatabaseHelper.ARTIST_ID, DatabaseHelper.ARTIST, DatabaseHelper.ARTIST_KEY };
 	}
 }

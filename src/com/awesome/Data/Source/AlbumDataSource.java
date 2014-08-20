@@ -16,6 +16,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 	final private static String ALBUM_ID = "_id";
 	final private static String ALBUM = "Album";
 	final private static String ALBUM_KEY = "AlbumKey";
+	final private static String ARTIST_ID = "ArtistId";
 	final private static String ALBUM_ARTIST = "Artist";
 	final private static String NUMBER_OF_SONGS = "NumberOfSongs";
 	final private static String FIRST_YEAR = "MinYear";
@@ -43,7 +44,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] { ALBUM_ID, ALBUM, ALBUM_KEY, ALBUM_ARTIST,
+		return new String[] { ALBUM_ID, ALBUM, ALBUM_KEY, ARTIST_ID, ALBUM_ARTIST,
 				NUMBER_OF_SONGS, FIRST_YEAR, LAST_YEAR, ALBUM_ART };
 	}
 	
@@ -61,6 +62,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 				.getString(cursor.getColumnIndexOrThrow(ALBUM));
 		String albumKey = cursor.getString(cursor
 				.getColumnIndexOrThrow(ALBUM_KEY));
+		Integer albumArtistId = cursor.getInt(cursor.getColumnIndexOrThrow(ARTIST_ID));
 		String albumArtist = cursor.getString(cursor
 				.getColumnIndexOrThrow(ALBUM_ARTIST));
 		Integer numberOfSongs = cursor.getInt(cursor
@@ -72,7 +74,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 		String albumArt = cursor.getString(cursor
 				.getColumnIndexOrThrow(ALBUM_ART));
 
-		Album album = new Album(albumId, albumName, albumKey, albumArtist,
+		Album album = new Album(albumId, albumName, albumKey, albumArtistId, albumArtist,
 				numberOfSongs, firstYear, lastYear, albumArt, null);
 		return album;
 	}
@@ -85,6 +87,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 		values.put(ALBUM_ID, entity.getId());
 		values.put(ALBUM, entity.getAlbum());
 		values.put(ALBUM_KEY, entity.getAlbumKey());
+		values.put(ARTIST_ID, entity.getArtistId());
 		values.put(ALBUM_ARTIST, entity.getArtist());
 		values.put(NUMBER_OF_SONGS, entity.getNumberOfSongs());
 		values.put(FIRST_YEAR, entity.getFirstYear());

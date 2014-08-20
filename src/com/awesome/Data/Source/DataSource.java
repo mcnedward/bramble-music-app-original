@@ -17,6 +17,8 @@ public abstract class DataSource<T> {
 
 	public abstract List<T> query(String selection, String[] selectionArgs,
 			String groupBy, String having, String orderBy);
+	
+	public abstract Cursor rawQuery(String sql, String[] selectionArgs);
 
 	public abstract String[] getAllColumns();
 	
