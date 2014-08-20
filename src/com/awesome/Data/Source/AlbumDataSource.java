@@ -1,6 +1,5 @@
 package com.awesome.Data.Source;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -9,7 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.awesome.Dto.Album;
 
-public class AlbumDataSource extends BaseDataSource<Album> implements IDataSource<Album> {
+public class AlbumDataSource extends MediaDataSource<Album> implements
+		IDataSource<Album> {
 
 	/** Album Table Variables **/
 	final private static String TABLE_NAME = "Albums";
@@ -22,72 +22,34 @@ public class AlbumDataSource extends BaseDataSource<Album> implements IDataSourc
 	final private static String LAST_YEAR = "MaxYear";
 	final private static String ALBUM_ART = "AlbumArt";
 
-	private SQLiteDatabase database;
-	
 	public AlbumDataSource(SQLiteDatabase database) {
 		super(database);
-		this.database = database;
 	}
 
 	@Override
 	public boolean save(Album entity) {
-		return super.save(entity);
-	}
-
-	@Override
-	public boolean delete(Album entity) {
-		if (entity == null)
-			return false;
-		int result = database.delete(TABLE_NAME,
-				ALBUM_ID + " = " + entity.getId(), null);
-		return result != 0;
-	}
-
-	@Override
-	public boolean update(Album entity) {
-		if (entity == null)
-			return false;
-		int result = database.update(TABLE_NAME,
-				generateContentValuesFromEntity(entity), ALBUM_ID + " = "
-						+ entity.getId(), null);
-		return result != 0;
-	}
-
-	@Override
-	public List<Album> read() {
-		Cursor cursor = database.query(TABLE_NAME, getAllColumns(), null,
-				null, null, null, null);
-		List<Album> albums = new ArrayList<Album>();
-		if (cursor != null && cursor.moveToFirst()) {
-			while (!cursor.isAfterLast()) {
-				albums.add(generateObjectFromCursor(cursor));
-				cursor.moveToNext();
-			}
-			cursor.close();
-		}
-		return albums;
+		return insert(entity);
 	}
 
 	@Override
 	public List<Album> read(String selection, String[] selectionArgs,
 			String groupBy, String having, String orderBy) {
-		Cursor cursor = database.query(TABLE_NAME, getAllColumns(), selection,
-				selectionArgs, groupBy, having, orderBy);
-		List<Album> albums = new ArrayList<Album>();
-		if (cursor != null && cursor.moveToFirst()) {
-			while (!cursor.isAfterLast()) {
-				albums.add(generateObjectFromCursor(cursor));
-				cursor.moveToNext();
-			}
-			cursor.close();
-		}
+		List<Album> albums = query(selection, selectionArgs, groupBy, having,
+				orderBy);
 		return albums;
 	}
+	
+	/********** GET DATA COLUMNS AND OBJECTS **********/
 
 	@Override
 	public String[] getAllColumns() {
 		return new String[] { ALBUM_ID, ALBUM, ALBUM_KEY, ALBUM_ARTIST,
 				NUMBER_OF_SONGS, FIRST_YEAR, LAST_YEAR, ALBUM_ART };
+	}
+	
+	@Override
+	public String getTableName() {
+		return TABLE_NAME;
 	}
 
 	@Override
@@ -95,16 +57,23 @@ public class AlbumDataSource extends BaseDataSource<Album> implements IDataSourc
 		if (cursor == null)
 			return null;
 		Integer albumId = cursor.getInt(cursor.getColumnIndexOrThrow(ALBUM_ID));
-		String albumName = cursor.getString(cursor.getColumnIndexOrThrow(ALBUM));
-		String albumKey = cursor.getString(cursor.getColumnIndexOrThrow(ALBUM_KEY));
-		String albumArtist = cursor.getString(cursor.getColumnIndexOrThrow(ALBUM_ARTIST));
-		Integer numberOfSongs = cursor.getInt(cursor.getColumnIndexOrThrow(NUMBER_OF_SONGS));
-		Integer firstYear = cursor.getInt(cursor.getColumnIndexOrThrow(FIRST_YEAR));
-		Integer lastYear = cursor.getInt(cursor.getColumnIndexOrThrow(LAST_YEAR));
-		String albumArt = cursor.getString(cursor.getColumnIndexOrThrow(ALBUM_ART));
-		
-		Album album = new Album(albumId, albumName, albumKey, albumArtist, numberOfSongs, firstYear, lastYear,
-				albumArt, null);
+		String albumName = cursor
+				.getString(cursor.getColumnIndexOrThrow(ALBUM));
+		String albumKey = cursor.getString(cursor
+				.getColumnIndexOrThrow(ALBUM_KEY));
+		String albumArtist = cursor.getString(cursor
+				.getColumnIndexOrThrow(ALBUM_ARTIST));
+		Integer numberOfSongs = cursor.getInt(cursor
+				.getColumnIndexOrThrow(NUMBER_OF_SONGS));
+		Integer firstYear = cursor.getInt(cursor
+				.getColumnIndexOrThrow(FIRST_YEAR));
+		Integer lastYear = cursor.getInt(cursor
+				.getColumnIndexOrThrow(LAST_YEAR));
+		String albumArt = cursor.getString(cursor
+				.getColumnIndexOrThrow(ALBUM_ART));
+
+		Album album = new Album(albumId, albumName, albumKey, albumArtist,
+				numberOfSongs, firstYear, lastYear, albumArt, null);
 		return album;
 	}
 
@@ -123,11 +92,17 @@ public class AlbumDataSource extends BaseDataSource<Album> implements IDataSourc
 		values.put(ALBUM_ART, entity.getAlbumArt());
 		return values;
 	}
+	
+	@Override
+	public boolean delete(Album entity) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public String getTableName() {
+	public boolean update(Album entity) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 }

@@ -83,7 +83,7 @@ public class MediaLoader {
 					final Uri albumUri = MediaStore.Audio.Artists.Albums
 							.getContentUri("external", artistId);
 					final String[] albumCols = {
-							MediaStore.Audio.Artists.Albums.ALBUM_ID,
+							MediaStore.Audio.Albums._ID,
 							MediaStore.Audio.Artists.Albums.ALBUM,
 							MediaStore.Audio.Artists.Albums.ALBUM_KEY,
 							MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS,
@@ -102,7 +102,7 @@ public class MediaLoader {
 						// Get album information
 						Integer albumId = albumCursor
 								.getInt(albumCursor
-										.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM_ID));
+										.getColumnIndexOrThrow(MediaStore.Audio.Albums._ID));
 						String album = albumCursor
 								.getString(albumCursor
 										.getColumnIndexOrThrow(MediaStore.Audio.Artists.Albums.ALBUM));

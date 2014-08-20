@@ -181,11 +181,11 @@ public class MediaPlayerService extends Service {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				Log.i(TAG, "Now Playing Information Touched!!!");
-				Intent nowPlaying = new Intent(MainActivity.context, NowPlayingActivity.class);
+				Intent nowPlaying = new Intent(MainActivity.mContext, NowPlayingActivity.class);
 				nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				nowPlaying.putExtra("album", MainActivity.currentAlbum);
 				nowPlaying.putExtra("song", MainActivity.currentSong);
-				MainActivity.context.startActivity(nowPlaying);
+				MainActivity.mContext.startActivity(nowPlaying);
 				return false;
 			}
 		});

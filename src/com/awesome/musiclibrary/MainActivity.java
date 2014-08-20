@@ -38,6 +38,7 @@ import android.widget.ToggleButton;
 
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Song;
+import com.awesome.Loader.Adapter.AlbumDataAdapter;
 import com.awesome.Loader.Adapter.ArtistDataAdapter;
 import com.awesome.asynctasks.RetrieveMedia;
 import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
@@ -62,18 +63,13 @@ public class MainActivity extends FragmentActivity {
 	public static Song currentSong;
 	public static Album currentAlbum;
 
-	public static Context context;
+	public static Context mContext;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); // Set the
-																		// window
-																		// to
-																		// allow
-																		// for
-																		// progress
-																		// spinner
+		// Set the window to allow for progress spinner
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
 		// new
@@ -81,7 +77,7 @@ public class MainActivity extends FragmentActivity {
 		new RetrieveMedia(this)
 				.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-		this.context = getApplicationContext();
+		mContext = getApplicationContext();
 
 		mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -131,14 +127,14 @@ public class MainActivity extends FragmentActivity {
 						public boolean onTouch(View v, MotionEvent event) {
 							Log.i(TAG, "Now Playing Information Touched!!!");
 							Intent nowPlaying = new Intent(
-									MainActivity.context,
+									MainActivity.mContext,
 									NowPlayingActivity.class);
 							nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							nowPlaying.putExtra("album",
 									MainActivity.currentAlbum);
 							nowPlaying.putExtra("song",
 									MainActivity.currentSong);
-							MainActivity.context.startActivity(nowPlaying);
+							MainActivity.mContext.startActivity(nowPlaying);
 							return false;
 						}
 
@@ -156,9 +152,9 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	public void viewDisplaySongsByAlbum(Album album) {
-		Intent displaySongs = new Intent(context, DisplaySongsActivity.class);
+		Intent displaySongs = new Intent(mContext, DisplaySongsActivity.class);
 		displaySongs.putExtra("album", album);
-		context.startActivity(displaySongs);
+		mContext.startActivity(displaySongs);
 	}
 
 	public class PagerAdapter extends FragmentPagerAdapter implements
@@ -174,8 +170,18 @@ public class MainActivity extends FragmentActivity {
 		public PagerAdapter(FragmentManager fm) {
 			super(fm);
 			this.fm = fm;
-			for (int tab : tabs) {
-				fragments.add(new ArtistDataAdapter());
+			for (String title : titles) {
+				switch (title) {
+				case "Artists":
+					fragments.add(new ArtistDataAdapter());
+					break;
+				case "Albums":
+					fragments.add(new AlbumDataAdapter());
+					break;
+				default:
+					fragments.add(PageFragment.createTab(tabs[2]));
+					break;
+				}
 			}
 		}
 
@@ -217,7 +223,7 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
-	public static class PageFragment extends Fragment{
+	public static class PageFragment extends Fragment {
 		public static final String LAYOUT_PAGE = "LAYOUT_PAGE";
 
 		private int layout;
