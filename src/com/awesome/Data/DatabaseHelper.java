@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Database Name
 	public static String DB_NAME = "library.db";
 	// Database Version - Increment this number in order to upgrade the database
-	public static final int DB_VERSION = 12;
+	public static final int DB_VERSION = 15;
 
 	/** Artist Table Variables **/
 	public final static String ARTISTS_TABLE = "Artists";

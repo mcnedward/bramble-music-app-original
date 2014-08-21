@@ -8,10 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.awesome.Data.DatabaseHelper;
-import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.Dto.Media;
-import com.awesome.Dto.Song;
 
 public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 	private static final String TAG = "MediaDataSource";
@@ -62,7 +60,7 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 			String groupBy, String having, String orderBy) {
 		Cursor cursor = mDatabase.query(getTableName(), getAllColumns(), selection, selectionArgs, groupBy, having, orderBy);
 		List<T> entities = new ArrayList<T>();
-		if (cursor != null && cursor.moveToFirst()) {
+		if (cursorHasValue(cursor)) {
 			while (!cursor.isAfterLast()) {
 				entities.add((T) generateObjectFromCursor(cursor));
 				cursor.moveToNext();
@@ -71,7 +69,17 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 		}
 		return entities;
 	}
-	
+
+	/**
+     * Runs the provided SQL and returns a {@link Cursor} over the result set.
+     *
+     * @param sql the SQL query. The SQL string must not be ; terminated
+     * @param selectionArgs You may include ?s in where clause in the query,
+     *     which will be replaced by the values from selectionArgs. The
+     *     values will be bound as Strings.
+     * @return A {@link Cursor} object, which is positioned before the first entry. Note that
+     * {@link Cursor}s are not synchronized, see the documentation for more details.
+     */
 	@Override
 	public Cursor rawQuery(String sql, String[] selectionArgs) {
 		return mDatabase.rawQuery(sql, selectionArgs);
@@ -97,11 +105,28 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 		} catch (Exception e) {
 			Log.e(TAG, "Error checking if entity exists with id: " + id, e);
 		} finally {
-			if (cursor != null && !cursor.isClosed()) {
+			if (cursorHasValue(cursor)) {
 				cursor.close();
 			}
 		}
 		return false;
+	}
+	
+	public Artist generateArtist(Cursor cursor) {
+		if (cursor == null)
+			return null;
+		Integer artistId = cursor.getInt(cursor
+				.getColumnIndexOrThrow(DatabaseHelper.ARTIST_ID));
+		String artistName = cursor.getString(cursor
+				.getColumnIndexOrThrow(DatabaseHelper.ARTIST));
+		String artistKey = cursor.getString(cursor
+				.getColumnIndexOrThrow(DatabaseHelper.ARTIST_KEY));
+		Integer numberOfAlbums = cursor.getInt(cursor
+				.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_ALBUMS));
+		
+		Artist artist = new Artist(artistId, artistName, artistKey,
+				numberOfAlbums, null);
+		return artist;
 	}
 	
 	protected String[] getArtistColumns() {

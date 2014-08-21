@@ -51,7 +51,9 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 //		String sql = "SELECT * FROM " + DatabaseHelper.ALBUMS_TABLE + " WHERE ArtistId = ?";
 //		String[] selectionArgs = new String[] { String.valueOf(artist.getId()) };
 //		Cursor cursor = rawQuery(sql, selectionArgs);
-//		
+//		if (cursorHasValue(cursor)) {
+//			
+//		}
 //	}
 
 	/********** GET DATA COLUMNS AND OBJECTS **********/
@@ -78,9 +80,7 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 				.getColumnIndexOrThrow(ARTIST_KEY));
 		Integer numberOfAlbums = cursor.getInt(cursor
 				.getColumnIndexOrThrow(NUMBER_OF_ALBUMS));
-
-		// List<Album> albumList = getAllAlbumsForArtist(artistName);
-
+		
 		Artist artist = new Artist(artistId, artistName, artistKey,
 				numberOfAlbums, null);
 		return artist;

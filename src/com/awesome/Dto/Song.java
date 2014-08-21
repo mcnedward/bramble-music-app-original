@@ -4,18 +4,19 @@ import java.io.Serializable;
 
 import android.net.Uri;
 
-public class Song implements Serializable {
+public class Song extends Media implements Serializable {
 
 	/**
 	 * Default serial id
 	 */
 	private static final long serialVersionUID = 1L;
-	private Integer titleId;
 	private String title;
 	private String titleKey;
 	private String displayName;
-	private String artist;
+	private Integer artistId;
+	private String artist;	// TODO Remove this and album
 	private String artistKey;
+	private Integer albumId;
 	private String album;
 	private String albumKey;
 	private String composer;
@@ -67,7 +68,6 @@ public class Song implements Serializable {
 	public Song(Integer titleId, String title, String titleKey, String displayName, String artist, String artistKey,
 			String album, String albumKey, String composer, Integer track, Integer duration, Integer year,
 			Integer dateAdded, String mimeType, String data) {
-		this.titleId = titleId;
 		this.title = title;
 		this.titleKey = titleKey;
 		this.displayName = displayName;
@@ -84,19 +84,23 @@ public class Song implements Serializable {
 		this.data = data;
 	}
 
-	/**
-	 * @return The titleId.
-	 */
-	public Integer getTitleId() {
-		return titleId;
-	}
-
-	/**
-	 * @param titleId
-	 *            The titleId to set.
-	 */
-	public void setTitleId(Integer titleId) {
-		this.titleId = titleId;
+	public Song(Integer titleId, String title, String titleKey,
+			String displayName, Integer artistId, Integer albumId,
+			String composer, Integer track, Integer duration, Integer year,
+			Integer dateAdded, String mimeType, String data, Integer isMusic) {
+		id = titleId;
+		this.title = title;
+		this.titleKey = titleKey;
+		this.displayName = displayName;
+		this.artistId = artistId;
+		this.albumId = albumId;
+		this.composer = composer;
+		this.track = track;
+		this.duration = duration;
+		this.year = year;
+		this.dateAdded = dateAdded;
+		this.mimeType = mimeType;
+		this.data = data;
 	}
 
 	/**
@@ -143,6 +147,21 @@ public class Song implements Serializable {
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
+	
+	/**
+	 * @return The artistId.
+	 */
+	public Integer getArtistId() {
+		return artistId;
+	}
+
+	/**
+	 * @param artistId
+	 *            The artistId to set.
+	 */
+	public void setArtistId(Integer artistId) {
+		this.artistId = artistId;
+	}
 
 	/**
 	 * @return The artist.
@@ -172,6 +191,21 @@ public class Song implements Serializable {
 	 */
 	public void setArtistKey(String artistKey) {
 		this.artistKey = artistKey;
+	}
+	
+	/**
+	 * @return The albumId.
+	 */
+	public Integer getAlbumId() {
+		return albumId;
+	}
+
+	/**
+	 * @param albumId
+	 *            The albumId to set.
+	 */
+	public void setAlbumId(Integer albumId) {
+		this.albumId = albumId;
 	}
 
 	/**
@@ -317,21 +351,39 @@ public class Song implements Serializable {
 	public Uri getUri() {
 		return Uri.parse(data);
 	}
+	
+	@Override
+	public String toString() {
+		return displayName;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((albumKey == null) ? 0 : albumKey.hashCode());
-		result = prime * result + ((artistKey == null) ? 0 : artistKey.hashCode());
+		int result = super.hashCode();
+		result = prime * result + ((album == null) ? 0 : album.hashCode());
+		result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
+		result = prime * result
+				+ ((albumKey == null) ? 0 : albumKey.hashCode());
+		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
+		result = prime * result
+				+ ((artistId == null) ? 0 : artistId.hashCode());
+		result = prime * result
+				+ ((artistKey == null) ? 0 : artistKey.hashCode());
+		result = prime * result
+				+ ((composer == null) ? 0 : composer.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
-		result = prime * result + ((dateAdded == null) ? 0 : dateAdded.hashCode());
-		result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
-		result = prime * result + ((duration == null) ? 0 : duration.hashCode());
-		result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
+		result = prime * result
+				+ ((dateAdded == null) ? 0 : dateAdded.hashCode());
+		result = prime * result
+				+ ((displayName == null) ? 0 : displayName.hashCode());
+		result = prime * result
+				+ ((duration == null) ? 0 : duration.hashCode());
+		result = prime * result
+				+ ((mimeType == null) ? 0 : mimeType.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((titleId == null) ? 0 : titleId.hashCode());
-		result = prime * result + ((titleKey == null) ? 0 : titleKey.hashCode());
+		result = prime * result
+				+ ((titleKey == null) ? 0 : titleKey.hashCode());
 		result = prime * result + ((track == null) ? 0 : track.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;
@@ -341,20 +393,45 @@ public class Song implements Serializable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		Song other = (Song) obj;
+		if (album == null) {
+			if (other.album != null)
+				return false;
+		} else if (!album.equals(other.album))
+			return false;
+		if (albumId == null) {
+			if (other.albumId != null)
+				return false;
+		} else if (!albumId.equals(other.albumId))
+			return false;
 		if (albumKey == null) {
 			if (other.albumKey != null)
 				return false;
 		} else if (!albumKey.equals(other.albumKey))
 			return false;
+		if (artist == null) {
+			if (other.artist != null)
+				return false;
+		} else if (!artist.equals(other.artist))
+			return false;
+		if (artistId == null) {
+			if (other.artistId != null)
+				return false;
+		} else if (!artistId.equals(other.artistId))
+			return false;
 		if (artistKey == null) {
 			if (other.artistKey != null)
 				return false;
 		} else if (!artistKey.equals(other.artistKey))
+			return false;
+		if (composer == null) {
+			if (other.composer != null)
+				return false;
+		} else if (!composer.equals(other.composer))
 			return false;
 		if (data == null) {
 			if (other.data != null)
@@ -385,11 +462,6 @@ public class Song implements Serializable {
 			if (other.title != null)
 				return false;
 		} else if (!title.equals(other.title))
-			return false;
-		if (titleId == null) {
-			if (other.titleId != null)
-				return false;
-		} else if (!titleId.equals(other.titleId))
 			return false;
 		if (titleKey == null) {
 			if (other.titleKey != null)
