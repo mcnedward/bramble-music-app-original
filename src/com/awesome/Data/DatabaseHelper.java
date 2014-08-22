@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Database Name
 	public static String DB_NAME = "library.db";
 	// Database Version - Increment this number in order to upgrade the database
-	public static final int DB_VERSION = 15;
+	public static final int DB_VERSION = 18;
 
 	/** Artist Table Variables **/
 	public final static String ARTISTS_TABLE = "Artists";
@@ -45,10 +45,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public final static String SONG_TITLE = "Title";
 	public final static String SONG_KEY = "TitleKey";
 	public final static String SONG_DISPLAY_NAME = "DisplayName";
-	public final static String SONG_ARTIST = "Artist";
-	public final static String SONG_ARTIST_KEY = "ArtistKey";
-	public final static String SONG_ALBUM = "Album";
-	public final static String SONG_ALBUM_KEY = "AlbumKey";
+	public final static String SONG_ARTIST_ID = "ArtistId";
+	public final static String SONG_ALBUM_ID = "AlbumId";
 	public final static String SONG_COMPOSER = "Composer";
 	public final static String SONG_TRACK = "Track";
 	public final static String SONG_DURATION = "Duration";
@@ -70,10 +68,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String createArtistTable = String
-				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT, %s INTEGER)",
-						ARTISTS_TABLE, ARTIST_ID, ARTIST, ARTIST_KEY,
-						NUMBER_OF_ALBUMS);
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + ARTISTS_TABLE + " ( "
+				+ ARTIST_ID + " INTEGER PRIMARY KEY NOT NULL, " + ARTIST
+				+ " TEXT, " + ARTIST_KEY + " TEXT, " + NUMBER_OF_ALBUMS
+				+ " INTEGER)");
+
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + ALBUMS_TABLE + " ("
+				+ ALBUM_ID + " PRIMARY KEY NOT NULL, " + ALBUM + " TEXT, " + ALBUM_KEY + " TEXT, ");
 
 		// Primary key does not auto-increment for this table to allow for
 		// proper checking of albumExists method
@@ -85,16 +86,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 						ALBUM_ART);
 
 		String createSongTable = String
-				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT)",
+				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY NOT NULL, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT, %s TEXT)",
 						SONGS_TABLE, SONG_ID, SONG_TITLE, SONG_KEY,
-						SONG_DISPLAY_NAME, SONG_ARTIST, SONG_ARTIST_KEY,
-						SONG_ALBUM, SONG_ALBUM_KEY, SONG_COMPOSER, SONG_TRACK,
-						SONG_DURATION, SONG_YEAR, SONG_DATE_ADDED,
-						SONG_MIME_TYPE, SONG_DATA);
+						SONG_DISPLAY_NAME, SONG_ARTIST_ID, SONG_ALBUM_ID,
+						SONG_COMPOSER, SONG_TRACK, SONG_DURATION, SONG_YEAR,
+						SONG_DATE_ADDED, SONG_MIME_TYPE, SONG_DATA,
+						SONG_IS_MUSIC);
 
-		Log.i(TAG, String.format("%s \n %s \n %s", createArtistTable,
-				createAlbumTable, createSongTable));
-		db.execSQL(createArtistTable);
+		//Log.i(TAG, String.format("%s \n %s \n %s", createArtistTable,
+		//		createAlbumTable, createSongTable));
+		//db.execSQL(createArtistTable);
 		db.execSQL(createAlbumTable);
 		db.execSQL(createSongTable);
 	}

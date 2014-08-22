@@ -26,6 +26,7 @@ public class Song extends Media implements Serializable {
 	private Integer dateAdded;
 	private String mimeType;
 	private String data;
+	private Boolean isMusic;
 
 	public Song() {
 
@@ -87,7 +88,7 @@ public class Song extends Media implements Serializable {
 	public Song(Integer titleId, String title, String titleKey,
 			String displayName, Integer artistId, Integer albumId,
 			String composer, Integer track, Integer duration, Integer year,
-			Integer dateAdded, String mimeType, String data, Integer isMusic) {
+			Integer dateAdded, String mimeType, String data, Boolean isMusic) {
 		id = titleId;
 		this.title = title;
 		this.titleKey = titleKey;
@@ -101,6 +102,7 @@ public class Song extends Media implements Serializable {
 		this.dateAdded = dateAdded;
 		this.mimeType = mimeType;
 		this.data = data;
+		this.isMusic = isMusic;
 	}
 
 	/**
@@ -341,6 +343,14 @@ public class Song extends Media implements Serializable {
 	 */
 	public void setData(String data) {
 		this.data = data;
+	}
+
+	public Boolean isMusic() {
+		return isMusic;
+	}
+
+	public void setIsMusic(Boolean isMusic) {
+		this.isMusic = isMusic;
 	}
 
 	/**
