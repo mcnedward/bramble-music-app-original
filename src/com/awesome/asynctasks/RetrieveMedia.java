@@ -1,22 +1,11 @@
 package com.awesome.asynctasks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.awesome.Data.MediaDatabase;
-import com.awesome.Data.MediaDatabase3;
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
-import com.awesome.Dto.Genre;
-import com.awesome.Dto.Song;
-import com.awesome.adapters.Refresh;
-import com.awesome.musiclibrary.MainActivity;
 import com.awesome.utils.MediaLoader;
 
 /**
@@ -52,14 +41,14 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		((Activity) context).setProgressBarIndeterminateVisibility(true);	// Show the progress spinner
+		((Activity) context).setProgressBarIndeterminateVisibility(true); // Show the progress spinner
 	}
 
 	@Override
 	protected Void doInBackground(Void... object) {
 		Log.i(TAG, "Executing task");
 		try {
-			loader.retrieveMedia();	
+			loader.retrieveMedia();
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
@@ -68,7 +57,7 @@ public class RetrieveMedia extends AsyncTask<Void, Integer, Void> {
 
 	@Override
 	protected void onPostExecute(Void v) {
-		((Activity) context).setProgressBarIndeterminateVisibility(false);	// Remove the progress spinner
+		((Activity) context).setProgressBarIndeterminateVisibility(false); // Remove the progress spinner
 		Log.i(TAG, "Task successfully executed");
 	}
 

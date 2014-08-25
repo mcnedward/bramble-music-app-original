@@ -38,8 +38,7 @@ public class AlbumDataAdapter extends Fragment implements
 	private MediaListAdapter<Album> mMediaAdapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.view_album_layout, container, false);
 	}
@@ -52,11 +51,9 @@ public class AlbumDataAdapter extends Fragment implements
 		mDatabase = new MediaDatabase(mContext);
 		mAlbumDataSource = new AlbumDataSource(mDatabase.open());
 
-		mLView = (ListView) ((Activity) mContext)
-				.findViewById(R.id.displayAlbums);
+		mLView = (ListView) ((Activity) mContext).findViewById(R.id.displayAlbums);
 
-		mMediaAdapter = new MediaListAdapter<Album>(mContext,
-				R.layout.view_album_layout);
+		mMediaAdapter = new MediaListAdapter<Album>(mContext, R.layout.view_album_layout);
 
 		mLView.setAdapter(mMediaAdapter);
 
@@ -64,8 +61,7 @@ public class AlbumDataAdapter extends Fragment implements
 		if (getLoaderManager().getLoader(LOADER_ID) == null) {
 			Log.d(TAG, "### Initializing a new Loader... ###");
 		} else {
-			Log.d(TAG, "### Reconnecting with existing Loader (id " + LOADER_ID
-					+ ")... ###");
+			Log.d(TAG, "### Reconnecting with existing Loader (id " + LOADER_ID + ")... ###");
 		}
 		// Initialize a Loader. If the Loader with this id already
 		// exists, then the LoaderManager will reuse the existing Loader.
@@ -74,8 +70,7 @@ public class AlbumDataAdapter extends Fragment implements
 
 	@Override
 	public Loader<List<Album>> onCreateLoader(int arg0, Bundle arg1) {
-		BaseDataLoader<Album> loader = new AlbumDataLoader(mContext,
-				mAlbumDataSource, null, null, null, null, null);
+		BaseDataLoader<Album> loader = new AlbumDataLoader(mContext, mAlbumDataSource, null, null, null, null, null);
 		return loader;
 	}
 

@@ -12,13 +12,6 @@ import com.awesome.Dto.Artist;
 
 public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSource<Artist> {
 
-	/** Artist Table Variables **/
-	private final static String TABLE_NAME = "Artists";
-	private final static String ARTIST_ID = "_id";
-	private final static String ARTIST = "Artist";
-	private final static String ARTIST_KEY = "ArtistKey";
-	private final static String NUMBER_OF_ALBUMS = "NumberOfAlbums";
-
 	public ArtistDataSource(SQLiteDatabase database) {
 		super(database);
 	}
@@ -39,50 +32,47 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
-	public List<Artist> read(String selection, String[] selectionArgs,
-			String groupBy, String having, String orderBy) {
+	public List<Artist> read(String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
 		List<Artist> artists = query(selection, selectionArgs, groupBy, having, orderBy);
+
 		return artists;
 	}
-	
-//	public List<Album> getAlbums(Artist artist) {
-//		String sql = "SELECT * FROM " + DatabaseHelper.ALBUMS_TABLE + " WHERE ArtistId = ?";
-//		String[] selectionArgs = new String[] { String.valueOf(artist.getId()) };
-//		Cursor cursor = rawQuery(sql, selectionArgs);
-//		if (cursorHasValue(cursor)) {
-//			
-//		}
-//	}
+
+	public List<Album> getAlbums(Artist artist) {
+		String sql = "SELECT * FROM artist_album_info(" + artist.getId() + ")";
+		String[] selectionArgs = new String[] { String.valueOf(artist.getId()) };
+		Cursor cursor = rawQuery(sql, selectionArgs);
+		if (cursorHasValue(cursor)) {
+			return null;
+		}
+		return null;
+	}
 
 	/********** GET DATA COLUMNS AND OBJECTS **********/
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] { ARTIST_ID, ARTIST, ARTIST_KEY, NUMBER_OF_ALBUMS };
+		return new String[] { DatabaseHelper.ARTIST_ID, DatabaseHelper.ARTIST, DatabaseHelper.ARTIST_KEY,
+				DatabaseHelper.NUMBER_OF_ALBUMS };
 	}
-	
+
 	@Override
 	public String getTableName() {
-		return TABLE_NAME;
+		return DatabaseHelper.ARTISTS_TABLE;
 	}
 
 	@Override
 	public Artist generateObjectFromCursor(Cursor cursor) {
 		if (cursor == null)
 			return null;
-		Integer artistId = cursor.getInt(cursor
-				.getColumnIndexOrThrow(ARTIST_ID));
-		String artistName = cursor.getString(cursor
-				.getColumnIndexOrThrow(ARTIST));
-		String artistKey = cursor.getString(cursor
-				.getColumnIndexOrThrow(ARTIST_KEY));
-		Integer numberOfAlbums = cursor.getInt(cursor
-				.getColumnIndexOrThrow(NUMBER_OF_ALBUMS));
-		
-		Artist artist = new Artist(artistId, artistName, artistKey,
-				numberOfAlbums, null);
+		Integer artistId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST_ID));
+		String artistName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST));
+		String artistKey = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST_KEY));
+		Integer numberOfAlbums = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_ALBUMS));
+
+		Artist artist = new Artist(artistId, artistName, artistKey, numberOfAlbums, null);
 		return artist;
 	}
 
@@ -91,10 +81,10 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 		if (entity == null)
 			return null;
 		ContentValues values = new ContentValues();
-		values.put(ARTIST_ID, entity.getId());
-		values.put(ARTIST, entity.getArtist());
-		values.put(ARTIST_KEY, entity.getArtistKey());
-		values.put(NUMBER_OF_ALBUMS, entity.getNumberOfAlbums());
+		values.put(DatabaseHelper.ARTIST_ID, entity.getId());
+		values.put(DatabaseHelper.ARTIST, entity.getArtist());
+		values.put(DatabaseHelper.ARTIST_KEY, entity.getArtistKey());
+		values.put(DatabaseHelper.NUMBER_OF_ALBUMS, entity.getNumberOfAlbums());
 		return values;
 	}
 }

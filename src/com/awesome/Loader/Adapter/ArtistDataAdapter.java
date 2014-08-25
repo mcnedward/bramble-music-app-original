@@ -29,15 +29,13 @@ import com.awesome.adapters.MediaListAdapter;
 import com.awesome.musiclibrary.R;
 
 /**
- * This is the class that loads data into the Artist list of the library. The
- * LoaderManager will update the data as it is changed. TODO Should this be a
- * FragmentActity?
+ * This is the class that loads data into the Artist list of the library. The LoaderManager will update the data as it
+ * is changed. TODO Should this be a FragmentActity?
  * 
  * @author emcnealy
  * 
  */
-public class ArtistDataAdapter extends Fragment implements
-		LoaderManager.LoaderCallbacks<List<Artist>> {
+public class ArtistDataAdapter extends Fragment implements LoaderManager.LoaderCallbacks<List<Artist>> {
 
 	protected static final String TAG = "DataAdapter";
 	private static final int LOADER_ID = new Random().nextInt();
@@ -52,8 +50,7 @@ public class ArtistDataAdapter extends Fragment implements
 	private MediaListAdapter<Artist> mMediaAdapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.view_artist_layout, container, false);
 	}
@@ -66,14 +63,11 @@ public class ArtistDataAdapter extends Fragment implements
 		mDatabase = new MediaDatabase(mContext);
 		mArtistDataSource = new ArtistDataSource(mDatabase.open());
 
-		mEView = (ExpandableListView) ((Activity) mContext)
-				.findViewById(R.id.displayArtists);
-		mLView = (ListView) ((Activity) mContext)
-				.findViewById(R.id.displayArtists2);
+		mEView = (ExpandableListView) ((Activity) mContext).findViewById(R.id.displayArtists);
+		mLView = (ListView) ((Activity) mContext).findViewById(R.id.displayArtists2);
 
 		mEMediaAdapter = new MediaExpandableListAdapter(mContext);
-		mMediaAdapter = new MediaListAdapter<Artist>(mContext,
-				R.layout.view_artist_layout);
+		mMediaAdapter = new MediaListAdapter<Artist>(mContext, R.layout.view_artist_layout);
 
 		mEView.setAdapter(mEMediaAdapter);
 		mLView.setAdapter(mMediaAdapter);
@@ -82,8 +76,7 @@ public class ArtistDataAdapter extends Fragment implements
 		if (getLoaderManager().getLoader(LOADER_ID) == null) {
 			Log.d(TAG, "### Initializing a new Loader... ###");
 		} else {
-			Log.d(TAG, "### Reconnecting with existing Loader (id " + LOADER_ID
-					+ ")... ###");
+			Log.d(TAG, "### Reconnecting with existing Loader (id " + LOADER_ID + ")... ###");
 		}
 		// Initialize a Loader with id '1'. If the Loader with this id already
 		// exists, then the LoaderManager will reuse the existing Loader.
@@ -92,8 +85,7 @@ public class ArtistDataAdapter extends Fragment implements
 
 	@Override
 	public Loader<List<Artist>> onCreateLoader(int arg0, Bundle arg1) {
-		BaseDataLoader<Artist> loader = new ArtistDataLoader(mContext,
-				mArtistDataSource, null, null, null, null, null);
+		BaseDataLoader<Artist> loader = new ArtistDataLoader(mContext, mArtistDataSource, null, null, null, null, null);
 		return loader;
 	}
 
@@ -105,8 +97,7 @@ public class ArtistDataAdapter extends Fragment implements
 		for (int x = 0; x < data.size(); x++) {
 			Artist artist = data.get(x);
 			mEMediaAdapter.setGroup(artist);
-			if (artist.getAlbumList() != null
-					&& !artist.getAlbumList().isEmpty()) {
+			if (artist.getAlbumList() != null && !artist.getAlbumList().isEmpty()) {
 				mEMediaAdapter.setChild(x, artist.getAlbumList());
 			} else {
 				mEMediaAdapter.setChild(x, null);
@@ -116,12 +107,11 @@ public class ArtistDataAdapter extends Fragment implements
 			mEView.setClickable(true);
 			mEView.setOnChildClickListener(new OnChildClickListener() {
 				@Override
-				public boolean onChildClick(ExpandableListView parent,
-						View view, int groupPosition, int childPosition, long id) {
+				public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition,
+						long id) {
 					if (view.isSelected() == false) {
-						Album album = (Album) ((ExpandableListView) parent)
-								.getExpandableListAdapter().getChild(
-										groupPosition, childPosition);
+						Album album = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
+								groupPosition, childPosition);
 						// Get all songs for this album
 						// List<Song> songList = mdb.getAllSongsForAlbum(album);
 						// album.setSongList(songList);

@@ -14,11 +14,7 @@ public class Song extends Media implements Serializable {
 	private String titleKey;
 	private String displayName;
 	private Integer artistId;
-	private String artist;	// TODO Remove this and album
-	private String artistKey;
 	private Integer albumId;
-	private String album;
-	private String albumKey;
 	private String composer;
 	private Integer track;
 	private Integer duration;
@@ -30,59 +26,6 @@ public class Song extends Media implements Serializable {
 
 	public Song() {
 
-	}
-
-	/**
-	 * Constructor used to create a new Song object.
-	 * 
-	 * @param titleId
-	 *            The id for the song.
-	 * @param title
-	 *            The title of the song.
-	 * @param titleKey
-	 *            A key for the song, used for searching, sorting, and grouping.
-	 * @param displayName
-	 *            The display name of the song.
-	 * @param artist
-	 *            The artist of the song.
-	 * @param artistKey
-	 *            A key for the artist, used for searching, sorting, and grouping.
-	 * @param album
-	 *            The album on which the song appears.
-	 * @param albumKey
-	 *            A key for the album, used for searching, sorting, and grouping.
-	 * @param composer
-	 *            The composer of the song.
-	 * @param track
-	 *            The track number of the song.
-	 * @param duration
-	 *            The duration of the song.
-	 * @param year
-	 *            The year the song was released.
-	 * @param dateAdded
-	 *            The time the song was added to the media provider.
-	 * @param mimeType
-	 *            The MIME type for the song.
-	 * @param data
-	 *            The data stream for the song.
-	 */
-	public Song(Integer titleId, String title, String titleKey, String displayName, String artist, String artistKey,
-			String album, String albumKey, String composer, Integer track, Integer duration, Integer year,
-			Integer dateAdded, String mimeType, String data) {
-		this.title = title;
-		this.titleKey = titleKey;
-		this.displayName = displayName;
-		this.artist = artist;
-		this.artistKey = artistKey;
-		this.album = album;
-		this.albumKey = albumKey;
-		this.composer = composer;
-		this.track = track;
-		this.duration = duration;
-		this.year = year;
-		this.dateAdded = dateAdded;
-		this.mimeType = mimeType;
-		this.data = data;
 	}
 
 	public Song(Integer titleId, String title, String titleKey,
@@ -166,36 +109,6 @@ public class Song extends Media implements Serializable {
 	}
 
 	/**
-	 * @return The artist.
-	 */
-	public String getArtist() {
-		return artist;
-	}
-
-	/**
-	 * @param artist
-	 *            The artist to set.
-	 */
-	public void setArtist(String artist) {
-		this.artist = artist;
-	}
-
-	/**
-	 * @return The artistKey.
-	 */
-	public String getArtistKey() {
-		return artistKey;
-	}
-
-	/**
-	 * @param artistKey
-	 *            The artistKey to set.
-	 */
-	public void setArtistKey(String artistKey) {
-		this.artistKey = artistKey;
-	}
-	
-	/**
 	 * @return The albumId.
 	 */
 	public Integer getAlbumId() {
@@ -210,36 +123,7 @@ public class Song extends Media implements Serializable {
 		this.albumId = albumId;
 	}
 
-	/**
-	 * @return The album.
-	 */
-	public String getAlbum() {
-		return album;
-	}
-
-	/**
-	 * @param album
-	 *            The album to set.
-	 */
-	public void setAlbum(String album) {
-		this.album = album;
-	}
-
-	/**
-	 * @return The albumKey.
-	 */
-	public String getAlbumKey() {
-		return albumKey;
-	}
-
-	/**
-	 * @param albumKey
-	 *            The albumKey to set.
-	 */
-	public void setAlbumKey(String albumKey) {
-		this.albumKey = albumKey;
-	}
-
+	
 	/**
 	 * @return The composer.
 	 */
@@ -371,15 +255,9 @@ public class Song extends Media implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((album == null) ? 0 : album.hashCode());
 		result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
 		result = prime * result
-				+ ((albumKey == null) ? 0 : albumKey.hashCode());
-		result = prime * result + ((artist == null) ? 0 : artist.hashCode());
-		result = prime * result
 				+ ((artistId == null) ? 0 : artistId.hashCode());
-		result = prime * result
-				+ ((artistKey == null) ? 0 : artistKey.hashCode());
 		result = prime * result
 				+ ((composer == null) ? 0 : composer.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
@@ -408,35 +286,15 @@ public class Song extends Media implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Song other = (Song) obj;
-		if (album == null) {
-			if (other.album != null)
-				return false;
-		} else if (!album.equals(other.album))
-			return false;
 		if (albumId == null) {
 			if (other.albumId != null)
 				return false;
 		} else if (!albumId.equals(other.albumId))
 			return false;
-		if (albumKey == null) {
-			if (other.albumKey != null)
-				return false;
-		} else if (!albumKey.equals(other.albumKey))
-			return false;
-		if (artist == null) {
-			if (other.artist != null)
-				return false;
-		} else if (!artist.equals(other.artist))
-			return false;
 		if (artistId == null) {
 			if (other.artistId != null)
 				return false;
 		} else if (!artistId.equals(other.artistId))
-			return false;
-		if (artistKey == null) {
-			if (other.artistKey != null)
-				return false;
-		} else if (!artistKey.equals(other.artistKey))
 			return false;
 		if (composer == null) {
 			if (other.composer != null)

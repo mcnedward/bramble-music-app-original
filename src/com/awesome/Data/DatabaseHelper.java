@@ -3,11 +3,13 @@ package com.awesome.Data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.MediaStore;
 import android.util.Log;
 
 /**
- * A helper class that is used to create, update, and delete the database for
- * the Music Library
+ * A helper class that is used to create, update, and delete the database for the Music Library
+ * 
+ * TODO Maybe this should be static?
  * 
  * @author Edward
  * 
@@ -18,47 +20,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Database Name
 	public static String DB_NAME = "library.db";
 	// Database Version - Increment this number in order to upgrade the database
-	public static final int DB_VERSION = 18;
+	public static final int DB_VERSION = 35;
 
 	/** Artist Table Variables **/
 	public final static String ARTISTS_TABLE = "Artists";
-	public final static String ARTIST_ID = "_id";
-	public final static String ARTIST = "Artist";
-	public final static String ARTIST_KEY = "ArtistKey";
-	public final static String NUMBER_OF_ALBUMS = "NumberOfAlbums";
+	public final static String ARTIST_ID = MediaStore.Audio.Artists._ID;
+	public final static String ARTIST = MediaStore.Audio.Artists.ARTIST;
+	public final static String ARTIST_KEY = MediaStore.Audio.Artists.ARTIST_KEY;
+	public final static String NUMBER_OF_ALBUMS = MediaStore.Audio.Artists.NUMBER_OF_ALBUMS;
 
 	/** Album Table Variables **/
 	public final static String ALBUMS_TABLE = "Albums";
-	public final static String ALBUM_ID = "_id";
-	public final static String ALBUM = "Album";
-	public final static String ALBUM_KEY = "AlbumKey";
-	public final static String ALBUM_ARTIST_ID = "ArtistId";
-	public final static String ALBUM_ARTIST = "Artist";
-	public final static String NUMBER_OF_SONGS = "NumberOfSongs";
-	public final static String FIRST_YEAR = "MinYear";
-	public final static String LAST_YEAR = "MaxYear";
-	public final static String ALBUM_ART = "AlbumArt";
+	public final static String ALBUM_ID = MediaStore.Audio.Albums._ID;
+	public final static String ALBUM = MediaStore.Audio.Albums.ALBUM;
+	public final static String ALBUM_KEY = MediaStore.Audio.Albums.ALBUM_KEY;
+	public final static String ALBUM_ARTIST = MediaStore.Audio.Albums.ARTIST;
+	public final static String NUMBER_OF_SONGS = MediaStore.Audio.Albums.NUMBER_OF_SONGS;
+	public final static String FIRST_YEAR = MediaStore.Audio.Albums.FIRST_YEAR;
+	public final static String LAST_YEAR = MediaStore.Audio.Albums.LAST_YEAR;
+	public final static String ALBUM_ART = MediaStore.Audio.Albums.ALBUM_ART;
 
 	/** Song Table Variables **/
 	public final static String SONGS_TABLE = "Songs";
-	public final static String SONG_ID = "_id";
-	public final static String SONG_TITLE = "Title";
-	public final static String SONG_KEY = "TitleKey";
-	public final static String SONG_DISPLAY_NAME = "DisplayName";
-	public final static String SONG_ARTIST_ID = "ArtistId";
-	public final static String SONG_ALBUM_ID = "AlbumId";
-	public final static String SONG_COMPOSER = "Composer";
-	public final static String SONG_TRACK = "Track";
-	public final static String SONG_DURATION = "Duration";
-	public final static String SONG_YEAR = "Year";
-	public final static String SONG_DATE_ADDED = "DateAdded";
-	public final static String SONG_MIME_TYPE = "MimeType";
-	public final static String SONG_DATA = "Data";
-	public final static String SONG_IS_MUSIC = "IsMusic";
+	public final static String SONG_ID = MediaStore.Audio.Media._ID;
+	public final static String SONG_TITLE = MediaStore.Audio.Media.TITLE;
+	public final static String SONG_KEY = MediaStore.Audio.Media.TITLE_KEY;
+	public final static String SONG_DISPLAY_NAME = MediaStore.Audio.Media.DISPLAY_NAME;
+	public final static String SONG_ARTIST_ID = MediaStore.Audio.Media.ARTIST_ID;
+	public final static String SONG_ALBUM_ID = MediaStore.Audio.Media.ALBUM_ID;
+	public final static String SONG_COMPOSER = MediaStore.Audio.Media.COMPOSER;
+	public final static String SONG_TRACK = MediaStore.Audio.Media.TRACK;
+	public final static String SONG_DURATION = MediaStore.Audio.Media.DURATION;
+	public final static String SONG_YEAR = MediaStore.Audio.Media.YEAR;
+	public final static String SONG_DATE_ADDED = MediaStore.Audio.Media.DATE_ADDED;
+	public final static String SONG_MIME_TYPE = MediaStore.Audio.Media.MIME_TYPE;
+	public final static String SONG_DATA = MediaStore.Audio.Media.DATA;
+	public final static String SONG_IS_MUSIC = MediaStore.Audio.Media.IS_MUSIC;
 
 	/**
-	 * Constructor Takes and keeps a reference of the passed context in order to
-	 * access to the application assets and resources.
+	 * Constructor Takes and keeps a reference of the passed context in order to access to the application assets and
+	 * resources.
 	 * 
 	 * @param context
 	 */
@@ -68,36 +69,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + ARTISTS_TABLE + " ( "
-				+ ARTIST_ID + " INTEGER PRIMARY KEY NOT NULL, " + ARTIST
-				+ " TEXT, " + ARTIST_KEY + " TEXT, " + NUMBER_OF_ALBUMS
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + ARTISTS_TABLE + " ( " + ARTIST_ID
+				+ " INTEGER PRIMARY KEY NOT NULL, " + ARTIST + " TEXT, " + ARTIST_KEY + " TEXT, " + NUMBER_OF_ALBUMS
 				+ " INTEGER)");
 
-		db.execSQL("CREATE TABLE IF NOT EXISTS " + ALBUMS_TABLE + " ("
-				+ ALBUM_ID + " PRIMARY KEY NOT NULL, " + ALBUM + " TEXT, " + ALBUM_KEY + " TEXT, ");
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + ALBUMS_TABLE + " (" + ALBUM_ID + " INTEGER PRIMARY KEY NOT NULL, "
+				+ ALBUM + " TEXT, " + ALBUM_KEY + " TEXT, " + ARTIST + " TEXT, " + NUMBER_OF_SONGS + " INTEGER, "
+				+ FIRST_YEAR + " INTEGER, " + LAST_YEAR + " INTEGER, " + ALBUM_ART + " TEXT)");
 
-		// Primary key does not auto-increment for this table to allow for
-		// proper checking of albumExists method
-		String createAlbumTable = String
-				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY NOT NULL, %s TEXT, %s TEXT, %s INTEGER REFERENCES %s(%s) ON UPDATE CASCADE ON DELETE CASCADE, %s TEXT, %s INTEGER, %s TEXT, %s TEXT, %s TEXT)",
-						ALBUMS_TABLE, ALBUM_ID, ALBUM, ALBUM_KEY,
-						ALBUM_ARTIST_ID, ARTISTS_TABLE, ARTIST_ID,
-						ALBUM_ARTIST, NUMBER_OF_SONGS, FIRST_YEAR, LAST_YEAR,
-						ALBUM_ART);
+		db.execSQL("CREATE TABLE IF NOT EXISTS " + SONGS_TABLE + " (" + SONG_ID + " INTEGER PRIMARY KEY NOT NULL, "
+				+ SONG_TITLE + " TEXT, " + SONG_KEY + " TEXT, " + SONG_DISPLAY_NAME + " TEXT, " + SONG_ARTIST_ID
+				+ " INTEGER, " + SONG_ALBUM_ID + " INTEGER, " + SONG_COMPOSER + " TEXT, " + SONG_TRACK + " INTEGER, "
+				+ SONG_DURATION + " INTEGER, " + SONG_YEAR + " INTEGER, " + SONG_DATE_ADDED + " INTEGER, "
+				+ SONG_MIME_TYPE + " TEXT, " + SONG_DATA + " TEXT, " + SONG_IS_MUSIC + " INTEGER)");
 
-		String createSongTable = String
-				.format("CREATE TABLE IF NOT EXISTS %s (%s INTEGER PRIMARY KEY NOT NULL, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s TEXT, %s INTEGER, %s INTEGER, %s INTEGER, %s INTEGER, %s TEXT, %s TEXT, %s TEXT)",
-						SONGS_TABLE, SONG_ID, SONG_TITLE, SONG_KEY,
-						SONG_DISPLAY_NAME, SONG_ARTIST_ID, SONG_ALBUM_ID,
-						SONG_COMPOSER, SONG_TRACK, SONG_DURATION, SONG_YEAR,
-						SONG_DATE_ADDED, SONG_MIME_TYPE, SONG_DATA,
-						SONG_IS_MUSIC);
-
-		//Log.i(TAG, String.format("%s \n %s \n %s", createArtistTable,
-		//		createAlbumTable, createSongTable));
-		//db.execSQL(createArtistTable);
-		db.execSQL(createAlbumTable);
-		db.execSQL(createSongTable);
+		db.execSQL("CREATE VIEW IF NOT EXISTS audio_info AS SELECT * FROM " + SONGS_TABLE + " LEFT OUTER JOIN "
+				+ ARTISTS_TABLE + " ON " + SONGS_TABLE + "." + SONG_ARTIST_ID + " = " + ARTISTS_TABLE + "." + ARTIST_ID
+				+ " LEFT OUTER JOIN " + ALBUMS_TABLE + " ON " + SONGS_TABLE + "." + SONG_ALBUM_ID + " = "
+				+ ALBUMS_TABLE + "." + ALBUM_ID);
 	}
 
 	public void dropTables(SQLiteDatabase db) {
@@ -115,5 +104,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + SONGS_TABLE);
 
 		onCreate(db);
+	}
+
+	@Override
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
+		// TODO THIS IS ONLY FOR DEBUG PURPOSES
+		// dropTables(db);
+		// onCreate(db);
+		if (!db.isReadOnly())
+			db.execSQL("PRAGMA foreign_keys=ON;");
 	}
 }

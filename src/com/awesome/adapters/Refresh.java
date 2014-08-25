@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awesome.Data.MediaDatabase3;
 import com.awesome.Dto.Album;
 import com.awesome.Dto.Artist;
 import com.awesome.Dto.Song;
@@ -44,7 +43,8 @@ public class Refresh extends Activity {
 
 	private Context context;
 	private MainActivity mainActivity;
-	private MediaDatabase3 mdb;
+
+	// private MediaDatabase3 mdb;
 
 	/**
 	 * Empty constructor for the Refresh adapter
@@ -61,7 +61,7 @@ public class Refresh extends Activity {
 	 */
 	public Refresh(Context context) {
 		this.context = context;
-		mdb = new MediaDatabase3(context);
+		// mdb = new MediaDatabase3(context);
 
 	}
 
@@ -107,8 +107,8 @@ public class Refresh extends Activity {
 						Album album = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
 								groupPosition, childPosition);
 						// Get all songs for this album
-						List<Song> songList = mdb.getAllSongsForAlbum(album);
-						album.setSongList(songList);
+						// List<Song> songList = mdb.getAllSongsForAlbum(album);
+						// album.setSongList(songList);
 						viewDisplaySongsByAlbum(album);
 					}
 					return false;
@@ -147,7 +147,7 @@ public class Refresh extends Activity {
 					return false;
 				}
 			});
-			exlaArtists.notifyDataSetChanged();	// Refresh the list
+			exlaArtists.notifyDataSetChanged(); // Refresh the list
 		} else {
 			LinearLayout expViewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.expViewArtist);
 			expViewArtist.setVisibility(LinearLayout.GONE);
@@ -186,8 +186,8 @@ public class Refresh extends Activity {
 						if (view.isSelected() == false) {
 							Album album = (Album) parent.getItemAtPosition(position);
 							// Get all songs in album
-							List<Song> songList = mdb.getAllSongsForAlbum(album);
-							album.setSongList(songList);
+							// List<Song> songList = mdb.getAllSongsForAlbum(album);
+							// album.setSongList(songList);
 							viewDisplaySongsByAlbum(album);
 						}
 						return;
@@ -361,11 +361,11 @@ public class Refresh extends Activity {
 		helpDialog.show();
 
 		TextView edit = (TextView) options.findViewById(R.id.edit); // Find the text view for Edit
-		edit.setOnClickListener(new View.OnClickListener() { 		// Set the onClickListener for the Edit option
+		edit.setOnClickListener(new View.OnClickListener() { // Set the onClickListener for the Edit option
 			@Override
-			public void onClick(View v) { 	// This will start the new intent for Edit view
-				viewEdit(title, type); 		// Show the Edit activity
-				helpDialog.dismiss(); 		// Close the options menu
+			public void onClick(View v) { // This will start the new intent for Edit view
+				viewEdit(title, type); // Show the Edit activity
+				helpDialog.dismiss(); // Close the options menu
 				return;
 			}
 		});

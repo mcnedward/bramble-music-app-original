@@ -192,7 +192,7 @@ public class MediaPlayerService extends Service {
 	}
 
 	public void updateNowPlaying() {
-		NowPlayingActivity.txtArtist.setText(song.getArtist());
+		//NowPlayingActivity.txtArtist.setText(song.getArtist());
 		NowPlayingActivity.txtTitle.setText(song.getTitle());
 		NowPlayingActivity.btnNext.setOnClickListener(new OnClickListener() {
 			@Override

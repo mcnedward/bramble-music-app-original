@@ -13,6 +13,7 @@ import com.awesome.Data.Source.IDataSource;
  * @param <T3>
  */
 public abstract class DataChangeTask<T1, T2, T3> extends AsyncTask<T1, T2, T3> {
+	protected final static String TAG = "DataChangeTask";
 	
 	private Loader<?> mLoader;
 	protected T1 mEntity;

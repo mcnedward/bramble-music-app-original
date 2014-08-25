@@ -6,22 +6,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.awesome.Data.DatabaseHelper;
 import com.awesome.Dto.Album;
 
 public class AlbumDataSource extends MediaDataSource<Album> implements
 		IDataSource<Album> {
-
-	/** Album Table Variables **/
-	final private static String TABLE_NAME = "Albums";
-	final private static String ALBUM_ID = "_id";
-	final private static String ALBUM = "Album";
-	final private static String ALBUM_KEY = "AlbumKey";
-	final private static String ARTIST_ID = "ArtistId";
-	final private static String ALBUM_ARTIST = "Artist";
-	final private static String NUMBER_OF_SONGS = "NumberOfSongs";
-	final private static String FIRST_YEAR = "MinYear";
-	final private static String LAST_YEAR = "MaxYear";
-	final private static String ALBUM_ART = "AlbumArt";
 
 	public AlbumDataSource(SQLiteDatabase database) {
 		super(database);
@@ -44,37 +33,36 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] { ALBUM_ID, ALBUM, ALBUM_KEY, ARTIST_ID, ALBUM_ARTIST,
-				NUMBER_OF_SONGS, FIRST_YEAR, LAST_YEAR, ALBUM_ART };
+		return new String[] { DatabaseHelper.ALBUM_ID, DatabaseHelper.ALBUM, DatabaseHelper.ALBUM_KEY, DatabaseHelper.ALBUM_ARTIST,
+				DatabaseHelper.NUMBER_OF_SONGS, DatabaseHelper.FIRST_YEAR, DatabaseHelper.LAST_YEAR, DatabaseHelper.ALBUM_ART };
 	}
 	
 	@Override
 	public String getTableName() {
-		return TABLE_NAME;
+		return DatabaseHelper.ALBUMS_TABLE;
 	}
 
 	@Override
 	public Album generateObjectFromCursor(Cursor cursor) {
 		if (cursor == null)
 			return null;
-		Integer albumId = cursor.getInt(cursor.getColumnIndexOrThrow(ALBUM_ID));
+		Integer albumId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ID));
 		String albumName = cursor
-				.getString(cursor.getColumnIndexOrThrow(ALBUM));
+				.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM));
 		String albumKey = cursor.getString(cursor
-				.getColumnIndexOrThrow(ALBUM_KEY));
-		Integer albumArtistId = cursor.getInt(cursor.getColumnIndexOrThrow(ARTIST_ID));
+				.getColumnIndexOrThrow(DatabaseHelper.ALBUM_KEY));
 		String albumArtist = cursor.getString(cursor
-				.getColumnIndexOrThrow(ALBUM_ARTIST));
+				.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ARTIST));
 		Integer numberOfSongs = cursor.getInt(cursor
-				.getColumnIndexOrThrow(NUMBER_OF_SONGS));
+				.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_SONGS));
 		Integer firstYear = cursor.getInt(cursor
-				.getColumnIndexOrThrow(FIRST_YEAR));
+				.getColumnIndexOrThrow(DatabaseHelper.FIRST_YEAR));
 		Integer lastYear = cursor.getInt(cursor
-				.getColumnIndexOrThrow(LAST_YEAR));
+				.getColumnIndexOrThrow(DatabaseHelper.LAST_YEAR));
 		String albumArt = cursor.getString(cursor
-				.getColumnIndexOrThrow(ALBUM_ART));
+				.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ART));
 
-		Album album = new Album(albumId, albumName, albumKey, albumArtistId, albumArtist,
+		Album album = new Album(albumId, albumName, albumKey, albumArtist,
 				numberOfSongs, firstYear, lastYear, albumArt, null);
 		return album;
 	}
@@ -84,15 +72,14 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 		if (entity == null)
 			return null;
 		ContentValues values = new ContentValues();
-		values.put(ALBUM_ID, entity.getId());
-		values.put(ALBUM, entity.getAlbum());
-		values.put(ALBUM_KEY, entity.getAlbumKey());
-		values.put(ARTIST_ID, entity.getArtistId());
-		values.put(ALBUM_ARTIST, entity.getArtist());
-		values.put(NUMBER_OF_SONGS, entity.getNumberOfSongs());
-		values.put(FIRST_YEAR, entity.getFirstYear());
-		values.put(LAST_YEAR, entity.getLastYear());
-		values.put(ALBUM_ART, entity.getAlbumArt());
+		values.put(DatabaseHelper.ALBUM_ID, entity.getId());
+		values.put(DatabaseHelper.ALBUM, entity.getAlbum());
+		values.put(DatabaseHelper.ALBUM_KEY, entity.getAlbumKey());
+		values.put(DatabaseHelper.ALBUM_ARTIST, entity.getArtist());
+		values.put(DatabaseHelper.NUMBER_OF_SONGS, entity.getNumberOfSongs());
+		values.put(DatabaseHelper.FIRST_YEAR, entity.getFirstYear());
+		values.put(DatabaseHelper.LAST_YEAR, entity.getLastYear());
+		values.put(DatabaseHelper.ALBUM_ART, entity.getAlbumArt());
 		return values;
 	}
 	

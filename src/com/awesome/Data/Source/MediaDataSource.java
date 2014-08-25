@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -13,9 +14,9 @@ import com.awesome.Dto.Media;
 
 public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 	private static final String TAG = "MediaDataSource";
-	
+
 	private SQLiteDatabase mDatabase;
-	
+
 	public MediaDataSource(SQLiteDatabase database) {
 		mDatabase = database;
 	}
@@ -26,11 +27,11 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 			return false;
 		try {
 			mDatabase.beginTransaction();
-			mDatabase.insert(getTableName(), null,
-					generateContentValuesFromEntity(entity));
+			mDatabase.insertOrThrow(getTableName(), null, generateContentValuesFromEntity(entity));
 			mDatabase.setTransactionSuccessful();
-		} catch (Exception e) {
-			Log.e(TAG, "Error when trying to insert " + entity, e);
+			Log.d(TAG, "Successfully inserted " + entity);
+		} catch (SQLException e) {
+			Log.e(TAG, "Error when trying to insert type " + entity.getClass() + ": " + entity, e);
 		} finally {
 			mDatabase.endTransaction();
 		}
@@ -54,11 +55,11 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
-	public List<T> query(String selection, String[] selectionArgs,
-			String groupBy, String having, String orderBy) {
-		Cursor cursor = mDatabase.query(getTableName(), getAllColumns(), selection, selectionArgs, groupBy, having, orderBy);
+	public List<T> query(String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
+		Cursor cursor = mDatabase.query(getTableName(), getAllColumns(), selection, selectionArgs, groupBy, having,
+				orderBy);
 		List<T> entities = new ArrayList<T>();
 		if (cursorHasValue(cursor)) {
 			while (!cursor.isAfterLast()) {
@@ -71,23 +72,23 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 	}
 
 	/**
-     * Runs the provided SQL and returns a {@link Cursor} over the result set.
-     *
-     * @param sql the SQL query. The SQL string must not be ; terminated
-     * @param selectionArgs You may include ?s in where clause in the query,
-     *     which will be replaced by the values from selectionArgs. The
-     *     values will be bound as Strings.
-     * @return A {@link Cursor} object, which is positioned before the first entry. Note that
-     * {@link Cursor}s are not synchronized, see the documentation for more details.
-     */
+	 * Runs the provided SQL and returns a {@link Cursor} over the result set.
+	 * 
+	 * @param sql
+	 *            the SQL query. The SQL string must not be ; terminated
+	 * @param selectionArgs
+	 *            You may include ?s in where clause in the query, which will be replaced by the values from
+	 *            selectionArgs. The values will be bound as Strings.
+	 * @return A {@link Cursor} object, which is positioned before the first entry. Note that {@link Cursor}s are not
+	 *         synchronized, see the documentation for more details.
+	 */
 	@Override
 	public Cursor rawQuery(String sql, String[] selectionArgs) {
 		return mDatabase.rawQuery(sql, selectionArgs);
 	}
-	
+
 	/**
-	 * This checks if an entity with a certain id already exists in the
-	 * database.
+	 * This checks if an entity with a certain id already exists in the database.
 	 * 
 	 * @param id
 	 *            The id of the entity of check.
@@ -95,13 +96,12 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 	 */
 	private boolean entityExists(int id) {
 		Cursor cursor = null;
+		boolean exists = false;
 		try {
-			cursor = mDatabase.query(getTableName(), new String[] { "_id" },
-					"_id = ?", new String[] { String.valueOf(id) }, null, null,
-					null);
-			cursor.moveToFirst();
+			cursor = mDatabase.query(getTableName(), new String[] { "_id" }, "_id = ?",
+					new String[] { String.valueOf(id) }, null, null, null);
 			if (cursor.getCount() > 0)
-				return true;
+				exists = true;
 		} catch (Exception e) {
 			Log.e(TAG, "Error checking if entity exists with id: " + id, e);
 		} finally {
@@ -109,26 +109,21 @@ public abstract class MediaDataSource<T extends Media> extends DataSource<T> {
 				cursor.close();
 			}
 		}
-		return false;
+		return exists;
 	}
-	
+
 	public Artist generateArtist(Cursor cursor) {
 		if (cursor == null)
 			return null;
-		Integer artistId = cursor.getInt(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.ARTIST_ID));
-		String artistName = cursor.getString(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.ARTIST));
-		String artistKey = cursor.getString(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.ARTIST_KEY));
-		Integer numberOfAlbums = cursor.getInt(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_ALBUMS));
-		
-		Artist artist = new Artist(artistId, artistName, artistKey,
-				numberOfAlbums, null);
+		Integer artistId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST_ID));
+		String artistName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST));
+		String artistKey = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST_KEY));
+		Integer numberOfAlbums = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_ALBUMS));
+
+		Artist artist = new Artist(artistId, artistName, artistKey, numberOfAlbums, null);
 		return artist;
 	}
-	
+
 	protected String[] getArtistColumns() {
 		return new String[] { DatabaseHelper.ARTIST_ID, DatabaseHelper.ARTIST, DatabaseHelper.ARTIST_KEY };
 	}

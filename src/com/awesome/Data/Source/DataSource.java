@@ -29,7 +29,7 @@ public abstract class DataSource<T> {
 	public abstract ContentValues generateContentValuesFromEntity(T entity);
 	
 	protected boolean cursorHasValue(Cursor cursor) {
-		if (cursor != null && cursor.moveToFirst())
+		if (cursor != null && !cursor.moveToFirst())
 			return true;
 		return false;
 	}

@@ -40,6 +40,7 @@ import com.awesome.Dto.Album;
 import com.awesome.Dto.Song;
 import com.awesome.Loader.Adapter.AlbumDataAdapter;
 import com.awesome.Loader.Adapter.ArtistDataAdapter;
+import com.awesome.Loader.Adapter.SongDataAdapter;
 import com.awesome.asynctasks.RetrieveMedia;
 import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
@@ -74,8 +75,7 @@ public class MainActivity extends FragmentActivity {
 
 		// new
 		// LoadDatabase(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		new RetrieveMedia(this)
-				.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		new RetrieveMedia(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
 		mContext = getApplicationContext();
 
@@ -93,52 +93,40 @@ public class MainActivity extends FragmentActivity {
 		nowPlayingInformationLayout = (LinearLayout) findViewById(R.id.nowPlayingInformationLayout);
 
 		/**
-		 * If there is no media playing, set the play/pause button to be disable
-		 * and set the album art for currently playing to be blank. If there is
-		 * media playing, get the current media information and set the text
-		 * views and album art. Also update the layout for currently playing
-		 * information to start the Now Playing activity when touched.
+		 * If there is no media playing, set the play/pause button to be disable and set the album art for currently
+		 * playing to be blank. If there is media playing, get the current media information and set the text views and
+		 * album art. Also update the layout for currently playing information to start the Now Playing activity when
+		 * touched.
 		 */
 		if (mPlayer == null || !mPlayer.isPlaying()) {
 			btnPlayPause.setEnabled(false);
-			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(),
-					R.drawable.noalbumart);
-			MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(
-					imageBitmap, 60, 60, false));
+			Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
+			MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
 		} else {
 			btnPlayPause.setEnabled(true);
 			MainActivity.mainSong.setText(currentSong.getTitle());
 			MainActivity.mainAlbum.setText(currentAlbum.getAlbum());
 			if (currentAlbum.getAlbumArt() != null) {
-				Bitmap imageBitmap = BitmapFactory.decodeFile(currentAlbum
-						.getAlbumArt());
-				MainActivity.mainAlbumArt.setImageBitmap(Bitmap
-						.createScaledBitmap(imageBitmap, 60, 60, false));
+				Bitmap imageBitmap = BitmapFactory.decodeFile(currentAlbum.getAlbumArt());
+				MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
 			} else {
-				Bitmap imageBitmap = BitmapFactory.decodeResource(
-						getResources(), R.drawable.noalbumart);
-				MainActivity.mainAlbumArt.setImageBitmap(Bitmap
-						.createScaledBitmap(imageBitmap, 60, 60, false));
+				Bitmap imageBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.noalbumart);
+				MainActivity.mainAlbumArt.setImageBitmap(Bitmap.createScaledBitmap(imageBitmap, 60, 60, false));
 			}
-			MainActivity.nowPlayingInformationLayout
-					.setOnTouchListener(new OnTouchListener() {
+			MainActivity.nowPlayingInformationLayout.setOnTouchListener(new OnTouchListener() {
 
-						@Override
-						public boolean onTouch(View v, MotionEvent event) {
-							Log.i(TAG, "Now Playing Information Touched!!!");
-							Intent nowPlaying = new Intent(
-									MainActivity.mContext,
-									NowPlayingActivity.class);
-							nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							nowPlaying.putExtra("album",
-									MainActivity.currentAlbum);
-							nowPlaying.putExtra("song",
-									MainActivity.currentSong);
-							MainActivity.mContext.startActivity(nowPlaying);
-							return false;
-						}
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					Log.i(TAG, "Now Playing Information Touched!!!");
+					Intent nowPlaying = new Intent(MainActivity.mContext, NowPlayingActivity.class);
+					nowPlaying.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					nowPlaying.putExtra("album", MainActivity.currentAlbum);
+					nowPlaying.putExtra("song", MainActivity.currentSong);
+					MainActivity.mContext.startActivity(nowPlaying);
+					return false;
+				}
 
-					});
+			});
 		}
 	}
 
@@ -157,12 +145,10 @@ public class MainActivity extends FragmentActivity {
 		mContext.startActivity(displaySongs);
 	}
 
-	public class PagerAdapter extends FragmentPagerAdapter implements
-			ViewPager.OnPageChangeListener {
+	public class PagerAdapter extends FragmentPagerAdapter implements ViewPager.OnPageChangeListener {
 		final int PAGE_COUNT = 4;
 		private List<Fragment> fragments = new ArrayList<Fragment>();
-		final int[] tabs = { R.layout.view_artist_layout,
-				R.layout.view_album_layout, R.layout.view_song_layout,
+		final int[] tabs = { R.layout.view_artist_layout, R.layout.view_album_layout, R.layout.view_song_layout,
 				R.layout.view_genre_layout };
 		final String[] titles = { "Artists", "Albums", "Songs", "Genres" };
 		private FragmentManager fm;
@@ -178,6 +164,8 @@ public class MainActivity extends FragmentActivity {
 				case "Albums":
 					fragments.add(new AlbumDataAdapter());
 					break;
+				case "Songs":
+					fragments.add(new SongDataAdapter());
 				default:
 					fragments.add(PageFragment.createTab(tabs[2]));
 					break;
@@ -206,8 +194,7 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		@Override
-		public void onPageScrolled(int position, float positionOffset,
-				int positionOffsetPixels) {
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
 		}
 
@@ -243,8 +230,7 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			super.onCreateView(inflater, container, savedInstanceState);
 			return inflater.inflate(layout, container, false);
 		}

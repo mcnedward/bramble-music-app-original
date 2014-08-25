@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.awesome.Data.DatabaseHelper;
 import com.awesome.Data.MediaDatabase;
 import com.awesome.Data.Source.AlbumDataSource;
 import com.awesome.Data.Source.ArtistDataSource;
@@ -31,11 +32,11 @@ public class MediaLoader {
 	private ArtistDataLoader artistDataLoader;
 	private AlbumDataLoader albumDataLoader;
 	private SongDataLoader songDataLoader;
-	
+
 	private IDataSource<Artist> artistDataSource;
 	private IDataSource<Album> albumDataSource;
 	private IDataSource<Song> songDataSource;
-	
+
 	private Context context;
 
 	public MediaLoader(Context context, MediaDatabase mediaDatabase) {
@@ -45,12 +46,10 @@ public class MediaLoader {
 		albumDataSource = new AlbumDataSource(database);
 		songDataSource = new SongDataSource(database);
 
-		artistDataLoader = new ArtistDataLoader(context, artistDataSource,
-				null, null, null, null, null);
-		albumDataLoader = new AlbumDataLoader(context, albumDataSource, null,
-				null, null, null, null);
-		songDataLoader = new SongDataLoader(context, songDataSource, null,
-				null, null, null, null);
+		// TODO Can I use the same DataLoader for all of these?
+		artistDataLoader = new ArtistDataLoader(context, artistDataSource, null, null, null, null, null);
+		albumDataLoader = new AlbumDataLoader(context, albumDataSource, null, null, null, null, null);
+		songDataLoader = new SongDataLoader(context, songDataSource, null, null, null, null, null);
 	}
 
 	public void retrieveMedia() {
@@ -64,12 +63,9 @@ public class MediaLoader {
 		try {
 			// Set the Uri and columns for extracting artist media data
 			final Uri artistUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
-			final String[] artistCols = { MediaStore.Audio.Artists._ID,
-					MediaStore.Audio.Artists.ARTIST,
-					MediaStore.Audio.Artists.ARTIST_KEY,
-					MediaStore.Audio.Artists.NUMBER_OF_ALBUMS };
-			cursor = context.getContentResolver().query(artistUri, artistCols,
-					null, null, null);
+			final String[] artistCols = { DatabaseHelper.ARTIST_ID, DatabaseHelper.ARTIST, DatabaseHelper.ARTIST_KEY,
+					DatabaseHelper.NUMBER_OF_ALBUMS };
+			cursor = context.getContentResolver().query(artistUri, artistCols, null, null, null);
 
 			int artistCount = cursor.getCount();
 			int x = 1;
@@ -78,8 +74,7 @@ public class MediaLoader {
 				// Create a new Artist and add to the database
 				Artist artistEntity = artistDataSource.generateObjectFromCursor(cursor);
 				artistDataLoader.insert(artistEntity);
-				Log.d(TAG, "Starting insert task for " + artistEntity + "....." + x
-						+ "/" + artistCount);
+				Log.d(TAG, "Starting insert task for " + artistEntity + "....." + x + "/" + artistCount);
 				x++;
 			}
 		} catch (Exception e) {
@@ -96,16 +91,10 @@ public class MediaLoader {
 		try {
 			// Get the album information for each artist
 			final Uri albumUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
-			final String[] albumCols = { MediaStore.Audio.Albums._ID,
-					MediaStore.Audio.Albums.ALBUM,
-					MediaStore.Audio.Albums.ALBUM_KEY,
-					MediaStore.Audio.Albums.ARTIST,
-					MediaStore.Audio.Albums.NUMBER_OF_SONGS,
-					MediaStore.Audio.Albums.FIRST_YEAR,
-					MediaStore.Audio.Albums.LAST_YEAR,
-					MediaStore.Audio.Albums.ALBUM_ART };
-			cursor = context.getContentResolver().query(albumUri, albumCols,
-					null, null, null);
+			final String[] albumCols = { DatabaseHelper.ALBUM_ID, DatabaseHelper.ALBUM, DatabaseHelper.ALBUM_KEY,
+					DatabaseHelper.ALBUM_ARTIST, DatabaseHelper.NUMBER_OF_SONGS, DatabaseHelper.FIRST_YEAR,
+					DatabaseHelper.LAST_YEAR, DatabaseHelper.ALBUM_ART };
+			cursor = context.getContentResolver().query(albumUri, albumCols, null, null, null);
 
 			int albumCount = cursor.getCount();
 			int x = 1;
@@ -115,8 +104,7 @@ public class MediaLoader {
 				// and the artist album list
 				Album albumEntity = albumDataSource.generateObjectFromCursor(cursor);
 				albumDataLoader.insert(albumEntity);
-				Log.d(TAG, "Starting insert task for  " + albumEntity + "....." + x
-						+ "/" + albumCount);
+				Log.d(TAG, "Starting insert task for  " + albumEntity + "....." + x + "/" + albumCount);
 				x++;
 			}
 		} catch (Exception e) {
@@ -129,44 +117,34 @@ public class MediaLoader {
 	}
 
 	private void getSongs() {
-		Cursor songCursor = null;
+		Cursor cursor = null;
 		try {
 			// Set the Uri and columns for extracting artist media data
 			final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-			final String[] cols = { MediaStore.Audio.Media._ID,
-					MediaStore.Audio.Media.TITLE,
-					MediaStore.Audio.Media.TITLE_KEY,
-					MediaStore.Audio.Media.DISPLAY_NAME,
-					MediaStore.Audio.Media.ARTIST_ID,
-					MediaStore.Audio.Media.ALBUM_ID,
-					MediaStore.Audio.Media.COMPOSER,
-					MediaStore.Audio.Media.TRACK,
-					MediaStore.Audio.Media.DURATION,
-					MediaStore.Audio.Media.YEAR,
-					MediaStore.Audio.Media.DATE_ADDED,
-					MediaStore.Audio.Media.MIME_TYPE,
-					MediaStore.Audio.Media.DATA,
-					MediaStore.Audio.Media.IS_MUSIC };
+			final String[] cols = { DatabaseHelper.SONG_ID, DatabaseHelper.SONG_TITLE, DatabaseHelper.SONG_KEY,
+					DatabaseHelper.SONG_DISPLAY_NAME, DatabaseHelper.SONG_ARTIST_ID, DatabaseHelper.SONG_ALBUM_ID,
+					DatabaseHelper.SONG_COMPOSER, DatabaseHelper.SONG_TRACK, DatabaseHelper.SONG_DURATION,
+					DatabaseHelper.SONG_YEAR, DatabaseHelper.SONG_DATE_ADDED, DatabaseHelper.SONG_MIME_TYPE,
+					DatabaseHelper.SONG_DATA, DatabaseHelper.SONG_IS_MUSIC };
 
-			final Cursor cursor = context.getContentResolver().query(uri, cols,
-					null, null, null);
+			cursor = context.getContentResolver().query(uri, cols, null, null, null);
 
 			int songCount = cursor.getCount();
 			int x = 1;
-			Log.d(TAG, "Number of results for artist retrieval: " + songCount);
+			Log.d(TAG, "Number of results for song retrieval: " + songCount);
 			while (cursor.moveToNext()) {
 				Song songEntity = songDataSource.generateObjectFromCursor(cursor);
-				songDataLoader.insert(songEntity);
+				if (songEntity.isMusic())
+					songDataLoader.insert(songEntity);
 
-				Log.d(TAG, "Starting insert task for  " + songEntity + "....." + x
-						+ "/" + songCount);
+				Log.d(TAG, "Starting insert task for  " + songEntity + "....." + x + "/" + songCount);
 				x++;
 			}
 		} catch (Exception e) {
 
 		} finally {
-			if (songCursor != null && !songCursor.isClosed())
-				songCursor.close();
+			if (cursor != null && !cursor.isClosed())
+				cursor.close();
 			Log.d(TAG, "Done with albums");
 		}
 	}
