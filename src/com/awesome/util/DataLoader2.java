@@ -1,4 +1,4 @@
-package com.awesome.utils;
+package com.awesome.util;
 
 import java.util.ArrayList;
 import java.util.List;

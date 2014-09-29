@@ -1,6 +1,10 @@
 package com.awesome.musiclibrary.viewcontent;
 
+import java.io.File;
+
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +16,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Song;
 import com.awesome.musiclibrary.MainActivity;
 import com.awesome.musiclibrary.R;
 
@@ -38,7 +42,6 @@ public class NowPlayingActivity extends Activity {
 		setContentView(R.layout.now_playing);
 
 		activity = this;	// Set the activity to NowPlayingActivity
-		//MediaDatabase3 mdb = new MediaDatabase3(this);	// Instantiate the database
 
 		mSeekBar = (SeekBar) findViewById(R.id.seekBar);
 
@@ -54,12 +57,12 @@ public class NowPlayingActivity extends Activity {
 		btnPrevious = (Button) findViewById(R.id.btnPrevious);
 		btnNext = (Button) findViewById(R.id.btnNext);
 
-		//String albumArt = mdb.getAlbumArt(song.getAlbumKey());
-//		if (albumArt != null) {
-//			File imageFile = new File(albumArt);
-//			Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-//			imgAlbumArt.setImageBitmap(imageBitmap);
-//		}
+		String albumArt = album.getAlbumArt();
+		if (albumArt != null) {
+			File imageFile = new File(albumArt);
+			Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+			imgAlbumArt.setImageBitmap(imageBitmap);
+		 }
 
 		btnPlayPause = (ToggleButton) findViewById(R.id.btnPlayPause);
 

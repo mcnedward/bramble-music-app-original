@@ -1,5 +1,6 @@
 package com.awesome.Data.Source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -7,13 +8,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.awesome.Data.DatabaseHelper;
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
+import com.awesome.Entity.Song;
 
 public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSource<Artist> {
 
+	private AlbumDataSource albumDataSource;
+	
 	public ArtistDataSource(SQLiteDatabase database) {
 		super(database);
+		albumDataSource  = new AlbumDataSource(database);
 	}
 
 	@Override
@@ -36,18 +41,63 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 	@Override
 	public List<Artist> read(String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
 		List<Artist> artists = query(selection, selectionArgs, groupBy, having, orderBy);
-
+//		for (Artist artist : artists) { // TODO What type of for loop works best here?
+//			getAlbumsForArtist(artist);
+//		}
 		return artists;
 	}
-
+	
 	public List<Album> getAlbums(Artist artist) {
-		String sql = "SELECT * FROM artist_album_info(" + artist.getId() + ")";
+		String sql = "SELECT * FROM " + DatabaseHelper.ALBUMS_TABLE + " WHERE " + DatabaseHelper.ALBUM_ARTIST_ID + " = ?";
 		String[] selectionArgs = new String[] { String.valueOf(artist.getId()) };
 		Cursor cursor = rawQuery(sql, selectionArgs);
+		List<Album> albumList = new ArrayList<Album>();
 		if (cursorHasValue(cursor)) {
-			return null;
+			while (!cursor.isAfterLast()) {
+				Album album = generateAlbum(cursor);
+				if (album != null) {
+					List<Song> songs = albumDataSource.getSongsForAlbum(album);
+					//album.setSongList(songs);
+				}
+				albumList.add(album);
+				cursor.moveToNext();
+			}
+			cursor.close();
 		}
-		return null;
+		if (albumList != null && !albumList.isEmpty())
+			artist.setAlbumList(albumList);
+		return albumList;
+	}
+	
+	/**
+	 * This is used to get all the albums for a certain artist. If there are albums available for this artist, they will
+	 * be automatically added to that artist's album list.
+	 * 
+	 * @param artist
+	 *            The artist to check for albums.
+	 * @return The list of albums for this artist.
+	 */
+	public List<Album> getAlbumsForArtist(Artist artist) {
+		String sql = "SELECT DISTINCT al.* FROM " + DatabaseHelper.ALBUMS_TABLE
+				+ " al LEFT JOIN audio_info ai ON ai.artist_id = ? WHERE ai.album_id = al." + DatabaseHelper.ALBUM_ID;
+		String[] selectionArgs = new String[] { String.valueOf(artist.getId()) };
+		Cursor cursor = rawQuery(sql, selectionArgs);
+		List<Album> albumList = new ArrayList<Album>();
+		if (cursorHasValue(cursor)) {
+			while (!cursor.isAfterLast()) {
+				Album album = generateAlbum(cursor);
+				if (album != null) {
+					List<Song> songs = albumDataSource.getSongsForAlbum(album);
+					//album.setSongList(songs);
+				}
+				albumList.add(album);
+				cursor.moveToNext();
+			}
+			cursor.close();
+		}
+		if (albumList != null && !albumList.isEmpty())
+			artist.setAlbumList(albumList);
+		return albumList;
 	}
 
 	/********** GET DATA COLUMNS AND OBJECTS **********/
@@ -73,6 +123,7 @@ public class ArtistDataSource extends MediaDataSource<Artist> implements IDataSo
 		Integer numberOfAlbums = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_ALBUMS));
 
 		Artist artist = new Artist(artistId, artistName, artistKey, numberOfAlbums, null);
+		getAlbums(artist);
 		return artist;
 	}
 

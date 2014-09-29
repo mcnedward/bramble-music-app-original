@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -13,16 +14,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.awesome.Data.MediaDatabase;
 import com.awesome.Data.Source.IDataSource;
 import com.awesome.Data.Source.SongDataSource;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Song;
 import com.awesome.Loader.BaseDataLoader;
 import com.awesome.Loader.SongDataLoader;
 import com.awesome.adapters.MediaListAdapter;
+import com.awesome.musiclibrary.MediaPlayerService;
 import com.awesome.musiclibrary.R;
+import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 
 public class SongDataAdapter extends Fragment implements LoaderManager.LoaderCallbacks<List<Song>> {
 
@@ -83,7 +89,35 @@ public class SongDataAdapter extends Fragment implements LoaderManager.LoaderCal
 
 			mLView.setAdapter(mMediaAdapter);
 			mLView.setClickable(true);
+			// Set the single click for songs
+			mLView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					if (view.isSelected() == false) {
+						Song song = (Song) parent.getItemAtPosition(position);
+						// TODO Change this
+						viewNowPlaying(null, song);
+						startMediaService(null, song);
+					}
+					return;
+				}
+			});
+			mMediaAdapter.notifyDataSetChanged();
 		}
+	}
+	
+	public void startMediaService(Album album, Song song) {
+		Intent playSong = new Intent(mContext, MediaPlayerService.class);
+		playSong.putExtra("album", album);
+		playSong.putExtra("song", song);
+		mContext.startService(playSong);
+	}
+
+	public void viewNowPlaying(Album album, Song song) {
+		Intent nowPlaying = new Intent(mContext, NowPlayingActivity.class);
+		nowPlaying.putExtra("album", album);
+		nowPlaying.putExtra("song", song);
+		this.startActivity(nowPlaying);
 	}
 
 	@Override

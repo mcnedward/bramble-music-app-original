@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -13,16 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.awesome.Data.MediaDatabase;
 import com.awesome.Data.Source.AlbumDataSource;
 import com.awesome.Data.Source.IDataSource;
-import com.awesome.Dto.Album;
+import com.awesome.Entity.Album;
 import com.awesome.Loader.AlbumDataLoader;
 import com.awesome.Loader.BaseDataLoader;
 import com.awesome.adapters.MediaListAdapter;
 import com.awesome.musiclibrary.R;
+import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 
 public class AlbumDataAdapter extends Fragment implements
 		LoaderManager.LoaderCallbacks<List<Album>> {
@@ -84,7 +88,32 @@ public class AlbumDataAdapter extends Fragment implements
 
 			mLView.setAdapter(mMediaAdapter);
 			mLView.setClickable(true);
+			mLView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					if (view.isSelected() == false) {
+						Album album = (Album) parent.getItemAtPosition(position);
+						// Get all songs in album
+						// List<Song> songList = mdb.getAllSongsForAlbum(album);
+						// album.setSongList(songList);
+						viewDisplaySongsByAlbum(album);
+					}
+					return;
+				}
+			});
 		}
+	}
+	
+	/**
+	 * Opens the activity for viewing all songs in an album
+	 * 
+	 * @param album
+	 *            The album that you want to view
+	 */
+	public void viewDisplaySongsByAlbum(Album album) {
+		Intent displaySongs = new Intent(mContext, DisplaySongsActivity.class);
+		displaySongs.putExtra("album", album);
+		mContext.startActivity(displaySongs);
 	}
 
 	@Override

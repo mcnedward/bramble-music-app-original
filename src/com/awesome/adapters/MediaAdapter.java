@@ -9,9 +9,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
+import com.awesome.Entity.Song;
 
 /**
  * An adapter that is used to retrieve information from the Media Store for each media file on the user's device. The

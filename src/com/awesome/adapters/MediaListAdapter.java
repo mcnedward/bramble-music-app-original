@@ -18,8 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Song;
 import com.awesome.musiclibrary.R;
 
 public class MediaListAdapter<T> extends ArrayAdapter<T> {
@@ -40,6 +40,7 @@ public class MediaListAdapter<T> extends ArrayAdapter<T> {
 		} else {
 			groups.add(group);
 		}
+		notifyDataSetChanged();
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class MediaListAdapter<T> extends ArrayAdapter<T> {
 	 */
 	public TextView getGenericView() {
 		// Layout parameters for the ExpandableListView
-		AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 98);
+		AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 200);
 
 		TextView tv = new TextView(this.context);
 		tv.setLayoutParams(lp);
@@ -61,7 +62,7 @@ public class MediaListAdapter<T> extends ArrayAdapter<T> {
 		// Center the text vertically
 		tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
 		// Set the text starting position
-		tv.setPadding(45, 0, 0, 0);
+		tv.setPadding(100, 0, 0, 0);
 		return tv;
 	}
 
@@ -138,7 +139,12 @@ public class MediaListAdapter<T> extends ArrayAdapter<T> {
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
-		return itemView;	
+		return itemView;
+	}
+	
+	public void swapItems(List<T> groups) {
+		this.groups = groups;
+		notifyDataSetChanged();
 	}
 	
 	/**

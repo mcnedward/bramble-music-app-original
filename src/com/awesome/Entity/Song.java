@@ -1,4 +1,4 @@
-package com.awesome.Dto;
+package com.awesome.Entity;
 
 import java.io.Serializable;
 
@@ -14,7 +14,11 @@ public class Song extends Media implements Serializable {
 	private String titleKey;
 	private String displayName;
 	private Integer artistId;
+	private String artist;
+	private String artistKey;
 	private Integer albumId;
+	private String album;
+	private String albumKey;
 	private String composer;
 	private Integer track;
 	private Integer duration;
@@ -28,16 +32,38 @@ public class Song extends Media implements Serializable {
 
 	}
 
-	public Song(Integer titleId, String title, String titleKey,
-			String displayName, Integer artistId, Integer albumId,
-			String composer, Integer track, Integer duration, Integer year,
-			Integer dateAdded, String mimeType, String data, Boolean isMusic) {
+	public Song(Integer titleId, String title, String titleKey, String displayName, Integer artistId, Integer albumId,
+			String composer, Integer track, Integer duration, Integer year, Integer dateAdded, String mimeType,
+			String data, Boolean isMusic) {
 		id = titleId;
 		this.title = title;
 		this.titleKey = titleKey;
 		this.displayName = displayName;
 		this.artistId = artistId;
 		this.albumId = albumId;
+		this.composer = composer;
+		this.track = track;
+		this.duration = duration;
+		this.year = year;
+		this.dateAdded = dateAdded;
+		this.mimeType = mimeType;
+		this.data = data;
+		this.isMusic = isMusic;
+	}
+
+	public Song(Integer titleId, String title, String titleKey, String displayName, Integer artistId, String artist,
+			String artistKey, Integer albumId, String album, String albumKey, String composer, Integer track,
+			Integer duration, Integer year, Integer dateAdded, String mimeType, String data, Boolean isMusic) {
+		id = titleId;
+		this.title = title;
+		this.titleKey = titleKey;
+		this.displayName = displayName;
+		this.artistId = artistId;
+		this.artist = artist;
+		this.artistKey = artistKey;
+		this.albumId = albumId;
+		this.album = album;
+		this.albumKey = albumKey;
 		this.composer = composer;
 		this.track = track;
 		this.duration = duration;
@@ -92,7 +118,7 @@ public class Song extends Media implements Serializable {
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
 	}
-	
+
 	/**
 	 * @return The artistId.
 	 */
@@ -106,6 +132,40 @@ public class Song extends Media implements Serializable {
 	 */
 	public void setArtistId(Integer artistId) {
 		this.artistId = artistId;
+	}
+
+	/**
+	 * 
+	 * @return The artist
+	 */
+	public String getArtist() {
+		return artist;
+	}
+
+	/**
+	 * 
+	 * @param artist
+	 *            The artist to set.
+	 */
+	public void setArtist(String artist) {
+		this.artist = artist;
+	}
+
+	/**
+	 * 
+	 * @return The artistKey.
+	 */
+	public String getArtistKey() {
+		return artistKey;
+	}
+
+	/**
+	 * 
+	 * @param artistKey
+	 *            The artistKey to set.
+	 */
+	public void setArtistKey(String artistKey) {
+		this.artistKey = artistKey;
 	}
 
 	/**
@@ -123,7 +183,36 @@ public class Song extends Media implements Serializable {
 		this.albumId = albumId;
 	}
 
-	
+	/**
+	 * @return The album.
+	 */
+	public String getAlbum() {
+		return album;
+	}
+
+	/**
+	 * @param album
+	 *            The album to set.
+	 */
+	public void setAlbum(String album) {
+		this.album = album;
+	}
+
+	/**
+	 * @return The albumKey.
+	 */
+	public String getAlbumKey() {
+		return albumKey;
+	}
+
+	/**
+	 * @param albumKey
+	 *            The albumKey to set.
+	 */
+	public void setAlbumKey(String albumKey) {
+		this.albumKey = albumKey;
+	}
+
 	/**
 	 * @return The composer.
 	 */
@@ -245,7 +334,7 @@ public class Song extends Media implements Serializable {
 	public Uri getUri() {
 		return Uri.parse(data);
 	}
-	
+
 	@Override
 	public String toString() {
 		return displayName;
@@ -256,22 +345,15 @@ public class Song extends Media implements Serializable {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((albumId == null) ? 0 : albumId.hashCode());
-		result = prime * result
-				+ ((artistId == null) ? 0 : artistId.hashCode());
-		result = prime * result
-				+ ((composer == null) ? 0 : composer.hashCode());
+		result = prime * result + ((artistId == null) ? 0 : artistId.hashCode());
+		result = prime * result + ((composer == null) ? 0 : composer.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
-		result = prime * result
-				+ ((dateAdded == null) ? 0 : dateAdded.hashCode());
-		result = prime * result
-				+ ((displayName == null) ? 0 : displayName.hashCode());
-		result = prime * result
-				+ ((duration == null) ? 0 : duration.hashCode());
-		result = prime * result
-				+ ((mimeType == null) ? 0 : mimeType.hashCode());
+		result = prime * result + ((dateAdded == null) ? 0 : dateAdded.hashCode());
+		result = prime * result + ((displayName == null) ? 0 : displayName.hashCode());
+		result = prime * result + ((duration == null) ? 0 : duration.hashCode());
+		result = prime * result + ((mimeType == null) ? 0 : mimeType.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result
-				+ ((titleKey == null) ? 0 : titleKey.hashCode());
+		result = prime * result + ((titleKey == null) ? 0 : titleKey.hashCode());
 		result = prime * result + ((track == null) ? 0 : track.hashCode());
 		result = prime * result + ((year == null) ? 0 : year.hashCode());
 		return result;

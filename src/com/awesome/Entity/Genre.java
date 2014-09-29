@@ -1,4 +1,4 @@
-package com.awesome.Dto;
+package com.awesome.Entity;
 
 import java.util.ArrayList;
 

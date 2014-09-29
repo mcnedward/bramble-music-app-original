@@ -1,4 +1,4 @@
-package com.awesome.utils;
+package com.awesome.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,9 +13,9 @@ import com.awesome.Data.Source.AlbumDataSource;
 import com.awesome.Data.Source.ArtistDataSource;
 import com.awesome.Data.Source.IDataSource;
 import com.awesome.Data.Source.SongDataSource;
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
+import com.awesome.Entity.Song;
 import com.awesome.Loader.AlbumDataLoader;
 import com.awesome.Loader.ArtistDataLoader;
 import com.awesome.Loader.SongDataLoader;
@@ -54,7 +54,6 @@ public class MediaLoader {
 
 	public void retrieveMedia() {
 		getArtists();
-		getAlbums();
 		getSongs();
 	}
 
@@ -74,6 +73,9 @@ public class MediaLoader {
 				// Create a new Artist and add to the database
 				Artist artistEntity = artistDataSource.generateObjectFromCursor(cursor);
 				artistDataLoader.insert(artistEntity);
+
+				getAlbums(artistEntity);//cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.ARTIST_ID)));
+				//artistDataLoader.getAlbumsForArtist(artistEntity);
 				Log.d(TAG, "Starting insert task for " + artistEntity + "....." + x + "/" + artistCount);
 				x++;
 			}
@@ -86,15 +88,22 @@ public class MediaLoader {
 		}
 	}
 
-	private void getAlbums() {
+	private void getAlbums(Artist artist) {
 		Cursor cursor = null;
 		try {
-			// Get the album information for each artist
-			final Uri albumUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+			int artistId = artist.getId();
+			final Uri albumUri = MediaStore.Audio.Artists.Albums.getContentUri("external", artistId);
 			final String[] albumCols = { DatabaseHelper.ALBUM_ID, DatabaseHelper.ALBUM, DatabaseHelper.ALBUM_KEY,
 					DatabaseHelper.ALBUM_ARTIST, DatabaseHelper.NUMBER_OF_SONGS, DatabaseHelper.FIRST_YEAR,
 					DatabaseHelper.LAST_YEAR, DatabaseHelper.ALBUM_ART };
 			cursor = context.getContentResolver().query(albumUri, albumCols, null, null, null);
+			
+			// Get the album information for each artist
+//			final Uri albumUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+//			final String[] albumCols = { DatabaseHelper.ALBUM_ID, DatabaseHelper.ALBUM, DatabaseHelper.ALBUM_KEY,
+//					DatabaseHelper.ALBUM_ARTIST, DatabaseHelper.NUMBER_OF_SONGS, DatabaseHelper.FIRST_YEAR,
+//					DatabaseHelper.LAST_YEAR, DatabaseHelper.ALBUM_ART };
+//			cursor = context.getContentResolver().query(albumUri, albumCols, null, null, null);
 
 			int albumCount = cursor.getCount();
 			int x = 1;
@@ -103,6 +112,7 @@ public class MediaLoader {
 				// Create a new album and add it to the total album list
 				// and the artist album list
 				Album albumEntity = albumDataSource.generateObjectFromCursor(cursor);
+				albumEntity.setArtistId(artistId);	// TODO Setting the artist id differently???
 				albumDataLoader.insert(albumEntity);
 				Log.d(TAG, "Starting insert task for  " + albumEntity + "....." + x + "/" + albumCount);
 				x++;

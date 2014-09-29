@@ -13,4 +13,6 @@ public interface IDataSource<T> {
 	
 	public T generateObjectFromCursor(Cursor cursor);
 
+	//public Cursor getCursor(String mSelection, String[] mSelectionArgs, String mGroupBy, String mHaving, String mOrderBy);
+
 }

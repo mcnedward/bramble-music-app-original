@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.awesome.Data.MediaDatabase;
-import com.awesome.utils.MediaLoader;
+import com.awesome.util.MediaLoader;
 
 /**
  * AsyncTask used to retrieve media information from the Media Store. This should be called as soon as the application

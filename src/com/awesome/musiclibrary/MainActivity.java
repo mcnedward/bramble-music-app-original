@@ -36,8 +36,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Song;
 import com.awesome.Loader.Adapter.AlbumDataAdapter;
 import com.awesome.Loader.Adapter.ArtistDataAdapter;
 import com.awesome.Loader.Adapter.SongDataAdapter;

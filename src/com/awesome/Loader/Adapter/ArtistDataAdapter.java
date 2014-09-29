@@ -5,6 +5,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -15,18 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.awesome.Data.MediaDatabase;
 import com.awesome.Data.Source.ArtistDataSource;
 import com.awesome.Data.Source.IDataSource;
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
 import com.awesome.Loader.ArtistDataLoader;
 import com.awesome.Loader.BaseDataLoader;
 import com.awesome.adapters.MediaExpandableListAdapter;
+import com.awesome.adapters.MediaGridAdapter;
 import com.awesome.adapters.MediaListAdapter;
 import com.awesome.musiclibrary.R;
+import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 
 /**
  * This is the class that loads data into the Artist list of the library. The LoaderManager will update the data as it
@@ -48,6 +52,9 @@ public class ArtistDataAdapter extends Fragment implements LoaderManager.LoaderC
 	private ListView mLView;
 	private MediaExpandableListAdapter mEMediaAdapter;
 	private MediaListAdapter<Artist> mMediaAdapter;
+	
+	private GridView gView;
+	private MediaGridAdapter<Artist> mGridAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,14 +70,14 @@ public class ArtistDataAdapter extends Fragment implements LoaderManager.LoaderC
 		mDatabase = new MediaDatabase(mContext);
 		mArtistDataSource = new ArtistDataSource(mDatabase.open());
 
-		mEView = (ExpandableListView) ((Activity) mContext).findViewById(R.id.displayArtists);
-		mLView = (ListView) ((Activity) mContext).findViewById(R.id.displayArtists2);
+		//mEView = (ExpandableListView) ((Activity) mContext).findViewById(R.id.displayArtists);
+		//mLView = (ListView) ((Activity) mContext).findViewById(R.id.displayArtists2);
 
 		mEMediaAdapter = new MediaExpandableListAdapter(mContext);
 		mMediaAdapter = new MediaListAdapter<Artist>(mContext, R.layout.view_artist_layout);
-
-		mEView.setAdapter(mEMediaAdapter);
-		mLView.setAdapter(mMediaAdapter);
+		
+		gView = (GridView) ((Activity) mContext).findViewById(R.id.artistGridView);
+		mGridAdapter = new MediaGridAdapter<Artist>(mContext);
 
 		Log.d(TAG, "### Calling initLoader! ###");
 		if (getLoaderManager().getLoader(LOADER_ID) == null) {
@@ -92,36 +99,51 @@ public class ArtistDataAdapter extends Fragment implements LoaderManager.LoaderC
 	@Override
 	public void onLoadFinished(Loader<List<Artist>> loader, List<Artist> data) {
 		Log.d(TAG, "### onLoadFinished() called! ###");
-		mMediaAdapter.clear();
-		mEMediaAdapter.clear();
+		
 		for (int x = 0; x < data.size(); x++) {
 			Artist artist = data.get(x);
 			mEMediaAdapter.setGroup(artist);
+			mGridAdapter.setGroup(artist);
+			
 			if (artist.getAlbumList() != null && !artist.getAlbumList().isEmpty()) {
 				mEMediaAdapter.setChild(x, artist.getAlbumList());
 			} else {
 				mEMediaAdapter.setChild(x, null);
 			}
+			
+			//mEView.setAdapter(mEMediaAdapter);
 
-			mEView.setAdapter(mEMediaAdapter);
-			mEView.setClickable(true);
-			mEView.setOnChildClickListener(new OnChildClickListener() {
-				@Override
-				public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition,
-						long id) {
-					if (view.isSelected() == false) {
-						Album album = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
-								groupPosition, childPosition);
-						// Get all songs for this album
-						// List<Song> songList = mdb.getAllSongsForAlbum(album);
-						// album.setSongList(songList);
-						// viewDisplaySongsByAlbum(album);
-					}
-					return false;
-				}
-			});
-			mEMediaAdapter.notifyDataSetChanged();
+			gView.setAdapter(mGridAdapter);
+			
+//			mEView.setClickable(true);
+//			mEView.setOnChildClickListener(new OnChildClickListener() {
+//				@Override
+//				public boolean onChildClick(ExpandableListView parent, View view, int groupPosition, int childPosition,
+//						long id) {
+//					if (view.isSelected() == false) {
+//						Album album = (Album) ((ExpandableListView) parent).getExpandableListAdapter().getChild(
+//								groupPosition, childPosition);
+//						// Get all songs for this album
+//						// List<Song> songList = mdb.getAllSongsForAlbum(album);
+//						// album.setSongList(songList);
+//						viewDisplaySongsByAlbum(album);
+//					}
+//					return false;
+//				}
+//			});
 		}
+	}
+	
+	/**
+	 * Opens the activity for viewing all songs in an album
+	 * 
+	 * @param album
+	 *            The album that you want to view
+	 */
+	public void viewDisplaySongsByAlbum(Album album) {
+		Intent displaySongs = new Intent(mContext, DisplaySongsActivity.class);
+		displaySongs.putExtra("album", album);
+		mContext.startActivity(displaySongs);
 	}
 
 	@Override

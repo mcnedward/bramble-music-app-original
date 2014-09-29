@@ -21,8 +21,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Song;
 import com.awesome.musiclibrary.viewcontent.NowPlayingActivity;
 
 /**
@@ -63,7 +63,7 @@ public class MediaPlayerService extends Service {
 		album = (Album) intent.getSerializableExtra("album");
 		song = (Song) intent.getSerializableExtra("song");
 
-		songList = album.getSongList();
+		//songList = album.getSongList();
 
 		playMedia();
 
@@ -88,8 +88,8 @@ public class MediaPlayerService extends Service {
 		}
 
 		title = song.getTitle();
-		albumTitle = album.getAlbum();
-		albumArt = album.getAlbumArt();
+		//albumTitle = album.getAlbum();
+		//albumArt = album.getAlbumArt();
 
 		try {
 			MainActivity.mPlayer.setDataSource(this, song.getUri());

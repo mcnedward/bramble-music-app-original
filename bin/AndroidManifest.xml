@@ -174,7 +174,7 @@
         
         <!-- ********** Receivers ********** -->
         
-        <receiver android:name="com.awesome.utils.MediaBroadcastReceiver">
+        <receiver android:name="com.awesome.util.MediaBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

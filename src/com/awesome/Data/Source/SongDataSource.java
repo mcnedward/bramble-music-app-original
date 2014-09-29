@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.awesome.Data.DatabaseHelper;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Song;
 
 public class SongDataSource extends MediaDataSource<Song> implements IDataSource<Song> {
 

@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	// Database Name
 	public static String DB_NAME = "library.db";
 	// Database Version - Increment this number in order to upgrade the database
-	public static final int DB_VERSION = 35;
+	public static final int DB_VERSION = 36;
 
 	/** Artist Table Variables **/
 	public final static String ARTISTS_TABLE = "Artists";
@@ -34,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	public final static String ALBUM_ID = MediaStore.Audio.Albums._ID;
 	public final static String ALBUM = MediaStore.Audio.Albums.ALBUM;
 	public final static String ALBUM_KEY = MediaStore.Audio.Albums.ALBUM_KEY;
+	public final static String ALBUM_ARTIST_ID = "artist_id";
 	public final static String ALBUM_ARTIST = MediaStore.Audio.Albums.ARTIST;
 	public final static String NUMBER_OF_SONGS = MediaStore.Audio.Albums.NUMBER_OF_SONGS;
 	public final static String FIRST_YEAR = MediaStore.Audio.Albums.FIRST_YEAR;
@@ -74,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 				+ " INTEGER)");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + ALBUMS_TABLE + " (" + ALBUM_ID + " INTEGER PRIMARY KEY NOT NULL, "
-				+ ALBUM + " TEXT, " + ALBUM_KEY + " TEXT, " + ARTIST + " TEXT, " + NUMBER_OF_SONGS + " INTEGER, "
+				+ ALBUM + " TEXT, " + ALBUM_KEY + " TEXT, " + ALBUM_ARTIST_ID + " INTEGER, " + ARTIST + " TEXT, " + NUMBER_OF_SONGS + " INTEGER, "
 				+ FIRST_YEAR + " INTEGER, " + LAST_YEAR + " INTEGER, " + ALBUM_ART + " TEXT)");
 
 		db.execSQL("CREATE TABLE IF NOT EXISTS " + SONGS_TABLE + " (" + SONG_ID + " INTEGER PRIMARY KEY NOT NULL, "

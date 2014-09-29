@@ -1,4 +1,4 @@
-package com.awesome.Dto;
+package com.awesome.Entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +17,7 @@ public class Album extends Media implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String album;
 	private String albumKey;
+	private Integer artistId;
 	private String artist;
 	private Integer numberOfSongs;
 	private Integer firstYear;
@@ -111,6 +112,20 @@ public class Album extends Media implements Serializable {
 	 */
 	public void setArtist(String artist) {
 		this.artist = artist;
+	}
+
+	/**
+	 * @return the artistId
+	 */
+	public Integer getArtistId() {
+		return artistId;
+	}
+
+	/**
+	 * @param artistId the artistId to set
+	 */
+	public void setArtistId(Integer artistId) {
+		this.artistId = artistId;
 	}
 
 	/**

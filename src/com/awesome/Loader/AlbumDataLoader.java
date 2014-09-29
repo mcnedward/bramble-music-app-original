@@ -5,7 +5,7 @@ import java.util.List;
 import android.content.Context;
 
 import com.awesome.Data.Source.IDataSource;
-import com.awesome.Dto.Album;
+import com.awesome.Entity.Album;
 import com.awesome.Loader.Task.DeleteTask;
 import com.awesome.Loader.Task.InsertTask;
 import com.awesome.Loader.Task.UpdateTask;

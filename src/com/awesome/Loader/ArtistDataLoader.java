@@ -4,15 +4,18 @@ import java.util.List;
 
 import android.content.Context;
 
+import com.awesome.Data.Source.ArtistDataSource;
 import com.awesome.Data.Source.IDataSource;
-import com.awesome.Dto.Artist;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
 import com.awesome.Loader.Task.DeleteTask;
+import com.awesome.Loader.Task.GetAlbumsForArtistTask;
 import com.awesome.Loader.Task.InsertTask;
 import com.awesome.Loader.Task.UpdateTask;
 
 public class ArtistDataLoader extends BaseDataLoader<Artist> {
 
-	private IDataSource<Artist> mDataSource;
+	private ArtistDataSource mDataSource;
 	private String mSelection;
 	private String[] mSelectionArgs;
 	private String mGroupBy;
@@ -23,7 +26,7 @@ public class ArtistDataLoader extends BaseDataLoader<Artist> {
 			String selection, String[] selectionArgs, String groupBy,
 			String having, String orderBy) {
 		super(context, dataSource);
-		mDataSource = dataSource;
+		mDataSource = (ArtistDataSource) dataSource;
 		mSelection = selection;
 		mSelectionArgs = selectionArgs;
 		mGroupBy = groupBy;
@@ -48,5 +51,12 @@ public class ArtistDataLoader extends BaseDataLoader<Artist> {
 	public void delete(Artist entity) {
 		new DeleteTask<Artist>(this, entity, mDataSource).execute();
 	}
+	
+	public void updateAlbumList(Artist entity, Album album) {
+		
+	}
 
+	public void getAlbumsForArtist(Artist entity) {
+		new GetAlbumsForArtistTask<Artist>(this, entity, mDataSource).execute();
+	}
 }

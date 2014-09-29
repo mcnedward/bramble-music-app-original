@@ -21,13 +21,16 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
+import com.awesome.Data.MediaDatabase;
+import com.awesome.Data.Source.ArtistDataSource;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
 import com.awesome.musiclibrary.R;
 
 public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
@@ -36,14 +39,19 @@ public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 	private List<Artist> groups = new ArrayList<Artist>();
 	private List<List<Album>> children = new ArrayList<List<Album>>();
 	
+	ArtistDataSource dataSource;
+	
 	private Object mLock = new Object();
 
 	public MediaExpandableListAdapter(Context context) {
 		this.context = context;
+		MediaDatabase database = new MediaDatabase(context);
+		dataSource = new ArtistDataSource(database.open());
 	}
 
 	public void setGroup(Artist group) {
 		groups.add(group);
+		notifyDataSetChanged();
 	}
 
 	// Method to change the parent object in exp list on update
@@ -51,6 +59,7 @@ public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 		if (groups.contains(oldGroup)) {
 			groups.remove(oldGroup);
 			groups.add(newGroup);
+			notifyDataSetChanged();
 		}
 	}
 
@@ -62,6 +71,7 @@ public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 		} else {
 			children.add(index, child);
 		}
+		notifyDataSetChanged();
 	}
 	
 	public void clear() {
@@ -96,6 +106,8 @@ public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View itemView = inflater.inflate(R.layout.listview_item, null, false);
+		
+		itemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 150));
 
 		txtName = (TextView) itemView.findViewById(R.id.txtAlbum);
 		albumArtView = (ImageView) itemView.findViewById(R.id.albumArt);
@@ -142,11 +154,8 @@ public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 	}
 
 	public TextView getGenericView() {
-		// Layout parameters for the ExpandableListView
-		AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 98);
-
 		TextView tv = new TextView(this.context);
-		tv.setLayoutParams(lp);
+		tv.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 200));
 		tv.setMinimumWidth(550); // Sets the width of the text view for the list
 		// tv.setLongClickable(true);
 		tv.setTextSize(20);
@@ -155,7 +164,7 @@ public class MediaExpandableListAdapter extends BaseExpandableListAdapter {
 		// Center the text vertically
 		tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
 		// Set the text starting position
-		tv.setPadding(45, 0, 0, 0);
+		tv.setPadding(100, 0, 0, 0);
 
 		return tv;
 	}

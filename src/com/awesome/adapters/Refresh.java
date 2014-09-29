@@ -20,9 +20,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
+import com.awesome.Entity.Song;
 import com.awesome.musiclibrary.MainActivity;
 import com.awesome.musiclibrary.R;
 import com.awesome.musiclibrary.editcontent.EditAlbumActivity;
@@ -73,8 +73,8 @@ public class Refresh extends Activity {
 	 */
 	public void refreshArtists(List<Artist> artistList) {
 		// Initialize the List Views here
-		ExpandableListView exlvArtists = (ExpandableListView) ((Activity) context).findViewById(R.id.displayArtists);
-		ListView lvArtists = (ListView) ((Activity) context).findViewById(R.id.displayArtists2);
+		ExpandableListView exlvArtists = null;//(ExpandableListView) ((Activity) context).findViewById(R.id.displayArtists);
+		ListView lvArtists = null; //(ListView) ((Activity) context).findViewById(R.id.displayArtists2);
 
 		// Initialize the adapters
 		MediaExpandableListAdapter exlaArtists = new MediaExpandableListAdapter(context);
@@ -149,10 +149,10 @@ public class Refresh extends Activity {
 			});
 			exlaArtists.notifyDataSetChanged(); // Refresh the list
 		} else {
-			LinearLayout expViewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.expViewArtist);
-			expViewArtist.setVisibility(LinearLayout.GONE);
-			LinearLayout viewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.viewArtist);
-			viewArtist.setVisibility(LinearLayout.HORIZONTAL);
+			//LinearLayout expViewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.expViewArtist);
+			//expViewArtist.setVisibility(LinearLayout.GONE);
+			//LinearLayout viewArtist = (LinearLayout) ((Activity) context).findViewById(R.id.viewArtist);
+			//viewArtist.setVisibility(LinearLayout.HORIZONTAL);
 			laArtists.setGroup(null);
 			lvArtists.setAdapter(laArtists);
 		}

@@ -1,5 +1,6 @@
 package com.awesome.Data.Source;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -7,10 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.awesome.Data.DatabaseHelper;
-import com.awesome.Dto.Album;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Song;
 
-public class AlbumDataSource extends MediaDataSource<Album> implements
-		IDataSource<Album> {
+public class AlbumDataSource extends MediaDataSource<Album> implements IDataSource<Album> {
 
 	public AlbumDataSource(SQLiteDatabase database) {
 		super(database);
@@ -22,21 +23,39 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 	}
 
 	@Override
-	public List<Album> read(String selection, String[] selectionArgs,
-			String groupBy, String having, String orderBy) {
-		List<Album> albums = query(selection, selectionArgs, groupBy, having,
-				orderBy);
+	public List<Album> read(String selection, String[] selectionArgs, String groupBy, String having, String orderBy) {
+		List<Album> albums = query(selection, selectionArgs, groupBy, having, orderBy);
+		for (Album album : albums) {
+			getSongsForAlbum(album);
+		}
 		return albums;
 	}
 	
+	public List<Song> getSongsForAlbum(Album album) {
+		String sql = "SELECT DISTINCT * FROM audio_info WHERE album_id = ?";
+		Cursor cursor = rawQuery(sql, new String[] { String.valueOf(album.getId()) });
+		List<Song> songs = new ArrayList<Song>();
+		if (cursorHasValue(cursor)) {
+			while (!cursor.isAfterLast()) {
+				songs.add(generateSong(cursor));
+				cursor.moveToNext();
+			}
+			cursor.close();
+		}
+		if (!songs.isEmpty())
+			album.setSongList(songs);
+		return songs;
+	}
+
 	/********** GET DATA COLUMNS AND OBJECTS **********/
 
 	@Override
 	public String[] getAllColumns() {
-		return new String[] { DatabaseHelper.ALBUM_ID, DatabaseHelper.ALBUM, DatabaseHelper.ALBUM_KEY, DatabaseHelper.ALBUM_ARTIST,
-				DatabaseHelper.NUMBER_OF_SONGS, DatabaseHelper.FIRST_YEAR, DatabaseHelper.LAST_YEAR, DatabaseHelper.ALBUM_ART };
+		return new String[] { DatabaseHelper.ALBUM_ID, DatabaseHelper.ALBUM, DatabaseHelper.ALBUM_KEY,
+				DatabaseHelper.ALBUM_ARTIST, DatabaseHelper.NUMBER_OF_SONGS, DatabaseHelper.FIRST_YEAR,
+				DatabaseHelper.LAST_YEAR, DatabaseHelper.ALBUM_ART };
 	}
-	
+
 	@Override
 	public String getTableName() {
 		return DatabaseHelper.ALBUMS_TABLE;
@@ -47,23 +66,16 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 		if (cursor == null)
 			return null;
 		Integer albumId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ID));
-		String albumName = cursor
-				.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM));
-		String albumKey = cursor.getString(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.ALBUM_KEY));
-		String albumArtist = cursor.getString(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ARTIST));
-		Integer numberOfSongs = cursor.getInt(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_SONGS));
-		Integer firstYear = cursor.getInt(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.FIRST_YEAR));
-		Integer lastYear = cursor.getInt(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.LAST_YEAR));
-		String albumArt = cursor.getString(cursor
-				.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ART));
+		String albumName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM));
+		String albumKey = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM_KEY));
+		String albumArtist = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ARTIST));
+		Integer numberOfSongs = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.NUMBER_OF_SONGS));
+		Integer firstYear = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.FIRST_YEAR));
+		Integer lastYear = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.LAST_YEAR));
+		String albumArt = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ALBUM_ART));
 
-		Album album = new Album(albumId, albumName, albumKey, albumArtist,
-				numberOfSongs, firstYear, lastYear, albumArt, null);
+		Album album = new Album(albumId, albumName, albumKey, albumArtist, numberOfSongs, firstYear, lastYear,
+				albumArt, null);
 		return album;
 	}
 
@@ -75,6 +87,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 		values.put(DatabaseHelper.ALBUM_ID, entity.getId());
 		values.put(DatabaseHelper.ALBUM, entity.getAlbum());
 		values.put(DatabaseHelper.ALBUM_KEY, entity.getAlbumKey());
+		values.put(DatabaseHelper.ALBUM_ARTIST_ID, entity.getArtistId());
 		values.put(DatabaseHelper.ALBUM_ARTIST, entity.getArtist());
 		values.put(DatabaseHelper.NUMBER_OF_SONGS, entity.getNumberOfSongs());
 		values.put(DatabaseHelper.FIRST_YEAR, entity.getFirstYear());
@@ -82,7 +95,7 @@ public class AlbumDataSource extends MediaDataSource<Album> implements
 		values.put(DatabaseHelper.ALBUM_ART, entity.getAlbumArt());
 		return values;
 	}
-	
+
 	@Override
 	public boolean delete(Album entity) {
 		// TODO Auto-generated method stub

@@ -7,9 +7,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.awesome.Dto.Album;
-import com.awesome.Dto.Artist;
-import com.awesome.Dto.Song;
+import com.awesome.Entity.Album;
+import com.awesome.Entity.Artist;
+import com.awesome.Entity.Song;
 import com.awesome.adapters.Refresh;
 
 /**
