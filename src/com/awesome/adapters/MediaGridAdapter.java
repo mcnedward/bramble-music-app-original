@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -16,22 +20,23 @@ import android.widget.TextView;
 import com.awesome.Entity.Album;
 import com.awesome.Entity.Artist;
 import com.awesome.musiclibrary.R;
+import com.awesome.musiclibrary.viewcontent.DisplaySongsActivity;
 import com.awesome.util.art.ImageLoaderTask;
 import com.awesome.util.art.LoadingHolder;
-import com.awesome.util.view.ArtistView;
+import com.awesome.util.view.ArtworkView;
 
 public class MediaGridAdapter<T> extends BaseAdapter {
 	private static String TAG = "Adapter";
 
 	private Context mContext;
-	private LayoutInflater _inflator;
+	private LayoutInflater _inflater;
 
 	private Boolean isDisplaySong = false;
 	private List<T> groups = new ArrayList<T>();
 
 	public MediaGridAdapter(Context context) {
 		mContext = context;
-		_inflator = LayoutInflater.from(context);
+		_inflater = LayoutInflater.from(context);
 	}
 
 	@Override
@@ -65,28 +70,56 @@ public class MediaGridAdapter<T> extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view = convertView;
-		ArtistView artistView;
+		ArtworkView artworkView;
 		TextView textView;
 
+		Artist artist = (Artist) getItem(position);
+		final Album album = artist.getAlbumList().get(0);
+		String albumArt = album.getAlbumArt();
+		
 		try {
-			Artist artist = (Artist) getItem(position);
-
 			if (view == null) {
-				view = _inflator.inflate(R.layout.gridview_item, parent, false);
+				view = _inflater.inflate(R.layout.gridview_item, parent, false);
 				view.setTag(R.id.artistImage, view.findViewById(R.id.artistImage));
 				view.setTag(R.id.artistText, view.findViewById(R.id.artistText));
+				
+				view.setOnTouchListener(new OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						int action = event.getAction();
+						switch (action) {
+						case MotionEvent.ACTION_DOWN:
+							v.requestFocus();
+							break;
+						case MotionEvent.ACTION_UP:
+							//v.performClick();
+							v.bringToFront();
+							return true;
+						}
+						return false;
+					}
+					
+				});
+				
+				view.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						//view.requestFocusFromTouch();
+						//if (view.isSelected() == false) {
+							viewDisplaySongsByAlbum(album);
+						//}
+						return;
+					}
+				});
 			}
 
-			artistView = (ArtistView) view.getTag(R.id.artistImage);
+			artworkView = (ArtworkView) view.getTag(R.id.artistImage);
 			textView = (TextView) view.getTag(R.id.artistText);
+			artworkView.setMinimumHeight(250);
 
-			artistView.setMinimumHeight(250);
-
-			Album album = artist.getAlbumList().get(0);
-			String albumArt = album.getAlbumArt();
-
-			load(albumArt, artistView);
 			textView.setText(artist.toString());
+			load(albumArt, artworkView);
 		} catch (Exception e) {
 			Log.i(TAG, e.getMessage(), e);
 		}
@@ -108,17 +141,17 @@ public class MediaGridAdapter<T> extends BaseAdapter {
 		return tv;
 	}
 
-	public void load(String albumArt, ArtistView artistView) {
-		if (cancelPotentialLoad(albumArt, artistView)) {
-			ImageLoaderTask task = new ImageLoaderTask(artistView);
+	public void load(String albumArt, ArtworkView artworView) {
+		if (cancelPotentialLoad(albumArt, artworView)) {
+			ImageLoaderTask task = new ImageLoaderTask(artworView);
 			LoadingHolder holder = new LoadingHolder(task);
-			artistView.setLoadingHolder(holder);
+			artworView.setLoadingHolder(holder);
 			task.execute(albumArt);
 		}
 	}
 
-	private boolean cancelPotentialLoad(String albumArt, ArtistView artistView) {
-		ImageLoaderTask task = ImageLoaderTask.getImageLoaderTask(artistView);
+	private boolean cancelPotentialLoad(String albumArt, ArtworkView artworView) {
+		ImageLoaderTask task = ImageLoaderTask.getImageLoaderTask(artworView);
 
 		if (task != null) {
 			String taskAlbumArt = task.getTaskAlbumArt();
@@ -129,6 +162,20 @@ public class MediaGridAdapter<T> extends BaseAdapter {
 			}
 		}
 		return true;
+	}
+	
+	/********** View Methods **********/
+
+	/**
+	 * Opens the activity for viewing all songs in an album
+	 * 
+	 * @param album
+	 *            The album that you want to view
+	 */
+	public void viewDisplaySongsByAlbum(Album album) {
+		Intent displaySongs = new Intent(mContext, DisplaySongsActivity.class);
+		displaySongs.putExtra("album", album);
+		mContext.startActivity(displaySongs);
 	}
 
 	/**

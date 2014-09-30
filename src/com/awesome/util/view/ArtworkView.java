@@ -9,22 +9,22 @@ import android.widget.ImageView;
 import com.awesome.musiclibrary.R;
 import com.awesome.util.art.LoadingHolder;
 
-public class ArtistView extends ImageView {
+public class ArtworkView extends ImageView {
 
 	private LoadingHolder loadingHolder;
 	private Bitmap defaultAlbumArt;
 
-	public ArtistView(Context context) {
+	public ArtworkView(Context context) {
 		super(context);
 		loadDefaultArt(context);
 	}
 
-	public ArtistView(Context context, AttributeSet attrs) {
+	public ArtworkView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		loadDefaultArt(context);
 	}
 
-	public ArtistView(Context context, AttributeSet attrs, int defStyle) {
+	public ArtworkView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		loadDefaultArt(context);
 	}

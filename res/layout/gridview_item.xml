@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.awesome.util.view.ArtistView
+    <com.awesome.util.view.ArtworkView
         android:id="@+id/artistImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

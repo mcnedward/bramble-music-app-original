@@ -7,15 +7,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-import com.awesome.util.view.ArtistView;
+import com.awesome.util.view.ArtworkView;
 
 public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
 
 	private String taskAlbumArt;
-	private final WeakReference<ArtistView> artistViewReference;
+	private final WeakReference<ArtworkView> artworkViewReference;
 
-	public ImageLoaderTask(ArtistView artistView) {
-		artistViewReference = new WeakReference<ArtistView>(artistView);
+	public ImageLoaderTask(ArtworkView gridItemView) {
+		artworkViewReference = new WeakReference<ArtworkView>(gridItemView);
 	}
 
 	@Override
@@ -36,13 +36,13 @@ public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
 			bitmap = null;
 		}
 
-		if (artistViewReference != null) {
-			ArtistView artistView = artistViewReference.get();
-			ImageLoaderTask imageLoaderTask = getImageLoaderTask(artistView);
+		if (artworkViewReference != null) {
+			ArtworkView artworkView = artworkViewReference.get();
+			ImageLoaderTask imageLoaderTask = getImageLoaderTask(artworkView);
 			if (imageLoaderTask != null) {
 				if (this == imageLoaderTask) {
-					if (artistView != null) {
-						artistView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 100, 250, false));
+					if (artworkView != null) {
+						artworkView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 100, 250, false));
 					}
 				}
 			}
@@ -53,9 +53,9 @@ public class ImageLoaderTask extends AsyncTask<String, Void, Bitmap> {
 		return taskAlbumArt;
 	}
 	
-	public static ImageLoaderTask getImageLoaderTask(ArtistView artistView) {
+	public static ImageLoaderTask getImageLoaderTask(ArtworkView artworView) {
 		ImageLoaderTask task = null;
-		LoadingHolder holder = artistView.getLoadingHolder();
+		LoadingHolder holder = artworView.getLoadingHolder();
 		if (holder != null) {
 			task = holder.getTask();
 		}
